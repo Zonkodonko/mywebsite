@@ -1,0 +1,200 @@
+$needed-aboutme-height: 18rem;
+$zindex-portrait:2;
+$zindex-aboutme:$zindex-portrait - 1;
+
+
+.resume-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.resume-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  //justify-content: space-between;
+  width: 100%;
+  height: 102vh;
+  position: relative;
+}
+
+#resume-nav {
+  >li {
+    list-style-type: none;
+
+    >a {
+      text-decoration: none;
+      color: inherit;
+    }
+    //chevron
+    ::before {
+      content: "\F280";
+      font-family: bootstrap-icons !important;
+      font-style: normal;
+      font-weight: normal !important;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      vertical-align: -.125em;
+      margin-right: 0.5rem;
+    }
+    :hover:before {
+      margin-right: 0;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.header-text {
+  height: 100%;
+  justify-content: center;
+  text-wrap: nowrap;
+
+  > h1 {
+    font-size: 6rem;
+  }
+  > h2 {
+    font-size: 3rem;
+  }
+  > h3 {
+    font-size: 2rem;
+  }
+  > h4 {
+    font-size: 1.5rem;
+  }
+
+  > * {
+    width: fit-content;
+
+  }
+}
+
+#name {
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.resume-body {
+  padding-left: var(--bs-padding-4);
+  padding-right: var(--bs-padding-4);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  gap: 6rem;
+  margin-top: 6rem;
+  > div {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.header-image {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 52% 34%);
+  background-color: rgba(172, 0, 238, 0.41);
+}
+
+#backgroundFootage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+#aboutme {
+  font-size: 1.5rem;
+  width: 70%;
+  align-self: center;
+  overflow: hidden;
+}
+
+.aboutme-content {
+  flex-direction: row;
+  gap: 2.5rem;
+  z-index: $zindex-aboutme;
+  .aboutme-text {
+    transform: translateX(-100%);
+    opacity: 0;
+    &.show {
+      width: 100%;
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
+#portrait {
+  width: auto;
+  height: 20rem;
+  border-radius: 4%;
+  z-index: $zindex-portrait;
+}
+
+#experience {
+  justify-content: start;
+  align-self: center;
+}
+
+
+@media screen and (max-aspect-ratio: 3/4) {
+  .resume-container {
+    margin-top: 3rem;
+  }
+
+  .resume-header {
+    flex-direction: column;
+  }
+
+  .resume-body {
+    padding-left: var(--bs-padding-4);
+    padding-right: var(--bs-padding-4);
+  }
+
+  .header-image {
+    order: 1;
+    clip-path: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .header-text {
+    order: 2;
+    margin-left: 0 !important;
+  }
+
+  .header-image {
+    display: none;
+  }
+
+  #aboutme {
+    width: 100%;
+  }
+
+  .aboutme-content {
+    flex-direction: column;
+    .aboutme-text {
+      transform: unset;
+      max-height: 0;
+      &.show {
+        transform: unset;
+        max-height: 40rem;
+      }
+    }
+  }
+
+}
+
+
+

@@ -1,0 +1,28 @@
+{
+  "resume": {
+    "greeting": {
+      "1": "Hello, I am",
+      "2": "Software Developer"
+    },
+    "aboutme": {
+      "title": "About me"
+    },
+    "experience": {
+      "title": "Experience"
+    },
+    "skills": {
+      "title": "Skillset",
+      "category": {
+        "programminglanguages": "Programming languages",
+        "backend": "Backend",
+        "web": "Web",
+        "databases": "Databases",
+        "devops": "DevOps",
+        "other": "Misc.",
+        "os": "OS",
+        "devtools": "Dev Tools"
+      }
+    }
+  },
+  "period": "from {{from}} to {{to}}"
+}

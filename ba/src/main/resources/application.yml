@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: zonkodonko
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dev_db
+    username:
+    password:
+    # driver-class-name optional, wird erkannt: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/zonkodonko
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+    oidc:
+      base-url: http://localhost:8080/realms/zonkodonko/protocol/openid-connect
+      client-id: zonkodonko-rest-api
+      client-secret:
+
+
+server:
+  port: 8081

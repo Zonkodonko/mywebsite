@@ -1,0 +1,12 @@
+<div class="lang-switch" (click)="toggleLanguage()">
+  <span class="fi" [ngClass]="{'fi-de': currentLanguage =='de', 'fi-gb': currentLanguage != 'de'}"></span>
+</div>
+<div id="login-container" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()">
+  <button (click)="openLoginDialog()" [class.hidden]="!isShowLoginButton" class="bg-transparent border-0">
+    <i class="bi bi-key-fill text-white"></i>
+  </button>
+</div>
+<router-outlet></router-outlet>
+<div class="footer">
+  © Timm Kutzner - All Rights Reserved.
+</div>

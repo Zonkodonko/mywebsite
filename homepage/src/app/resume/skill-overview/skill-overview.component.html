@@ -1,0 +1,39 @@
+
+<div class="skill-container overflow-hidden position-relative" [class.editmode-border]="isEditMode">
+  @for (category of sortedCategories; track category;) {
+    <span>
+      <div class="category-header">
+        <span (click)="toggleCategoryCollapse(category.cat)" >{{ 'resume.skills.category.' + category.cat | translate }}</span>
+        @if (isEditMode) { <!-- Add Button -->
+          <button class="btn bg-transparent border-0" (click)="addSkill(category.cat)">
+            <i class="bi bi-plus-lg"></i>
+          </button>
+        }
+      </div>
+    </span>
+
+    <div [ngbCollapse]="collapsedCategories.includes(category.cat)">
+      <div class="category-content-container">
+        @for (skill of sortSkills(category.cat); track skill; let skillIndex = $index;) {
+          @if (isEditMode) {
+            <input type="text" class="bg-transparent border-0 text-body skill-item" [(ngModel)]="skill.name"/>
+          } @else {
+            <span class="skill-item">{{ skill.name }}</span>
+          }
+        <span class="level-bar level-{{skill.level}}">
+          @for (level of [1,2,3,4,5]; track level) {
+            <div class="level-indicator" (click)="updateSkillLevel(skill,level)"></div>
+          }
+        </span>
+        }
+      </div>
+    </div>
+  }
+
+  @if (isLoggedIn) { <!-- Edit Button -->
+    <button id="editButton" class="btn float-end bg-transparent border-0" (click)="toggleEditMode()">
+      <i class="bi" [ngClass]="{'bi-pencil-fill':!isEditMode,'bi-floppy2-fill': isEditMode}"></i>
+    </button>
+  }
+</div>
+

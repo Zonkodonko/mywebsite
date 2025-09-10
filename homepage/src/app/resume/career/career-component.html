@@ -1,0 +1,25 @@
+<ul id="career-list">
+  @for (exp of career; track exp; let isLast = $last) {
+    <li class="list-unstyled">
+      <div class="d-grid bullet-content">
+        <div class="bullet-shape">
+          <div class="bullet-ring-shape mx-auto my-auto">
+            <div class="bullet-inner-circle"></div>
+          </div>
+        </div>
+        <div class="bullet-header d-flex flex-row align-items-center flex-grow-1" intersect-anim>
+          <div class="bullet-text" >
+            <span class="fw-bold fs-3">{{ exp.title }}</span>
+            <span class="ms-1" [innerHTML]="'period' | translate:{from:dateFormat(exp.from),to:dateFormat(exp.to)}"></span>
+          </div>
+        </div>
+        <div *ngIf="!isLast" class="connection-line"></div>
+        <ul class="bullet-details" intersect-anim>
+          @for (bullet of exp.description; track bullet) {
+            <li>{{ bullet }}</li>
+          }
+        </ul>
+      </div>
+    </li>
+  }
+</ul>

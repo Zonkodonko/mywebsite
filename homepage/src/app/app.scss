@@ -1,0 +1,46 @@
+.footer {
+  height: 2rem;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lang-switch {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--bs-body-bg);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+  //clip-path: polygon(44% 7%, 71% 1%, 100% 0, 100% 100%, 0 100%, 0 74%, 4% 47%, 22% 22%);
+  border-radius: 60% 0 0 0;
+  padding-left: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.lang-switch:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+#login-container {
+  display: block;
+  position: fixed;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  top: 0;
+  bottom: 0;
+  left: 1rem;
+  z-index: 3;
+}
+
+.hidden {
+  transform: translateY(-4rem);
+}
