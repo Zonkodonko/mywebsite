@@ -3,7 +3,7 @@
   @for (category of sortedCategories; track category;) {
     <span>
       <div class="category-header">
-        <span (click)="toggleCategoryCollapse(category.cat)" >{{ 'resume.skills.category.' + category.cat | translate }}</span>
+        <span>{{ 'resume.skills.category.' + category.cat | translate }}</span>
         @if (isEditMode) { <!-- Add Button -->
           <button class="btn bg-transparent border-0" (click)="addSkill(category.cat)">
             <i class="bi bi-plus-lg"></i>
@@ -12,7 +12,7 @@
       </div>
     </span>
 
-    <div [ngbCollapse]="collapsedCategories.includes(category.cat)">
+    <div autoheight>
       <div class="category-content-container">
         @for (skill of sortSkills(category.cat); track skill; let skillIndex = $index;) {
           @if (isEditMode) {
