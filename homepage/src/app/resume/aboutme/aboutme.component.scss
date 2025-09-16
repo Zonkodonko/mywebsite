@@ -1,0 +1,62 @@
+$portrait-height: 20rem;
+$zindex-portrait:2;
+$zindex-aboutme:$zindex-portrait - 1;
+
+#portrait {
+  width: auto;
+  height: $portrait-height;
+  border-radius: 4%;
+  z-index: $zindex-portrait;
+}
+
+#edit-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.aboutme-content {
+  flex-direction: row;
+  gap: 2.5rem;
+  z-index: $zindex-aboutme;
+  .aboutme-text {
+    transform: translateX(-100%);
+    opacity: 0;
+    border: none;
+    resize: none;
+    &.show {
+      width: 100%;
+      transform: translateX(0);
+      opacity: 1;
+    }
+    &.edit {
+      border: 0.1rem dashed white;
+    }
+  }
+}
+
+.aboutme-input {
+  border: dashed 0.1rem white;
+  height: $portrait-height;
+  width: 100%;
+  padding: 1rem;
+}
+
+@media screen and (max-aspect-ratio: 3/4) {
+  #aboutme {
+    width: 100%;
+  }
+
+  .aboutme-content {
+    flex-direction: column;
+    .aboutme-text {
+      transform: unset;
+      resize: none;
+      border: none;
+      &.show {
+        transform: unset;
+        max-height: 40rem;
+      }
+    }
+  }
+}

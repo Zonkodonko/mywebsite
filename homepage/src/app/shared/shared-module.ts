@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IntersectAnimation } from './intersect-animation/intersect-animation';
+import { AutoHeight } from './auto-resize/auto-height.directive';
 
 
 
 @NgModule({
   declarations: [
-    IntersectAnimation
+    IntersectAnimation,
+    AutoHeight
   ],
   exports: [
-    IntersectAnimation
+    IntersectAnimation,
+    AutoHeight
   ],
   imports: [
     CommonModule

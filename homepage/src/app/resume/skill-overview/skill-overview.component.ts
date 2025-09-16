@@ -16,7 +16,6 @@ export class SkillOverviewComponent implements OnInit {
   @Input()
   public maxLevel!: number;
 
-  @Input()
   public _skills!: Map<number,Skill>;
 
   private pendingSkills: Skill[] = [];
@@ -91,15 +90,18 @@ export class SkillOverviewComponent implements OnInit {
   }
 
   sortSkills(category: string): { name: string, level: number, category: string }[] {
-    const sortedSkills = this.sortedCategories.find(c => c.cat === category)!.skills!.sort((a, b) => {
-      if(this.pendingSkills.includes(a)) {
-        return 1;
-      }
-      if (this.pendingSkills.includes(b)) {
-        return -1;
-      }
-      return b.level - a.level
-    });
+    let sortedSkills = this.sortedCategories.find(c => c.cat === category)!.skills!
+    if(!this.isEditMode) {
+      sortedSkills = sortedSkills.sort((a, b) => {
+        if(this.pendingSkills.includes(a)) {
+          return 1;
+        }
+        if (this.pendingSkills.includes(b)) {
+          return -1;
+        }
+        return b.level - a.level
+      });
+    }
     return sortedSkills;
   }
 
@@ -109,13 +111,14 @@ export class SkillOverviewComponent implements OnInit {
       this.resumeService.updateSkillset(skills).subscribe({
         next: () => {
           this.isEditMode = !this.isEditMode
+          sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString());
         },
         error: (error) => console.error(error)
       });
     } else {
       this.isEditMode = !this.isEditMode;
+      sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString());
     }
-    setTimeout(()=> sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString()),30);
   }
 
   get isLoggedIn() {

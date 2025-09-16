@@ -2,7 +2,6 @@ package com.zonkodonko.ba.resume;
 
 import com.zonkodonko.ba.resume.data.CareerStep;
 import com.zonkodonko.ba.resume.data.Skill;
-import jakarta.persistence.Entity;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -12,23 +11,29 @@ public final class Resume {
 	private final String name;
 	private final Collection<Skill> skills;
 	private final CareerStep[] career;
+	private final String aboutMe;
 
-	public Resume(String name, Collection<Skill> skills, CareerStep[] career) {
+	public Resume(String name, Collection<Skill> skills, CareerStep[] career, String aboutMe) {
 		this.name = name;
 		this.skills = skills;
 		this.career = career;
+		this.aboutMe = aboutMe;
 	}
 
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
-	public Collection<Skill> skills() {
+	public Collection<Skill> getSkills() {
 		return skills;
 	}
 
-	public CareerStep[] career() {
+	public CareerStep[] getCareer() {
 		return career;
+	}
+
+	public String getAboutMe() {
+		return aboutMe;
 	}
 
 	@Override
@@ -63,6 +68,7 @@ public final class Resume {
 		private String name;
 		private Collection<Skill> skills;
 		private CareerStep[] career;
+		private String aboutMe;
 
 		public Builder setName(String name) {
 			this.name = name;
@@ -79,8 +85,13 @@ public final class Resume {
 			return this;
 		}
 
+		public Builder setAboutMe(String aboutMe) {
+			this.aboutMe = aboutMe;
+			return this;
+		}
+
 		public Resume build() {
-			return new Resume(name, skills, career);
+			return new Resume(name, skills, career, aboutMe);
 		}
 	}
 }

@@ -15,8 +15,9 @@ export class ResumeComponent implements OnInit {
 
   public resume!: ResumeData;
 
-
-  constructor(public viewportScroller: ViewportScroller, private translate: TranslateService, private resumeService: ResumeApiService) {
+  constructor(public viewportScroller: ViewportScroller,
+              private translate: TranslateService,
+              private resumeService: ResumeApiService) {
   }
 
   ngOnInit(): void {
@@ -24,8 +25,19 @@ export class ResumeComponent implements OnInit {
     this.resumeService.fetchSkillset().subscribe(skills => this.resume.skills = skills)
 
     this.translate.onLangChange.subscribe((l) => {
-      l.lang === 'de' ? this.resume = de : this.resume = en;
+      this.fetchResume();
     })
+    this.fetchResume();
+  }
+
+  private fetchResume() {
+    this.resumeService.fetchResume().subscribe(resume => {
+      Object.assign(this.resume,resume);
+    })
+  }
+
+  get lang() {
+    return this.translate.getCurrentLang();
   }
 
   /**
@@ -34,10 +46,6 @@ export class ResumeComponent implements OnInit {
    */
   public scrollTo(id: string) {
     this.viewportScroller.scrollToAnchor(id, {behavior: 'smooth'})
-  }
-
-  public get aboutMe(): string {
-    return this.resume.aboutMe;
   }
 
 }

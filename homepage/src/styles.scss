@@ -76,3 +76,7 @@ html, body, *{
 .intersection-observer {
   transition: all .75s;
 }
+
+.clickable {
+  cursor: pointer;
+}

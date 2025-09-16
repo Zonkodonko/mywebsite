@@ -26,13 +26,7 @@
   <div class="resume-body d-flex flex-column">
     <div id="aboutme">
       <h2 class="mb-3">{{"resume.aboutme.title" | translate}}</h2>
-      <div class="d-flex aboutme-content align-items-center">
-        <img id="portrait"
-             src="/assets/portrait.jpg"
-             class="img-fluid shadow"
-        />
-        <p intersect-anim class="aboutme-text">{{aboutMe}}</p>
-      </div>
+      <app-aboutme [aboutMe]="{text:resume.aboutMe, lang: lang} "></app-aboutme>
     </div>
     <div id="experience">
       <h2 class="mb-3">{{"resume.experience.title" | translate}}</h2>

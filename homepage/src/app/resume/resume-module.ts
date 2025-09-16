@@ -7,13 +7,15 @@ import {CareerComponent} from './career/career-component';
 import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 import { SkillOverviewComponent } from './skill-overview/skill-overview.component';
 import {TranslatePipe} from '@ngx-translate/core';
+import { AboutmeComponent } from './aboutme/aboutme.component';
 
 
 @NgModule({
   declarations: [
     ResumeComponent,
     CareerComponent,
-    SkillOverviewComponent
+    SkillOverviewComponent,
+    AboutmeComponent
   ],
   imports: [
     CommonModule,

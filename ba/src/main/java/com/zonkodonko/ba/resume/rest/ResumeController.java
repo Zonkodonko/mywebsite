@@ -30,6 +30,11 @@ class ResumeController {
 
 	@GetMapping("/skills")
 	public Collection<Skill> getSkills() {
-		return resumeService.getResume().skills();
+		return resumeService.getResume().getSkills();
+	}
+
+	@PostMapping("/aboutme/{lang}")
+	public void updateAboutMe(@PathVariable String lang, @RequestBody String aboutMe) {
+		resumeService.updateAboutMe(lang,aboutMe);
 	}
 }

@@ -1,0 +1,29 @@
+<div
+  class="d-flex aboutme-content align-items-center position-relative"
+>
+  <img id="portrait"
+       src="/assets/portrait.jpg"
+       class="img-fluid shadow"
+  />
+  @if (!isEditMode) {
+    <div intersect-anim
+         [class.clickable]="isLoggedIn && !isEditMode"
+         (mouseleave)="toggleEditButtonVisible(false)"
+         (mouseenter)="toggleEditButtonVisible(true)"
+         (click)="activateEditMode()"
+    >
+      {{text}}
+    </div>
+  } @else {
+    <textarea #aboutMeInput
+              class="bg-transparent text-body aboutme-input"
+              [class.edit]="isEditMode"
+              (keydown.control.enter)="saveAboutMe()"
+              (blur)="saveAboutMe()"
+              [(ngModel)]="text">
+    </textarea>
+  }
+  @if (showEditButton) { <!-- Edit Button -->
+    <i id="edit-icon" class="bi" class="fs-5 bi-pencil-fill"></i>
+  }
+</div>

@@ -12,4 +12,6 @@ public interface ResumeService {
 	void updateSkills(Collection<Skill> skills);
 
 	void updateCareer(Collection<CareerStep> skills);
+
+	void updateAboutMe(String lang, String aboutMe);
 }
