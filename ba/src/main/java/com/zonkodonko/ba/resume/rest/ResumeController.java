@@ -3,6 +3,7 @@ package com.zonkodonko.ba.resume.rest;
 import com.zonkodonko.ba.resume.Resume;
 import com.zonkodonko.ba.resume.ResumeService;
 import com.zonkodonko.ba.resume.data.Skill;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -33,6 +34,7 @@ class ResumeController {
 		return resumeService.getResume().getSkills();
 	}
 
+	@PreAuthorize("isFullyAuthenticated()")
 	@PostMapping("/aboutme/{lang}")
 	public void updateAboutMe(@PathVariable String lang, @RequestBody String aboutMe) {
 		resumeService.updateAboutMe(lang,aboutMe);

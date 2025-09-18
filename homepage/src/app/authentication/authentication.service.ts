@@ -12,7 +12,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {
     const loginStatus = sessionStorage.getItem('login');
-    if(loginStatus != null) {
+    if (loginStatus != null) {
       this._isLoggedIn = true;
     }
     console.log('is logged in:' + this._isLoggedIn);
@@ -35,17 +35,32 @@ export class AuthenticationService {
       }
     ).pipe(
       tap(response => {
-        console.log(JSON.stringify(response));
         this._isLoggedIn = true;
-        sessionStorage.setItem('login', (response as any).access_token);
-    }));
+        sessionStorage.setItem('login', JSON.stringify(response as any));
+      }));
   }
 
-  public getAuthHeaders(): HttpHeaders {
-    const token = sessionStorage.getItem('login')!;
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+  logout() {
+    return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getAuthHeaders(true)}).subscribe({
+      complete: () => {
+        this._isLoggedIn = false;
+        sessionStorage.removeItem('login');
+      },
+      error: (error) => {
+        this._isLoggedIn = false;
+        sessionStorage.removeItem('login');
+      }
     });
+  }
+
+  public getAuthHeaders(withRefresh: boolean = false): HttpHeaders {
+    const jwt = JSON.parse(sessionStorage.getItem('login')!);
+    const bearer = jwt.access_token;
+    let headers = new HttpHeaders({'Authorization': `Bearer ${bearer}`})
+    if(withRefresh) {
+      headers = headers.set('refresh_token', jwt.refresh_token);
+    }
+    return headers;
   }
 
 }

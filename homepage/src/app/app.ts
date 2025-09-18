@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit, signal} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LoginComponent} from './authentication/login/login.component';
+import {AuthenticationService} from './authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import {LoginComponent} from './authentication/login/login.component';
 export class App {
   protected readonly title = signal('homepage');
 
-  constructor(private translateService: TranslateService, private modalService: NgbModal) {
+  constructor(private translateService: TranslateService, private modalService: NgbModal, private authService: AuthenticationService) {
   }
 
   public isShowLoginButton: boolean = false;
@@ -30,11 +31,19 @@ export class App {
     return this.translateService.getCurrentLang() ?? this.translateService.getFallbackLang();
   }
 
-  openLoginDialog() {
-    this.modalService.open(LoginComponent, {
-      centered: true,
-      size: 'sm'
-    });
+  get isLoggedIn() {
+    return this.authService.isLoggedIn;
+  }
+
+  clickLoginLogoutButton() {
+    if(this.isLoggedIn) {
+      this.authService.logout();
+    } else {
+      this.modalService.open(LoginComponent, {
+        centered: true,
+        size: 'sm'
+      });
+    }
   }
 
   showLoginButton() {

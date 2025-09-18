@@ -79,6 +79,27 @@ public class AuthenticationController {
 
 	}
 
+	@PostMapping(path = "/logout")
+	public ResponseEntity<?> logout(@RequestHeader Map<String, String> headers) {
+		MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+		form.add("client_id", clientId);
+		form.add("client_secret", clientSecret);
+		form.add("refresh_token", headers.get("refresh_token"));
+		ResponseEntity<Void> entity = restClient.post()
+				.uri("/logout")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.accept(MediaType.APPLICATION_JSON)
+				.body(form)
+				.retrieve()
+				.toBodilessEntity();
+		if(entity.getStatusCode().isError()) {
+			throw new RuntimeException("Error during logout");
+		} else {
+			return ResponseEntity.ok().build();
+		}
+
+	}
+
 	public record LoginRequest(String username, String password) {
 	}
 
