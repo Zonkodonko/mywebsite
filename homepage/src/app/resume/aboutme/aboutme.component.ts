@@ -14,6 +14,7 @@ export class AboutmeComponent {
   public _aboutMe: Map<string,string> = new Map();
   public isEditMode: boolean = false;
   public showEditButton: boolean = false;
+  private _originalText: string = "";
 
   @ViewChild('aboutMeInput') aboutMeInput!: ElementRef<HTMLTextAreaElement>;
 
@@ -26,6 +27,7 @@ export class AboutmeComponent {
   @Input()
   public set aboutMe(aboutMe: {text: string, lang: string}) {
     this._aboutMe.set(aboutMe.lang, aboutMe.text);
+    this._originalText = aboutMe.text;
   }
 
   get text(): string {
@@ -53,7 +55,12 @@ export class AboutmeComponent {
    */
   public saveAboutMe() {
     this.isEditMode = false;
-    this.resumeService.updateAboutMe(this.text,this.langService.getCurrentLang()).subscribe();
+    this.resumeService.updateAboutMe(this.text,this.langService.getCurrentLang()).subscribe({
+      error: (error) => {
+        this.text = this._originalText;
+        this.showEditButton = false;
+      },
+    });
   }
 
   toggleEditButtonVisible(show: boolean) {
