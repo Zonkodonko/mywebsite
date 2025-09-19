@@ -52,7 +52,6 @@ export class AboutmeComponent {
    * Save about me - text to backend.
    */
   public saveAboutMe() {
-    console.log("saving...");
     this.isEditMode = false;
     this.resumeService.updateAboutMe(this.text,this.langService.getCurrentLang()).subscribe();
   }

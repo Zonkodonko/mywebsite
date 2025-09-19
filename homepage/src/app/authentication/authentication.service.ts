@@ -43,14 +43,20 @@ export class AuthenticationService {
   logout() {
     return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getAuthHeaders(true)}).subscribe({
       complete: () => {
-        this._isLoggedIn = false;
-        sessionStorage.removeItem('login');
+        this.invalidateSessionLocal();
       },
       error: (error) => {
-        this._isLoggedIn = false;
-        sessionStorage.removeItem('login');
+        this.invalidateSessionLocal()
       }
     });
+  }
+
+  /**
+   * Remove session token from local storage.
+   */
+  public invalidateSessionLocal() {
+    this._isLoggedIn = false;
+    sessionStorage.removeItem('login');
   }
 
   public getAuthHeaders(withRefresh: boolean = false): HttpHeaders {

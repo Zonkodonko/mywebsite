@@ -7,6 +7,8 @@
 
 // 2. Include any default variable overrides here
 $body-bg: #240033;
+$body-secondary-bg: #e7e4cc;
+$body-secondary-color: #212121;
 $body-color: #fff;
 $font-family-sans-serif: 'Roboto', sans-serif;
 $enable-smooth-scroll: true;
@@ -77,6 +79,3 @@ html, body, *{
   transition: all .75s;
 }
 
-.clickable {
-  cursor: pointer;
-}

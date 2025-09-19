@@ -6,8 +6,9 @@ import {App} from './app';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideTranslateService, TranslateModule} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
-import {provideHttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
+import {UnauthorizedHandlerInterceptor} from './shared/http-interceptors/unauthorized-handler-interceptor';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {DatePipe} from '@angular/common';
   ],
   providers: [
     DatePipe,
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
+    {provide: HTTP_INTERCEPTORS,useClass: UnauthorizedHandlerInterceptor, multi: true},
     provideTranslateService({
       lang: 'en',
       fallbackLang: 'en',
