@@ -22,9 +22,7 @@ export class App {
    * Switch between English and German
    */
   public toggleLanguage() {
-    console.log("lang before: " + this.currentLanguage);
     this.translateService.use(this.currentLanguage === 'en' ? 'de' : 'en');
-    console.log(this.currentLanguage);
   }
 
   get currentLanguage() {
@@ -47,7 +45,6 @@ export class App {
   }
 
   showLoginButton() {
-    console.log("show login button");
     this.isShowLoginButton = true;
   }
 

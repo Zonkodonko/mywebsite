@@ -15,7 +15,6 @@ export class AuthenticationService {
     if (loginStatus != null) {
       this._isLoggedIn = true;
     }
-    console.log('is logged in:' + this._isLoggedIn);
   }
 
   get isLoggedIn(): boolean {

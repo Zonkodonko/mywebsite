@@ -9,7 +9,7 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent {
 
   public loginForm: FormGroup = new FormGroup({
     username: new FormControl('', {validators: Validators.required}),
@@ -20,9 +20,6 @@ export class LoginComponent implements OnInit{
   constructor(private authService: AuthenticationService, private modal: NgbActiveModal) {
   }
 
-  ngOnInit(): void {
-    console.log(JSON.stringify(this.loginForm.getRawValue()));
-  }
 
 
   login() {

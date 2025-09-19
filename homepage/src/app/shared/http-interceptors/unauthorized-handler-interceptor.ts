@@ -1,4 +1,10 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode
+} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
@@ -21,8 +27,7 @@ export class UnauthorizedHandlerInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap({
         error: (error) => {
-          if (error.status === 401) {
-            console.log("401");
+          if (error.status === HttpStatusCode.Unauthorized) {
             this.authService.invalidateSessionLocal();
             this.modalService.open(LogoutNotifcationModal,{size: 'sm', centered: true});
           }
