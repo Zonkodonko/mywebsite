@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: zonkodonko
+    dev: false
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/resume
+    username: ${BE_DB_USERNAME}
+    password: ${BE_DB_PASSWORD}
+    # driver-class-name optional, wird erkannt: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://keycloak.${HOST_DOMAIN}/realms/Resume/protocol/openid-connect/token/introspect
+          client-id: zonkodonko-rest-api
+          client-secret: ${KEYCLOAK_SECRET}
+    oidc:
+      base-url: https://keycloak.${HOST_DOMAIN}/realms/Resume/protocol/openid-connect
+      client-id: zonkodonko-rest-api
+      client-secret: ${KEYCLOAK_SECRET}
+
+data:
+  folder: /app/data/
+
+server:
+  port: 8081
+  forward-headers-strategy: framework

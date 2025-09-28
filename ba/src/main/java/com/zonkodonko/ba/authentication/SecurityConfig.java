@@ -8,6 +8,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /**
  * Config for Authorization
@@ -18,14 +23,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-
-	public SecurityConfig(
-			@Value("${spring.security.oidc.base-url}") String oidcBaseUrl,
-			@Value("${spring.security.oidc.client-id}") String clientId,
-			@Value("${spring.security.oidc.client-secret}") String clientSecret) {
-	}
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors(Customizer.withDefaults());
@@ -41,3 +38,4 @@ public class SecurityConfig {
 		return http.build();
 	}
 }
+

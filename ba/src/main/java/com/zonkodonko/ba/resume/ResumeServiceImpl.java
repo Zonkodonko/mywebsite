@@ -6,6 +6,7 @@ import com.zonkodonko.ba.resume.data.Skill;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaDelete;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,11 @@ public class ResumeServiceImpl implements ResumeService{
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	private String dataFolder = "data";
+
+	public ResumeServiceImpl(@Value("${data.folder:data}") String dataFolder) {
+		this.dataFolder = dataFolder;
+	}
 
 	@Transactional(readOnly = true)
 	@Override

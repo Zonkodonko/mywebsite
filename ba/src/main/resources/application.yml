@@ -1,13 +1,13 @@
 spring:
   application:
     name: zonkodonko
+    dev: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/dev_db
     username:
     password:
     # driver-class-name optional, wird erkannt: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update

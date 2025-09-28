@@ -1,5 +1,5 @@
 export const de = {
-  "aboutMe": "Am meisten Erfahrung habe ich mit der Entwicklung monolithischer Webanwendungen. Allerding versuche ich mein Wissen und Expertise zu erweitern und bin daher auch an Projekten in anderen Feldern interessiet. Derzeit arbeite ich an der Entwicklung und Verbesserung meiner persönlichen Website um mein Skillset und Projekte besser präsentieren zu können. Außerdem erweitere ich mein technisches Profil aktuell gezielt in Richtung Android-Entwicklung.",
+  "aboutMe": "",
   "experience": [
     {
       "title": "Ausbildung zum Fachinformatiker für Anwendungsentwicklung",
@@ -68,7 +68,7 @@ export const de = {
 }
 
 export const en = {
-  "aboutMe": "I’m a software developer with a strong background in building monolithic web applications, and I’m always looking to expand my skills and explore new areas within the IT world. Recently, I’ve been diving deeper into Android development while continuing to develop and improve my personal homepage to better showcase my experience and abilities.",
+  "aboutMe": "",
   "experience": [
     {
       "title": "Apprenticeship as IT specialist for application development",
