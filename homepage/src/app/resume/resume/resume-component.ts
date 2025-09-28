@@ -21,9 +21,6 @@ export class ResumeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.resume = this.translate.getCurrentLang() === 'de' ? de : en;
-    this.resumeService.fetchSkillset().subscribe(skills => this.resume.skills = skills)
-
     this.translate.onLangChange.subscribe((l) => {
       this.fetchResume();
     })
@@ -31,9 +28,12 @@ export class ResumeComponent implements OnInit {
   }
 
   private fetchResume() {
-    this.resumeService.fetchResume().subscribe(resume => {
-      Object.assign(this.resume,resume);
-    })
+    this.resume = this.translate.getCurrentLang() === 'de' ? de : en;
+    if(this.resume.skills.length === 0) {
+      this.resumeService.fetchResume().subscribe(resume => {
+        Object.assign(this.resume,resume);
+      })
+    }
   }
 
   get lang() {

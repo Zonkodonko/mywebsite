@@ -35,36 +35,7 @@ export const de = {
       "to": 1753826400000
     }
   ],
-  "skills": [
-    {"id": undefined, "name": "Java", "level": 4,  "category": "programminglanguages"},
-    {"id": undefined, "name": "Javascript/Typescript", "level": 4,  "category": "programminglanguages"},
-    {"id": undefined, "name": "C#", "level": 2,  "category": "programminglanguages"},
-    {"id": undefined, "name": "HTML", "level": 4,  "category": "web"},
-    {"id": undefined, "name": "CSS", "level": 4,  "category": "web"},
-    {"id": undefined, "name": "Angular", "level": 4,  "category": "web"},
-    {"id": undefined, "name": "Bootstrap", "level": 3,  "category": "web"},
-    {"id": undefined, "name": "Konva", "level": 2,  "category": "web"},
-    {"id": undefined, "name": "Micronaut", "level": 4,  "category": "backend"},
-    {"id": undefined, "name": "Quarkus", "level": 3,  "category": "backend"},
-    {"id": undefined, "name": "Spring", "level": 2,  "category": "backend"},
-    {"id": undefined, "name": "Gradle", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "Maven", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "GitLab", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "Bitbucket", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "Jenkins", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "Docker", "level": 3,  "category": "devops"},
-    {"id": undefined, "name": "Jira", "level": 4,  "category": "other"},
-    {"id": undefined, "name": "Confluence", "level": 4,  "category": "other"},
-    {"id": undefined, "name": "PostgreSQL", "level": 2,  "category": "databases"},
-    {"id": undefined, "name": "Janusgraph", "level": 3,  "category": "databases"},
-    {"id": undefined, "name": "SQL", "level": 2,  "category": "databases"},
-    {"id": undefined, "name": "Gremlin", "level": 3,  "category": "databases"},
-    {"id": undefined, "name": "Windows", "level": 3,  "category": "os"},
-    {"id": undefined, "name": "Linux (Ubuntu)", "level": 3,  "category": "os"},
-    {"id": undefined, "name": "IntelliJ", "level": 4,  "category": "devtools"},
-    {"id": undefined, "name": "Android Studio", "level": 2,  "category": "devtools"},
-    {"id": undefined, "name": "Unity", "level": 2,  "category": "devtools"}
-  ]
+  "skills": []
 }
 
 export const en = {
@@ -104,35 +75,6 @@ export const en = {
       "to": 1753826400000
     }
   ],
-  "skills": [
-    { "id": undefined, "name": "Java", "level": 4,  "category": "programminglanguages" },
-    { "id": undefined, "name": "Javascript/Typescript", "level": 4,  "category": "programminglanguages" },
-    { "id": undefined, "name": "C#", "level": 2,  "category": "programminglanguages" },
-    { "id": undefined, "name": "HTML", "level": 4,  "category": "web" },
-    { "id": undefined, "name": "CSS", "level": 4,  "category": "web" },
-    { "id": undefined, "name": "Angular", "level": 4,  "category": "web" },
-    { "id": undefined, "name": "Bootstrap", "level": 3,  "category": "web" },
-    { "id": undefined, "name": "Konva", "level": 2,  "category": "web" },
-    { "id": undefined, "name": "Micronaut", "level": 4,  "category": "backend" },
-    { "id": undefined, "name": "Quarkus", "level": 3,  "category": "backend" },
-    { "id": undefined, "name": "Spring", "level": 2,  "category": "backend" },
-    { "id": undefined, "name": "Gradle", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "Maven", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "GitLab", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "Bitbucket", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "Jenkins", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "Docker", "level": 3,  "category": "devops" },
-    { "id": undefined, "name": "Jira", "level": 4,  "category": "other" },
-    { "id": undefined, "name": "Confluence", "level": 4,  "category": "other" },
-    { "id": undefined, "name": "PostgreSQL", "level": 2,  "category": "databases" },
-    { "id": undefined, "name": "Janusgraph", "level": 3,  "category": "databases" },
-    { "id": undefined, "name": "SQL", "level": 2,  "category": "databases" },
-    { "id": undefined, "name": "Gremlin", "level": 3,  "category": "databases" },
-    { "id": undefined, "name": "Windows", "level": 3,  "category": "os" },
-    { "id": undefined, "name": "Linux (Ubuntu)", "level": 3,  "category": "os" },
-    { "id": undefined, "name": "IntelliJ", "level": 4,  "category": "devtools" },
-    { "id": undefined, "name": "Android Studio", "level": 2,  "category": "devtools" },
-    { "id": undefined, "name": "Unity", "level": 2,  "category": "devtools" }
-  ]
+  "skills": []
 }
 

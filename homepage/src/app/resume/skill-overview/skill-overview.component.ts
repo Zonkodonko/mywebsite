@@ -63,19 +63,19 @@ export class SkillOverviewComponent implements OnInit {
   @Input()
   public set skills(skills: Skill[]) {
     this.originalSkills = skills;
-    this._skills = new Map(skills.map(skill => [skill.id!, skill]));
-    this.maxLevel = skills.sort((a, b) => a.level - b.level)[skills.length - 1].level!
-    this.sortedCategories.forEach(entry => {
-      this.categories.set(entry.cat, []);
-      entry.skills = [];
-    })
-    this._skills.forEach(skill => {
-      this.categories.get(skill.category)?.push(skill);
-    })
-    this.sortSkillsInCategories();
+    if(skills.length > 0) {
+      this._skills = new Map(skills.map(skill => [skill.id!, skill]));
+      this.maxLevel = skills.sort((a, b) => a.level - b.level)[skills.length - 1].level!
+      this.sortedCategories.forEach(entry => {
+        this.categories.set(entry.cat, []);
+        entry.skills = [];
+      })
+      this._skills.forEach(skill => {
+        this.categories.get(skill.category)?.push(skill);
+      })
+      this.sortSkillsInCategories();
+    }
   }
-//todo karriere wechselt sprache nicht
-
   /**
    * Transfer category data to sortedCategories.
    */
