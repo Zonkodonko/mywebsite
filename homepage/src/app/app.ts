@@ -10,13 +10,21 @@ import {AuthenticationService} from './authentication/authentication.service';
   standalone: false,
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('homepage');
 
   constructor(private translateService: TranslateService, private modalService: NgbModal, private authService: AuthenticationService) {
   }
 
   public isShowLoginButton: boolean = false;
+
+  ngOnInit(): void {
+    if (navigator.language.includes('de')) {
+      this.translateService.use('de')
+    } else {
+      this.translateService.use('en');
+    }
+  }
 
   /**
    * Switch between English and German
