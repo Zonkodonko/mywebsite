@@ -7,7 +7,6 @@ spring:
     url: jdbc:postgresql://postgres:5432/resume
     username: ${BE_DB_USERNAME}
     password: ${BE_DB_PASSWORD}
-    # driver-class-name optional, wird erkannt: org.postgresql.Driver
 
   jpa:
     hibernate:
