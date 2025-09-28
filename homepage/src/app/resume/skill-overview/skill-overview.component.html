@@ -12,11 +12,16 @@
       </div>
     </span>
 
-    <div autoheight>
+    <div>
       <div class="category-content-container">
         @for (skill of sortSkills(category.cat); track skill; let skillIndex = $index;) {
           @if (isEditMode) {
-            <input type="text" class="bg-transparent border-0 text-body skill-item" [(ngModel)]="skill.name"/>
+            <div class="skill-input-container">
+              <button class="btn bg-transparent border-0" (click)="deleteSkill(skill)">
+                <i class="bi bi-x-lg"></i>
+              </button>
+              <input type="text" class="bg-transparent border-0 text-body skill-item" [(ngModel)]="skill.name"/>
+            </div>
           } @else {
             <span class="skill-item">{{ skill.name }}</span>
           }

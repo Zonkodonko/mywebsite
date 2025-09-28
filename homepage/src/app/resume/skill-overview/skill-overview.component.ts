@@ -24,6 +24,8 @@ export class SkillOverviewComponent implements OnInit {
 
   public isEditMode: boolean = false;
 
+  private originalSkills: Skill[] = [];
+
   private categories: Map<string, { name: string, level: number, category: string }[]> = new Map();
   public sortedCategories: {cat: string, skills: Skill[]}[] = [
     {cat: 'programminglanguages', skills: []},
@@ -60,33 +62,27 @@ export class SkillOverviewComponent implements OnInit {
 
   @Input()
   public set skills(skills: Skill[]) {
+    this.originalSkills = skills;
     this._skills = new Map(skills.map(skill => [skill.id!, skill]));
     this.maxLevel = skills.sort((a, b) => a.level - b.level)[skills.length - 1].level!
-
     this.sortedCategories.forEach(entry => {
       this.categories.set(entry.cat, []);
+      entry.skills = [];
     })
     this._skills.forEach(skill => {
       this.categories.get(skill.category)?.push(skill);
     })
     this.sortSkillsInCategories();
   }
+//todo karriere wechselt sprache nicht
 
   /**
-   * Sort skills in categories by level.
+   * Transfer category data to sortedCategories.
    */
   private sortSkillsInCategories() {
     this.sortedCategories.forEach(entry => {
       entry.skills = this.categories.get(entry.cat)!;
     })
-  }
-
-  toggleCategoryCollapse(category: string) {
-    if(this.collapsedCategories.includes(category)) {
-      this.collapsedCategories.splice(this.collapsedCategories.indexOf(category), 1);
-    } else {
-      this.collapsedCategories.push(category);
-    }
   }
 
   sortSkills(category: string): { name: string, level: number, category: string }[] {
@@ -109,11 +105,16 @@ export class SkillOverviewComponent implements OnInit {
     if(this.isEditMode) {
       const skills = this.collectSkillsToSave();
       this.resumeService.updateSkillset(skills).subscribe({
-        next: () => {
+        complete: () => {
           this.isEditMode = !this.isEditMode
           sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString());
+          this.skills = skills;
         },
-        error: (error) => console.error(error)
+        error: (error) => {
+          this.skills = this.originalSkills;
+          this.isEditMode = !this.isEditMode
+          sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString());
+        }
       });
     } else {
       this.isEditMode = !this.isEditMode;
@@ -139,6 +140,18 @@ export class SkillOverviewComponent implements OnInit {
       } else {
         this._skills.get(skill.id!)!.level = level;
       }
+    }
+  }
+
+  deleteSkill(skill: Skill) {
+    if(this.isEditMode) {
+      if(skill.id == undefined) {
+      this.pendingSkills.splice(this.pendingSkills.indexOf(skill), 1);
+      } else {
+        this._skills.delete(skill.id!);
+      }
+      const cat = this.sortedCategories.find(c => c.cat === skill.category)!;
+      cat.skills.splice(cat.skills.indexOf(skill), 1);
     }
   }
 
