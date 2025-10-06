@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * todo write comment
+ * Service to manage resume data.
  *
  * @author Z0nko
  * @version 29.08.2025
@@ -48,7 +48,6 @@ public class ResumeServiceImpl implements ResumeService{
 		if(!Locale.GERMAN.getLanguage().equals(locale.getLanguage())) {
 			locale = Locale.ENGLISH;
 		}
-		System.out.println(locale.getLanguage());
 		builder.setAboutMe(readAboutMe(locale.getLanguage()));
 		builder.setSkills(skills);
 		return builder.build();
@@ -86,8 +85,7 @@ public class ResumeServiceImpl implements ResumeService{
 	private String readAboutMe(String lang) {
 		File file = new File("data/aboutme."+lang+".txt");
 		if(!file.exists()) {
-//			throw new IllegalStateException("About me file for language "+lang+" not found");
-			return "";
+			throw new IllegalStateException("About me file for language "+lang+" not found");
 		}
 		try {
 			return Files.readString(file.toPath());

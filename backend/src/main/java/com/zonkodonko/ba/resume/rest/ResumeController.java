@@ -34,7 +34,6 @@ class ResumeController {
 		return resumeService.getResume().getSkills();
 	}
 
-	@PreAuthorize("isFullyAuthenticated()")
 	@PostMapping("/aboutme/{lang}")
 	public void updateAboutMe(@PathVariable String lang, @RequestBody String aboutMe) {
 		resumeService.updateAboutMe(lang,aboutMe);

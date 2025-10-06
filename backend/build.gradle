@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.zonkodonko'
 version = '0.0.1-SNAPSHOT'
-description = 'ba'
+description = 'backend'
 
 java {
     toolchain {
