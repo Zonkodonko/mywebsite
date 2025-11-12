@@ -32,6 +32,7 @@ export class SkillOverviewComponent implements OnInit {
     {cat: 'backend', skills: []},
     {cat: 'web', skills: []},
     {cat: 'databases', skills: []},
+    {cat: 'devops', skills: []},
     {cat: 'devtools', skills: []},
     {cat: 'os', skills: []},
     {cat: 'other', skills: []}
