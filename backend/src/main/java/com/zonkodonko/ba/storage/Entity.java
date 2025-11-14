@@ -1,4 +1,4 @@
-package com.zonkodonko.ba.resume.data;
+package com.zonkodonko.ba.storage;
 
 public interface Entity<ID_TYPE> {
 

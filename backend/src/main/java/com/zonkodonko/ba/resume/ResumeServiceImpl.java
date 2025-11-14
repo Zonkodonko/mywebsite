@@ -1,7 +1,7 @@
 package com.zonkodonko.ba.resume;
 
 import com.zonkodonko.ba.resume.data.CareerStep;
-import com.zonkodonko.ba.resume.data.Entity;
+import com.zonkodonko.ba.storage.Entity;
 import com.zonkodonko.ba.resume.data.Skill;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

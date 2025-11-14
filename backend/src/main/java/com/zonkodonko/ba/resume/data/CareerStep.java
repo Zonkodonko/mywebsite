@@ -13,7 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "CAREER_STEP")
-public class CareerStep implements com.zonkodonko.ba.resume.data.Entity<Long> {
+public class CareerStep implements com.zonkodonko.ba.storage.Entity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "blog_article")
-public final class BlogArticle implements com.zonkodonko.ba.resume.data.Entity<Long> {
+public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;

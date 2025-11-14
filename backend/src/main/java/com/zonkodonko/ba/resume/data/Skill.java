@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "SKILLS")
-public final class Skill implements com.zonkodonko.ba.resume.data.Entity<Long>{
+public final class Skill implements com.zonkodonko.ba.storage.Entity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Nullable
