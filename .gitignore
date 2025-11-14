@@ -6,3 +6,4 @@
 /ba/.idea/
 /ba/build/
 /ba/gradle/
+/backend/src/main/resources/application.yml
