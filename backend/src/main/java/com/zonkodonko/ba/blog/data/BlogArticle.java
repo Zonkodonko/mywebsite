@@ -9,6 +9,9 @@ import org.hibernate.type.SqlTypes;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Blog post entity.
+ */
 @Entity
 @Table(name = "blog_article")
 public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long> {
@@ -32,6 +35,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@Column(columnDefinition = "jsonb")
 	private ArticleSettings postSettings;
 
+	private String topic;
+
 
 	public BlogArticle() {
 	}
@@ -41,12 +46,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long createdDate,
 			byte[] image,
-			ArticleSettings postSettings) {
+			ArticleSettings postSettings,
+			String topic) {
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
 		this.image = image;
 		this.postSettings = postSettings;
+		this.topic = topic;
 	}
 
 	public BlogArticle(
@@ -55,13 +62,15 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long createdDate,
 			byte[] image,
-			ArticleSettings postSettings) {
+			ArticleSettings postSettings,
+			String topic) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
 		this.image = image;
 		this.postSettings = postSettings;
+		this.topic = topic;
 	}
 
 	public Long getId() {
@@ -88,6 +97,10 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return postSettings;
 	}
 
+	public String getTopic() {
+		return topic;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
@@ -98,12 +111,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				Objects.equals(this.content, that.content) &&
 				Objects.equals(this.createdDate, that.createdDate) &&
 				Objects.equals(this.image, that.image) &&
-				Objects.equals(this.postSettings, that.postSettings);
+				Objects.equals(this.postSettings, that.postSettings) &&
+				Objects.equals(this.topic, that.topic);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, createdDate, image, postSettings);
+		return Objects.hash(id, title, content, createdDate, image, postSettings, topic);
 	}
 
 	@Override
@@ -114,7 +128,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				"content=" + content + ", " +
 				"createdDate=" + createdDate + ", " +
 				"image=" + image + ", " +
-				"postSettings=" + postSettings + ']';
+				"postSettings=" + postSettings + ", " +
+				"topic=" + topic + ']';
 	}
 
 	public static Builder builder() {
@@ -128,6 +143,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private Long createdDate;
 		private byte[] image;
 		private ArticleSettings postSettings;
+		private String topic;
 		private String defaultLanguage = "de";
 
 		public Builder setId(Long id) {
@@ -182,8 +198,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			return this;
 		}
 
+		public Builder setTopic(String topic) {
+			this.topic = topic;
+			return this;
+		}
+
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, createdDate, image, postSettings);
+			return new BlogArticle(id, title, content, createdDate, image, postSettings, topic);
 		}
 	}
 }

@@ -22,7 +22,7 @@ import java.util.Optional;
 public class TestBlogArticleData {
 
 	@Autowired
-	private BlogPostRepository blogPostRepository;
+	private BlogArticleRepository blogPostRepository;
 
 	private BlogArticle testPost;
 
