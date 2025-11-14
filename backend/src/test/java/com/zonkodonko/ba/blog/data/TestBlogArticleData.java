@@ -3,6 +3,8 @@ package com.zonkodonko.ba.blog.data;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.zonkodonko.ba.blog.data.post.ArticleSettings;
+import com.zonkodonko.ba.blog.data.post.BlogArticle;
+import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

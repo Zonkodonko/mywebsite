@@ -1,4 +1,4 @@
-package com.zonkodonko.ba.blog.data;
+package com.zonkodonko.ba.blog.data.post;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,4 +9,6 @@ public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long>
 	List<BlogArticle> findAllByOrderByCreatedDateDesc();
 
 	List<BlogArticle> findAllByTopicOrderByCreatedDateDesc(String topic);
+
+	void deleteByTopic(String topic);
 }

@@ -1,6 +1,5 @@
-package com.zonkodonko.ba.blog.data;
+package com.zonkodonko.ba.blog.data.post;
 
-import com.zonkodonko.ba.blog.data.post.ArticleSettings;
 import com.zonkodonko.ba.storage.LocalizedText;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -35,7 +34,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@Column(columnDefinition = "jsonb")
 	private ArticleSettings postSettings;
 
-	private String topic;
+	private String topic; //todo add foreign key constraint
 
 
 	public BlogArticle() {

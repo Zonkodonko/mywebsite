@@ -1,21 +1,23 @@
 package com.zonkodonko.ba.blog.rest;
 
-import com.zonkodonko.ba.blog.BlogArticleService;
-import com.zonkodonko.ba.blog.data.BlogArticle;
+import com.zonkodonko.ba.blog.BlogService;
+import com.zonkodonko.ba.blog.data.post.BlogArticle;
+import com.zonkodonko.ba.blog.data.topic.BlogTopic;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/blog")
 class BlogController {
 
-	private final BlogArticleService blogArticleService;
+	private final BlogService blogArticleService;
 
 
-	BlogController(BlogArticleService blogArticleService) {
+	BlogController(BlogService blogArticleService) {
 		this.blogArticleService = blogArticleService;
 	}
 
@@ -24,7 +26,8 @@ class BlogController {
 		return blogArticleService.getArticles(topic);
 	}
 
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(path = "/article",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public Long saveArticle(
 			@RequestPart("article") ArticleDto article,
 			@RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
@@ -42,9 +45,24 @@ class BlogController {
 		return blogArticleService.saveArticle(fullArticle);
 	}
 
-	@DeleteMapping("/{id}")
+	@GetMapping("/topics")
+	public Collection<BlogTopic> getTopics() {
+		return blogArticleService.getTopics();
+	}
+
+	@DeleteMapping("/article/{id}")
 	public void deleteArticle(@PathVariable Long id) {
 		blogArticleService.deleteArticle(id);
+	}
+
+	@PostMapping("/topic")
+	public void saveTopic(@RequestBody BlogTopic topic) {
+		blogArticleService.saveTopic(topic);
+	}
+
+	@DeleteMapping("/topic/{id}")
+	public void deleteTopic(@PathVariable String id) {
+		blogArticleService.deleteTopic(id);
 	}
 
 }

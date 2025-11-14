@@ -1,25 +1,32 @@
 package com.zonkodonko.ba.blog;
 
-import com.zonkodonko.ba.blog.data.BlogArticle;
-import com.zonkodonko.ba.blog.data.BlogArticleRepository;
+import com.zonkodonko.ba.blog.data.post.BlogArticle;
+import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
+import com.zonkodonko.ba.blog.data.topic.BlogTopic;
+import com.zonkodonko.ba.blog.data.topic.BlogTopicRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Implementation of {@link BlogArticleService}.
+ * Implementation of {@link BlogService}.
  *
  * @author Timm
  * @version 14.11.2025
  */
 @Component
-public class BlogArticleServiceImpl implements BlogArticleService {
+public class BlogArticleServiceImpl implements BlogService {
 
 	final BlogArticleRepository blogArticleRepository;
 
-	public BlogArticleServiceImpl(BlogArticleRepository blogArticleRepository) {
+	final BlogTopicRepository blogTopicRepository;
+
+	public BlogArticleServiceImpl(BlogArticleRepository blogArticleRepository, BlogTopicRepository blogTopicRepository) {
 		this.blogArticleRepository = blogArticleRepository;
+		this.blogTopicRepository = blogTopicRepository;
 	}
 
 	@Override
@@ -46,5 +53,35 @@ public class BlogArticleServiceImpl implements BlogArticleService {
 	public void deleteArticle(Long id) {
 		Objects.requireNonNull(id);
 		blogArticleRepository.deleteById(id);
+	}
+
+	@Override
+	public void saveTopic(BlogTopic topic) {
+		Objects.requireNonNull(topic);
+		blogTopicRepository.save(topic);
+	}
+
+	@Override
+	public Collection<BlogTopic> getTopics() {
+		List<BlogTopic> topics = new ArrayList<>();
+		blogTopicRepository.findAll().forEach(topics::add);
+		return topics;
+	}
+
+	@Override
+	public BlogTopic getTopic(String id) {
+		Objects.requireNonNull(id);
+		return blogTopicRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public void deleteTopic(String id) {
+		deleteTopic(id, false);
+	}
+
+	@Override
+	public void deleteTopic(String id, boolean withArticles) {
+		blogTopicRepository.deleteById(id);
+		blogArticleRepository.deleteByTopic(id);
 	}
 }
