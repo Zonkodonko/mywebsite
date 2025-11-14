@@ -1,10 +1,7 @@
 package com.zonkodonko.ba.blog.data.topic;
 
 import com.zonkodonko.ba.storage.LocalizedText;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -31,16 +28,21 @@ public final class BlogTopic {
 	@Column(columnDefinition = "jsonb")
 	private LocalizedText description;
 
+	@Lob
+	private byte[] image;
+
+
 	public BlogTopic() {
 	}
 
 	/**
 	 *
 	 */
-	public BlogTopic(String id, LocalizedText name, LocalizedText description) {
+	public BlogTopic(String id, LocalizedText name, LocalizedText description, byte[] image) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.image = image;
 	}
 
 	public String getId() {
@@ -55,6 +57,10 @@ public final class BlogTopic {
 		return description;
 	}
 
+	public byte[] getImage() {
+		return image;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
@@ -62,12 +68,13 @@ public final class BlogTopic {
 		var that = (BlogTopic) obj;
 		return Objects.equals(this.id, that.id) &&
 				Objects.equals(this.name, that.name) &&
-				Objects.equals(this.description, that.description);
+				Objects.equals(this.description, that.description) &&
+				java.util.Arrays.equals(this.image, that.image);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, description);
+		return Objects.hash(id, name, description, java.util.Arrays.hashCode(image));
 	}
 
 	@Override
@@ -75,7 +82,73 @@ public final class BlogTopic {
 		return "BlogTopic[" +
 				"id=" + id + ", " +
 				"name=" + name + ", " +
-				"description=" + description + ']';
+				"description=" + description + ", " +
+				"image=" + (image != null ? "<binary>" : "null") + ']';
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static class Builder {
+		private String id;
+		private LocalizedText name;
+		private LocalizedText description;
+		private byte[] image;
+		private String defaultLanguage = "de"; // Default language is German
+
+		private Builder() {
+		}
+
+		public Builder setId(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder setName(LocalizedText name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder setName(String name) {
+			if (this.name == null) {
+				this.name = new LocalizedText();
+			}
+			this.name.put(defaultLanguage, name);
+			return this;
+		}
+
+		public Builder setDescription(LocalizedText description) {
+			this.description = description;
+			return this;
+		}
+
+		public Builder setDescription(String description) {
+			if (this.description == null) {
+				this.description = new LocalizedText();
+			}
+			this.description.put(defaultLanguage, description);
+			return this;
+		}
+
+		public Builder setImage(byte[] image) {
+			this.image = image;
+			return this;
+		}
+
+		public Builder setDefaultLanguage(String language) {
+			this.defaultLanguage = language;
+			return this;
+		}
+
+		public BlogTopic build() {
+			return new BlogTopic(id, name, description, image);
+		}
 	}
 
 }
+	
+	
+	
+	
+

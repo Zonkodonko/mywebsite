@@ -14,6 +14,9 @@ import java.util.Collection;
 @RequestMapping("/blog")
 class BlogController {
 
+	record TopicDto(String id, String name, String description) {
+	}
+
 	private final BlogService blogArticleService;
 
 
@@ -55,9 +58,21 @@ class BlogController {
 		blogArticleService.deleteArticle(id);
 	}
 
-	@PostMapping("/topic")
-	public void saveTopic(@RequestBody BlogTopic topic) {
-		blogArticleService.saveTopic(topic);
+
+	@PostMapping(path = "/topic",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public String saveTopic(
+			@RequestPart("topic") TopicDto topic,
+			@RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+
+		BlogTopic fullTopic = BlogTopic.builder()
+				.setId(topic.id())
+				.setName(topic.name())
+				.setDescription(topic.description())
+				.setImage(image != null ? image.getBytes() : null)
+				.build();
+
+		return blogArticleService.saveTopic(fullTopic);
 	}
 
 	@DeleteMapping("/topic/{id}")

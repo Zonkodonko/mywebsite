@@ -56,9 +56,9 @@ public class BlogArticleServiceImpl implements BlogService {
 	}
 
 	@Override
-	public void saveTopic(BlogTopic topic) {
+	public String saveTopic(BlogTopic topic) {
 		Objects.requireNonNull(topic);
-		blogTopicRepository.save(topic);
+		return blogTopicRepository.save(topic).getId();
 	}
 
 	@Override

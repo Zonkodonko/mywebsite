@@ -48,7 +48,7 @@ public interface BlogService {
 	 * Save topic.
 	 * @param topic Topic to save
 	 */
-	void saveTopic(@NotNull BlogTopic topic);
+	String saveTopic(@NotNull BlogTopic topic);
 
 	/**
 	 * Get all topics.
