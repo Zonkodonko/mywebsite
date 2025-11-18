@@ -3,7 +3,10 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
+import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
+import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.List;
 public interface BlogService {
 
 	/**
-	 * Get articles by topic.
+	 * Get articles by getTopic.
 	 *
 	 * @param topic Topic name
 	 * @return List of blog articles sorted by created date in descending order
@@ -35,7 +38,7 @@ public interface BlogService {
 	 * @param article Article to save
 	 * @return id of saved article
 	 */
-	Long saveArticle(@NotNull BlogArticle article);
+	Long saveArticle(@NotNull CreateArticleDto article, MultipartFile image);
 
 	/**
 	 * Delete article by id.
@@ -45,10 +48,10 @@ public interface BlogService {
 	void deleteArticle(@NotNull Long id);
 
 	/**
-	 * Save topic.
+	 * Save getTopic.
 	 * @param topic Topic to save
 	 */
-	String saveTopic(@NotNull BlogTopic topic);
+	String saveTopic(@NotNull TopicDto topic, MultipartFile image);
 
 	/**
 	 * Get all topics.
@@ -57,23 +60,22 @@ public interface BlogService {
 	Collection<BlogTopic> getTopics();
 
 	/**
-	 * Get topic by id.
+	 * Get getTopic by id.
 	 * @param id Topic id
 	 * @return Topic
 	 */
 	BlogTopic getTopic(@NotNull String id);
 
 	/**
-	 * Delete topic by id.
+	 * Delete getTopic by id.
 	 * @param id Topic id
 	 */
 	void deleteTopic(@NotNull String id);
 
 	/**
-	 * Delete topic by id and all articles associated with it.
+	 * Delete getTopic by id and all articles associated with it.
 	 * @param id Topic id
-	 * @param withArticles Delete articles associated with topic?
+	 * @param withArticles Delete articles associated with getTopic?
 	 */
 	void deleteTopic(@NotNull String id, boolean withArticles);
-
 }

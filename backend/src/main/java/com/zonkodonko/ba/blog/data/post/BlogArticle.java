@@ -1,10 +1,12 @@
 package com.zonkodonko.ba.blog.data.post;
 
+import com.zonkodonko.ba.blog.data.images.Image;
 import com.zonkodonko.ba.storage.LocalizedText;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,8 +29,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
 	private LocalizedText content;
-	@Lob
-	private byte[] image;
+
+	@OneToMany(
+			mappedBy = "article",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY,
+			orphanRemoval = true)
+	private List<Image> images;
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
@@ -44,13 +51,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText title,
 			LocalizedText content,
 			Long createdDate,
-			byte[] image,
+			List<Image> images,
 			ArticleSettings postSettings,
 			String topic) {
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
-		this.image = image;
+		this.images = images;
 		this.postSettings = postSettings;
 		this.topic = topic;
 	}
@@ -60,14 +67,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText title,
 			LocalizedText content,
 			Long createdDate,
-			byte[] image,
+			List<Image> images,
 			ArticleSettings postSettings,
 			String topic) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
-		this.image = image;
+		this.images = images;
 		this.postSettings = postSettings;
 		this.topic = topic;
 	}
@@ -88,8 +95,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return createdDate;
 	}
 
-	public byte[] getImage() {
-		return image;
+	public List<Image> getImages() {
+		return images;
 	}
 
 	public ArticleSettings getPostSettings() {
@@ -109,26 +116,26 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				Objects.equals(this.title, that.title) &&
 				Objects.equals(this.content, that.content) &&
 				Objects.equals(this.createdDate, that.createdDate) &&
-				Objects.equals(this.image, that.image) &&
+				Objects.equals(this.images, that.images) &&
 				Objects.equals(this.postSettings, that.postSettings) &&
 				Objects.equals(this.topic, that.topic);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, createdDate, image, postSettings, topic);
+		return Objects.hash(id, title, content, createdDate, images, postSettings, topic);
 	}
 
 	@Override
 	public String toString() {
 		return "BlogPost[" +
 				"id=" + id + ", " +
-				"title=" + title + ", " +
-				"content=" + content + ", " +
+				"getTitle=" + title + ", " +
+				"getContent=" + content + ", " +
 				"createdDate=" + createdDate + ", " +
-				"image=" + image + ", " +
+				"image=" + images + ", " +
 				"postSettings=" + postSettings + ", " +
-				"topic=" + topic + ']';
+				"getTopic=" + topic + ']';
 	}
 
 	public static Builder builder() {
@@ -140,7 +147,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private LocalizedText title;
 		private LocalizedText content;
 		private Long createdDate;
-		private byte[] image;
+		private List<Image> images;
 		private ArticleSettings postSettings;
 		private String topic;
 		private String defaultLanguage = "de";
@@ -187,8 +194,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			return this;
 		}
 
-		public Builder setImage(byte[] image) {
-			this.image = image;
+		public Builder setImages(List<Image> images) {
+			this.images = images;
 			return this;
 		}
 
@@ -203,7 +210,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		}
 
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, createdDate, image, postSettings, topic);
+			return new BlogArticle(id, title, content, createdDate, images, postSettings, topic);
 		}
 	}
 }

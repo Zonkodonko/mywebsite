@@ -1,5 +1,6 @@
 package com.zonkodonko.ba.blog.data.topic;
 
+import com.zonkodonko.ba.blog.data.images.Image;
 import com.zonkodonko.ba.storage.LocalizedText;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -28,8 +29,10 @@ public final class BlogTopic {
 	@Column(columnDefinition = "jsonb")
 	private LocalizedText description;
 
-	@Lob
-	private byte[] image;
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private Image image;
 
 
 	public BlogTopic() {
@@ -38,7 +41,7 @@ public final class BlogTopic {
 	/**
 	 *
 	 */
-	public BlogTopic(String id, LocalizedText name, LocalizedText description, byte[] image) {
+	public BlogTopic(String id, LocalizedText name, LocalizedText description, Image image) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -57,7 +60,7 @@ public final class BlogTopic {
 		return description;
 	}
 
-	public byte[] getImage() {
+	public Image getImage() {
 		return image;
 	}
 
@@ -69,12 +72,12 @@ public final class BlogTopic {
 		return Objects.equals(this.id, that.id) &&
 				Objects.equals(this.name, that.name) &&
 				Objects.equals(this.description, that.description) &&
-				java.util.Arrays.equals(this.image, that.image);
+				Objects.equals(this.image, that.image);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, description, java.util.Arrays.hashCode(image));
+		return Objects.hash(id, name, description, image);
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public final class BlogTopic {
 				"id=" + id + ", " +
 				"name=" + name + ", " +
 				"description=" + description + ", " +
-				"image=" + (image != null ? "<binary>" : "null") + ']';
+				"image=" + (image != null ? image.getFilename() : "null") + ']';
 	}
 
 	public static Builder builder() {
@@ -94,7 +97,7 @@ public final class BlogTopic {
 		private String id;
 		private LocalizedText name;
 		private LocalizedText description;
-		private byte[] image;
+		private Image image;
 		private String defaultLanguage = "de"; // Default language is German
 
 		private Builder() {
@@ -131,7 +134,7 @@ public final class BlogTopic {
 			return this;
 		}
 
-		public Builder setImage(byte[] image) {
+		public Builder setImage(Image image) {
 			this.image = image;
 			return this;
 		}

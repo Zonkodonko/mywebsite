@@ -1,9 +1,9 @@
-package com.zonkodonko.ba.blog.rest;
+package com.zonkodonko.ba.blog.rest.dtos;
 
 import com.zonkodonko.ba.storage.LocalizedText;
 
 /**
- * Contains topic data to create new topic.
+ * Contains getTopic data to create new getTopic.
  *
  * @author Timm
  * @version 14.11.2025
