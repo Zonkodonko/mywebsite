@@ -14,7 +14,7 @@ import java.util.Objects;
  * Blog post entity.
  */
 @Entity
-@Table(name = "blog_article")
+@Table(name = "blog_articles")
 public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -31,7 +31,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	private LocalizedText content;
 
 	@OneToMany(
-			mappedBy = "article",
+			mappedBy = "relatedEntity",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY,
 			orphanRemoval = true)

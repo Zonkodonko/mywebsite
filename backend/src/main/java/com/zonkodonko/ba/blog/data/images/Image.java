@@ -16,6 +16,8 @@ public class Image {
 	@Column(nullable = false)
 	private String contentType;
 
+	private Long relatedEntity;
+
 	@Lob
 	@Column(nullable = false)
 	private byte[] data;
@@ -27,11 +29,12 @@ public class Image {
 	public Image() {
 	}
 
-	public Image(String filename, String contentType, byte[] data) {
+	public Image(String filename, String contentType, byte[] data, Long relatedEntity) {
 		this.filename = filename;
 		this.contentType = contentType;
 		this.data = data;
 		this.size = (long) data.length;
+		this.relatedEntity = relatedEntity;
 	}
 
 	// Getters
@@ -45,6 +48,10 @@ public class Image {
 
 	public String getContentType() {
 		return contentType;
+	}
+
+	public Long getRelatedEntity() {
+		return relatedEntity;
 	}
 
 	public byte[] getData() {

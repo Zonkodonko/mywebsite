@@ -15,7 +15,7 @@ import java.util.Objects;
  * @version 14.11.2025
  */
 @Entity
-@Table(name = "topics")
+@Table(name = "blog_topics")
 public final class BlogTopic {
 
 	@Id
