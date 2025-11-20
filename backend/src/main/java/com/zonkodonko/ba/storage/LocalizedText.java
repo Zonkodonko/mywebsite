@@ -21,6 +21,7 @@ public class LocalizedText {
 	}
 
 	public LocalizedText(Map<String, String> translations) {
+		this.translations = translations;
 	}
 
 

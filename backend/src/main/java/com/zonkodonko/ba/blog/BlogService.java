@@ -3,7 +3,9 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
+import com.zonkodonko.ba.blog.rest.dtos.ArticleClientDto;
 import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
+import com.zonkodonko.ba.blog.rest.dtos.TopicClientDto;
 import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +24,7 @@ public interface BlogService {
 	 * @param topic Topic name
 	 * @return List of blog articles sorted by created date in descending order
 	 */
-	List<BlogArticle> getArticles(@NotNull String topic);
+	List<ArticleClientDto> getArticles(@NotNull String topic);
 
 	/**
 	 * Get article by id.
@@ -57,7 +59,7 @@ public interface BlogService {
 	 * Get all topics.
 	 * @return Collection of topics
 	 */
-	Collection<BlogTopic> getTopics();
+	Collection<TopicClientDto> getTopics();
 
 	/**
 	 * Get getTopic by id.

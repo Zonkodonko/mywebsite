@@ -28,9 +28,9 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/resume/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/blog/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/blog/**").authenticated()
 				.anyRequest().authenticated());
 		http.oauth2ResourceServer((oauth2) -> oauth2.opaqueToken(Customizer.withDefaults()));
 		return http.build();
 	}
 }
-

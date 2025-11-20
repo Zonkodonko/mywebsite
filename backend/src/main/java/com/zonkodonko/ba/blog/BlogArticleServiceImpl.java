@@ -6,17 +6,20 @@ import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
 import com.zonkodonko.ba.blog.data.topic.BlogTopicRepository;
+import com.zonkodonko.ba.blog.rest.dtos.ArticleClientDto;
 import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
+import com.zonkodonko.ba.blog.rest.dtos.TopicClientDto;
 import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
+import com.zonkodonko.ba.storage.LocalizedText;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Implementation of {@link BlogService}.
@@ -38,20 +41,26 @@ public class BlogArticleServiceImpl implements BlogService {
 		this.imageRepository = imageRepository;
 	}
 
+	@Transactional
 	@Override
-	public List<BlogArticle> getArticles(String topic) {
+	public List<ArticleClientDto> getArticles(String topic) {
+		Collection<BlogArticle> articles;
 		if (topic == null || topic.isBlank()) {
-			return blogArticleRepository.findAllByOrderByCreatedDateDesc();
+			articles = blogArticleRepository.findAllByOrderByCreatedDateDesc();
+		} else {
+			articles = blogArticleRepository.findAllByTopicOrderByCreatedDateDesc(topic);
 		}
-		return blogArticleRepository.findAllByTopicOrderByCreatedDateDesc(topic);
+		return articles.stream().map(this::toDto).toList();
 	}
 
+	@Transactional
 	@Override
 	public BlogArticle getArticle(Long id) {
 		Objects.requireNonNull(id);
 		return blogArticleRepository.findById(id).orElse(null);
 	}
 
+	@Transactional
 	@Override
 	public Long saveArticle(CreateArticleDto article, MultipartFile image) {
 		Objects.requireNonNull(article);
@@ -73,36 +82,48 @@ public class BlogArticleServiceImpl implements BlogService {
 		blogArticleRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public String saveTopic(TopicDto topic, MultipartFile image) {
 		Objects.requireNonNull(topic);
 		Image imageEntity = toImageEntity(image);
 		BlogTopic blogTopic = BlogTopic.builder()
-				.setId(topic.id())
-				.setName(topic.title())
-				.setDescription(topic.description())
+				.setId(topic.id().toLowerCase())
+				.setName(new LocalizedText(topic.title()))
+				.setDescription(new LocalizedText(topic.description()))
 				.setImage(imageEntity)
 				.build();
 		blogTopic = blogTopicRepository.save(blogTopic);
-		return blogTopicRepository.save(blogTopic).getId();
+		return blogTopic.getId();
 	}
 
+	@Transactional
 	@Override
-	public Collection<BlogTopic> getTopics() {
-		List<BlogTopic> topics = new ArrayList<>();
-		blogTopicRepository.findAll().forEach(topics::add);
-		return topics;
+	public Collection<TopicClientDto> getTopics() {
+		try {
+			List<BlogTopic> topics = new ArrayList<>();
+			blogTopicRepository.findAll().forEach(topics::add);
+			return topics.stream().map(this::toDto).toList();
+		} catch (RuntimeException e) {
+			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, e);
+		}
 	}
 
+	@Transactional
 	@Override
 	public BlogTopic getTopic(String id) {
 		Objects.requireNonNull(id);
-		return blogTopicRepository.findById(id).orElse(null);
+		try {
+			return blogTopicRepository.findById(id.toLowerCase()).orElse(null);
+		} catch (RuntimeException e) {
+			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, e);
+		}
 	}
 
+	@Transactional
 	@Override
 	public void deleteTopic(String id) {
-		deleteTopic(id, false);
+		deleteTopic(id.toLowerCase(), false);
 	}
 
 	@Override
@@ -113,6 +134,7 @@ public class BlogArticleServiceImpl implements BlogService {
 
 	/**
 	 * Save image to database.
+	 *
 	 * @param image image to save
 	 * @return image entity
 	 */
@@ -130,12 +152,13 @@ public class BlogArticleServiceImpl implements BlogService {
 
 	/**
 	 * Get image data from multipart file. And check if the file is valid.
+	 *
 	 * @param image image to get data from
 	 * @return image data
 	 */
 	private static byte[] getImageData(MultipartFile image) {
-		if(image != null){
-			if(image.isEmpty()){
+		if (image != null) {
+			if (image.isEmpty()) {
 				throw new IllegalArgumentException("Empty image");
 			}
 		}
@@ -147,5 +170,26 @@ public class BlogArticleServiceImpl implements BlogService {
 			throw new RuntimeException(e);
 		}
 		return imgData;
+	}
+
+
+	private TopicClientDto toDto(BlogTopic topic) {
+		String base64 = Base64.getEncoder().encodeToString(topic.getImage().getData());
+		return new TopicClientDto(
+				topic.getId(),
+				topic.getName().getTranslations(),
+				topic.getDescription().getTranslations(),
+				base64
+		);
+	}
+
+	private ArticleClientDto toDto(BlogArticle article) {
+		return new ArticleClientDto(
+				article.getId(),
+				article.getTitle(),
+				article.getContent(),
+				article.getPostSettings(),
+				article.getTopic()
+		);
 	}
 }

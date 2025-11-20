@@ -22,11 +22,11 @@ public final class BlogTopic {
 	private String id;
 
 	@JdbcTypeCode(SqlTypes.JSON)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "jsonb", nullable = false)
 	private LocalizedText name;
 
 	@JdbcTypeCode(SqlTypes.JSON)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "jsonb", nullable = false)
 	private LocalizedText description;
 
 	@OneToOne(fetch = FetchType.LAZY,
