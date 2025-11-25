@@ -1,13 +1,13 @@
 package com.zonkodonko.ba.blog.rest;
 
-import com.zonkodonko.ba.blog.BlogService;
 import com.zonkodonko.ba.blog.ImageService;
 import com.zonkodonko.ba.blog.data.images.Image;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,10 +31,20 @@ public class ImageController {
 	}
 
 
-	@GetMapping
-	public ResponseEntity<byte[]> getImage(Long imageId) {
+	@GetMapping("{imageId}")
+	public ResponseEntity<byte[]> getImage(@PathVariable Long imageId) {
 		Image image = imageService.getImage(imageId);
 
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(image.getContentType()))
+				.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePublic())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.getFilename() + "\"")
+				.body(image.getData());
+	}
+
+	@GetMapping("/{entityType}/{entityId}")
+	public ResponseEntity<byte[]> getTopicImage(@PathVariable String entityType, @PathVariable String entityId) {
+		Image image = imageService.getImageBy(entityType, entityId);
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(image.getContentType()))
 				.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePublic())

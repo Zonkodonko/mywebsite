@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ResumeComponent} from './resume/resume/resume-component';
+import {BlogComponent} from './blog/blog/blog-component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,11 @@ const routes: Routes = [
     path: '',
     redirectTo: 'resume',
     pathMatch: 'full'
+  },
+  {
+    path: 'projects',
+    pathMatch: 'full',
+    component: BlogComponent
   }
 ];
 

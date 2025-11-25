@@ -1,0 +1,44 @@
+.dialog-form {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+
+  .lang-switch {
+    overflow: hidden;
+    grid-column: 2 / 2;
+    justify-self: end;
+    border-radius: 0 0 0.5rem 0.5rem;
+    margin-right: 1rem;
+
+    label:nth-of-type(1) {
+      border-radius: 0 0 0 0.5rem;
+    }
+    label:last-of-type {
+      border-radius: 0 0 0.5rem 0;
+    }
+  }
+
+  * {
+    align-self: center;
+  }
+}
+
+.form-control::placeholder {
+  -webkit-text-security: none;
+  color: color-mix(in srgb, currentColor 54%, transparent);
+}
+
+.form-control::file-selector-button {
+  background-color: var(--primary-color);
+}
+
+.image-preview {
+  max-height: 10rem;
+  width: 100%;
+  object-fit: contain;
+}
+
+::file-selector-button {
+  border: none;
+  border-radius: 0.5rem;
+  width: 9rem;
+}

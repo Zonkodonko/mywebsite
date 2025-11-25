@@ -86,6 +86,10 @@ public class BlogArticleServiceImpl implements BlogService {
 	@Override
 	public String saveTopic(TopicDto topic, MultipartFile image) {
 		Objects.requireNonNull(topic);
+		if(topic.id() != null && !topic.id().isBlank()) {
+			Image oldImg = blogTopicRepository.findById(topic.id()).orElseThrow().getImage();
+			imageRepository.delete(oldImg);
+		}
 		Image imageEntity = toImageEntity(image);
 		BlogTopic blogTopic = BlogTopic.builder()
 				.setId(topic.id().toLowerCase())

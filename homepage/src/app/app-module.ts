@@ -24,7 +24,7 @@ import {UnauthorizedHandlerInterceptor} from './shared/http-interceptors/unautho
   providers: [
     DatePipe,
     provideHttpClient(withInterceptorsFromDi()),
-    {provide: HTTP_INTERCEPTORS,useClass: UnauthorizedHandlerInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: UnauthorizedHandlerInterceptor, multi: true},
     provideTranslateService({
       lang: 'en',
       fallbackLang: 'en',

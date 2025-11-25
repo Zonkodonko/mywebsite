@@ -1,0 +1,37 @@
+
+.card-corner-buttons {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+  right: 0;
+}
+
+.topic-card {
+  width: 35rem;
+  background-color: #212121;
+  color: white;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  position: relative;
+  transition: transform 0.5s;
+
+  > .card-img-top {
+    height: 10rem;
+    width: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: #3b7272;
+    object-fit: cover ;
+    object-position: center;
+  }
+
+  > .card-body {
+    text-overflow: ellipsis;
+  }
+
+}

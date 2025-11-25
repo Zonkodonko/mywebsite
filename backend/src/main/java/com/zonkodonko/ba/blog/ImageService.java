@@ -6,4 +6,6 @@ public interface ImageService {
 
 	Image getImage(long imageId);
 
+	Image getImageBy(String type, String id);
+
 }

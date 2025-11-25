@@ -1,0 +1,17 @@
+<div class="card topic-card shiny shadow-sm clickable" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+  <img class="card-img-top" [src]="topic.image" [alt]="topic.title"/>
+  <div class="card-body">
+    <h5 class="card-title">{{topic.title}}</h5>
+    <p class="card-text">{{topic.description}}</p>
+  </div>
+  <div class="card-corner-buttons" [hidden]="!isHovered">
+    @if(isLoggedIn) {
+      <button class="btn" (click)="open()">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+    }
+    <div class="btn">
+      <i class="bi bi-box-arrow-up-right"></i>
+    </div>
+  </div>
+</div>

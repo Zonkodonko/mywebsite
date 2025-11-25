@@ -1,0 +1,66 @@
+<div class="modal-header">Create Topic</div>
+@if (imagePreview != null) {
+  <div class="d-flex flex-column align-items-center">
+    <img [src]="imagePreview" class="image-preview mt-3" alt="Preview">
+    <div class="justify-content-center">{{image?.name}}</div>
+  </div>
+}
+<div class="d-flex flex-column p-3 modal-content">
+  <form class="dialog-form">
+    <label for="idInput">ID</label>
+    <input id="idInput" class="form-control" type="text" [formControl]="idControl" placeholder="id">
+
+    <!-- TITLE            -->
+    <label for="titleInput" class="mt-3"> Titel </label>
+    <input id="titleInput"
+           class="form-control mt-3"
+           type="text" [formControl]="titleController" placeholder="Title">
+    <!-- TITLE LANGUAGE   -->
+    <div class="lang-switch btn-group btn-group-sm">
+      <input id="titleLangDe" class="btn-check"
+             type="radio"
+             name="titleLang"
+             [value]="'de'"
+             [(ngModel)]="titleLang">
+      <label for="titleLangDe" class="btn" [ngClass]="getTitleController('de').invalid ? 'btn-outline-secondary' : 'btn-outline-success'">
+        DE</label>
+      <input id="titleLangEng" class="btn-check"
+             type="radio"
+             name="titleLang"
+             [value]="'en'"
+             [(ngModel)]="titleLang">
+      <label for="titleLangEng" class="btn btn-outline-secondary" [ngClass]="getTitleController('en').invalid ? 'btn-outline-secondary' : 'btn-outline-success'">
+        ENG</label>
+    </div>
+
+    <!-- DESCRIPTION      -->
+    <label for="descriptionInput" class="mt-3 align-self-start"> Beschreibung </label>
+    <textarea id="descriptionInput" class="form-control align-self-start mt-3" [formControl]="descriptionController"
+              placeholder="Beschreibung"></textarea>
+    <!-- DESCRIPTION LANGUAGE      -->
+    <div class="lang-switch btn-group btn-group-sm">
+      <input id="descriptionLangDe" class="btn-check"
+             type="radio"
+             name="descriptionLang"
+             [value]="'de'"
+             [(ngModel)]="descriptionLang">
+      <label for="descriptionLangDe" class="btn" [ngClass]="getDescriptionController('de').invalid ? 'btn-outline-secondary' : 'btn-outline-success'">
+        DE
+      </label>
+      <input id="descriptionLangEng" class="btn-check"
+             type="radio"
+             name="descriptionLang"
+             [value]="'en'"
+             [(ngModel)]="descriptionLang">
+      <label for="descriptionLangEng" class="btn" [ngClass]="getDescriptionController('en').invalid ? 'btn-outline-secondary' : 'btn-outline-success'">
+        ENG
+      </label>
+    </div>
+    <label for="imageInput" class="mt-3 border-0"> Bild </label>
+    <input #fileInput id="imageInput" class="form-control mt-3 border-0" type="file" (change)="onSelectFile($event)">
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="cancel()">{{"cancel" | translate}}</button>
+  <button class="btn btn-primary" [disabled]="topicForm.invalid" (click)="save()">{{"save" | translate}}</button>
+</div>
