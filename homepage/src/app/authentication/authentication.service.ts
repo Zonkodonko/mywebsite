@@ -39,6 +39,14 @@ export class AuthenticationService {
       }));
   }
 
+  refreshToken() {
+    return this.http.post(`${environment.backendUrl}/auth/refresh`, {}, {headers: this.getAuthHeaders(true)}).pipe(
+      tap(response => {
+        this._isLoggedIn = true;
+        sessionStorage.setItem('login', JSON.stringify(response as any));
+      }));
+  }
+
   logout() {
     return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getAuthHeaders(true)}).subscribe({
       complete: () => {

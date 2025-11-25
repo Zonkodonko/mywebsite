@@ -28,8 +28,15 @@ export class UnauthorizedHandlerInterceptor implements HttpInterceptor {
       tap({
         error: (error) => {
           if (error.status === HttpStatusCode.Unauthorized) {
-            this.authService.invalidateSessionLocal();
-            this.modalService.open(LogoutNotifcationModal,{size: 'sm', centered: true});
+            let modalRef = this.modalService.open(LogoutNotifcationModal,{size: 'sm', centered: true});
+            modalRef.closed.subscribe((result: "refresh"| "logout") => {
+              if(result === "refresh") {
+                this.authService.refreshToken().subscribe();
+              } else {
+                this.authService.invalidateSessionLocal();
+                this.authService.logout();
+              }
+            })
           }
         }
       })

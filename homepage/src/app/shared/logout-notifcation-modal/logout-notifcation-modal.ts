@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-logout-notifcation-modal',
@@ -8,4 +9,15 @@ import { Component } from '@angular/core';
 })
 export class LogoutNotifcationModal {
 
+
+  constructor(private modal: NgbActiveModal) {
+  }
+
+  refresh() {
+    this.modal.close("refresh");
+  }
+
+  logout() {
+    this.modal.close("logout");
+  }
 }
