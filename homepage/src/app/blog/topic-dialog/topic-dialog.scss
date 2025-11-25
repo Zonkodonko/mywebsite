@@ -29,16 +29,13 @@
 
 .form-control::file-selector-button {
   background-color: var(--primary-color);
+  border: none;
+  border-radius: 0.5rem;
+  width: 9rem;
 }
 
 .image-preview {
   max-height: 10rem;
   width: 100%;
   object-fit: contain;
-}
-
-::file-selector-button {
-  border: none;
-  border-radius: 0.5rem;
-  width: 9rem;
 }
