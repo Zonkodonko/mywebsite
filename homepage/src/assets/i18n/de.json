@@ -22,7 +22,24 @@
         "os": "OS",
         "devtools": "Dev Tools"
       }
+    },
+    "projects": {
+      "title": "Meine privaten Projekte"
     }
   },
-  "period": "von {{from}} bis {{to}}"
+  "blog": {
+    "topic": {
+      "dialog": {
+        "title": "Thema erstellen/bearbeiten"
+      }
+    }
+  },
+  "period": "von {{from}} bis {{to}}",
+  "global": {
+    "title": "Titel",
+    "description": "Beschreibung",
+    "image": "Bild",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  }
 }

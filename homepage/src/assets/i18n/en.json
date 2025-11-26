@@ -22,7 +22,24 @@
         "os": "OS",
         "devtools": "Dev Tools"
       }
+    },
+    "projects": {
+      "title": "My Projects"
     }
   },
-  "period": "from {{from}} to {{to}}"
+  "blog": {
+    "topic": {
+      "dialog": {
+        "title": "Create/Edit Topic"
+      }
+    }
+  },
+  "period": "from {{from}} to {{to}}",
+  "global": {
+    "title": "Title",
+    "description": "Description",
+    "image": "Image",
+    "cancel": "Cancel",
+    "save": "Save"
+  }
 }
