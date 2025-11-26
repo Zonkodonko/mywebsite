@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {NewTopic, Topic, TopicRaw} from '../data/BlogTypes';
-import {BlogService} from '../services/blog-service';
+import {AuthenticationService} from '../../../authentication/authentication.service';
+import {NewTopic, Topic, TopicRaw} from '../../data/BlogTypes';
+import {BlogService} from '../../services/blog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TopicDialog} from '../topic-dialog/topic-dialog';
-import isString from '../../shared/utils/utils';
+import {TopicDialog} from '../../topic-dialog/topic-dialog';
+import isString from '../../../shared/utils/utils';
 
 @Component({
-  selector: 'app-blog-component',
+  selector: 'app-topic-overview-component',
   standalone: false,
-  templateUrl: './blog-component.html',
-  styleUrl: './blog-component.scss'
+  templateUrl: './topic-overview.component.html',
+  styleUrl: './topic-overview.component.scss'
 })
-export class BlogComponent implements OnInit {
+export class TopicOverview implements OnInit {
 
   private _topicsRaw: TopicRaw[] = [];
   private _topics: Topic[] = [];

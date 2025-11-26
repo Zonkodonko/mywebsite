@@ -6,13 +6,13 @@ import {SharedModule} from '../shared/shared-module';
 import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppModule} from '../app-module';
-import {BlogComponent} from './blog/blog-component';
+import {TopicOverview} from './blog/topic-overview/topic-overview.component';
 import {TopicDialog} from './topic-dialog/topic-dialog';
 import {TopicCard} from './blog/topic-card/topic-card';
 
 @NgModule({
   declarations: [
-    BlogComponent,
+    TopicOverview,
     TopicDialog,
     TopicCard
   ],
@@ -27,7 +27,7 @@ import {TopicCard} from './blog/topic-card/topic-card';
     AppModule,
   ],
   exports: [
-    BlogComponent
+    TopicOverview
   ],
 })
 export class BlogModule {

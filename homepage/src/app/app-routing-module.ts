@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ResumeComponent} from './resume/resume/resume-component';
-import {BlogComponent} from './blog/blog/blog-component';
+import {TopicOverview} from './blog/blog/topic-overview/topic-overview.component';
 
 const routes: Routes = [
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'projects',
     pathMatch: 'full',
-    component: BlogComponent
+    component: TopicOverview
   }
 ];
 
