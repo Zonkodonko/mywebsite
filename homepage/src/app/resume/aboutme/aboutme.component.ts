@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from '@angul
 import {ResumeApiService} from '../services/resume-api-service';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
+import {marked} from 'marked';
 
 @Component({
   selector: 'app-aboutme',
@@ -32,6 +33,10 @@ export class AboutmeComponent {
 
   get text(): string {
     return this._aboutMe.get(this.langService.getCurrentLang())!;
+  }
+
+  get formattedText(): string {
+    return marked.parse(this._aboutMe.get(this.langService.getCurrentLang())!,{async: false});
   }
 
   set text(value: string) {

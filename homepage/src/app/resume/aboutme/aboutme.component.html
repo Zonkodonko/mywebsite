@@ -12,8 +12,8 @@
          (mouseleave)="toggleEditButtonVisible(false)"
          (mouseenter)="toggleEditButtonVisible(true)"
          (click)="activateEditMode()"
+         [innerHTML]="formattedText"
     >
-      {{text}}
     </div>
   } @else {
     <textarea #aboutMeInput
