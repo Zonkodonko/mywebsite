@@ -1,10 +1,7 @@
 package com.zonkodonko.ba.blog.rest;
 
 import com.zonkodonko.ba.blog.BlogService;
-import com.zonkodonko.ba.blog.rest.dtos.ArticleClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
+import com.zonkodonko.ba.blog.rest.dtos.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,5 +58,9 @@ class BlogController {
 		blogArticleService.deleteTopic(id);
 	}
 
+	@GetMapping("/topic/{id}")
+	public FullBlogDto getTopic(@PathVariable String id) {
+		return blogArticleService.getFullBlog(id);
+	}
 
 }

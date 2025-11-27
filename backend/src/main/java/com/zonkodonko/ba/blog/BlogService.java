@@ -3,10 +3,7 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
-import com.zonkodonko.ba.blog.rest.dtos.ArticleClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
+import com.zonkodonko.ba.blog.rest.dtos.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,6 +64,13 @@ public interface BlogService {
 	 * @return Topic
 	 */
 	BlogTopic getTopic(@NotNull String id);
+
+	/**
+	 * Get full blog for topic.
+	 * @param topicId
+	 * @return
+	 */
+	FullBlogDto getFullBlog(@NotNull String topicId);
 
 	/**
 	 * Delete getTopic by id.

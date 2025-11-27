@@ -9,12 +9,19 @@ import {AppModule} from '../app-module';
 import {TopicOverview} from './blog/topic-overview/topic-overview.component';
 import {TopicDialog} from './topic-dialog/topic-dialog';
 import {TopicCard} from './blog/topic-card/topic-card';
+import {ArticleOverview} from './blog/article-overview/article-overview';
+import {ArticleCard} from './blog/article-overview/article-card/article-card';
+import { BlogComponent } from './blog/blog-component/blog-component';
+import {RouterLink} from '@angular/router';
 
 @NgModule({
   declarations: [
     TopicOverview,
     TopicDialog,
-    TopicCard
+    TopicCard,
+    ArticleOverview,
+    ArticleCard,
+    BlogComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +32,7 @@ import {TopicCard} from './blog/topic-card/topic-card';
     TranslatePipe,
     FormsModule,
     AppModule,
+    RouterLink,
   ],
   exports: [
     TopicOverview

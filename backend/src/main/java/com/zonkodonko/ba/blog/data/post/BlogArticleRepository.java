@@ -13,4 +13,5 @@ public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long>
 
 	void deleteByTopic(String topic);
 
+	List<BlogArticle> getBlogArticlesByTopic(String topic);
 }

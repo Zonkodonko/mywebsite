@@ -14,6 +14,11 @@ export type NewTopic = {
   description: LocalizedText
 }
 
+export type FullTopic = {
+  topic: TopicRaw,
+  articles: BlogArticleRaw[]
+}
+
 export type Topic = {
   id: string,
   image: any,
@@ -24,13 +29,13 @@ export type Topic = {
 export interface BlogArticleRaw {
   image?: any,
   title: LocalizedText,
-  description: LocalizedText,
+  content: LocalizedText,
   date: number,
 }
 
 export interface BlogArticle {
   image?: any,
   title: string,
-  description: string,
+  content: string,
   date: number,
 }

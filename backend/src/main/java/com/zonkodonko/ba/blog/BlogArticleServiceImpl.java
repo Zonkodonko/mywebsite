@@ -6,11 +6,9 @@ import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
 import com.zonkodonko.ba.blog.data.topic.BlogTopicRepository;
-import com.zonkodonko.ba.blog.rest.dtos.ArticleClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.CreateArticleDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicClientDto;
-import com.zonkodonko.ba.blog.rest.dtos.TopicDto;
+import com.zonkodonko.ba.blog.rest.dtos.*;
 import com.zonkodonko.ba.storage.LocalizedText;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -35,10 +33,17 @@ public class BlogArticleServiceImpl implements BlogService {
 	final BlogTopicRepository blogTopicRepository;
 	private final ImageRepository imageRepository;
 
-	public BlogArticleServiceImpl(BlogArticleRepository blogArticleRepository, BlogTopicRepository blogTopicRepository, ImageRepository imageRepository) {
+	final String hostDomain;
+
+	public BlogArticleServiceImpl(
+			BlogArticleRepository blogArticleRepository,
+			BlogTopicRepository blogTopicRepository,
+			ImageRepository imageRepository,
+			@Value("${host.domain}") String hostDomain) {
 		this.blogArticleRepository = blogArticleRepository;
 		this.blogTopicRepository = blogTopicRepository;
 		this.imageRepository = imageRepository;
+		this.hostDomain = hostDomain;
 	}
 
 	@Transactional
@@ -126,6 +131,14 @@ public class BlogArticleServiceImpl implements BlogService {
 
 	@Transactional
 	@Override
+	public FullBlogDto getFullBlog(String topicId) {
+		BlogTopic topic = getTopic(topicId);
+		List<BlogArticle> articles = blogArticleRepository.getBlogArticlesByTopic(topicId);
+		return toDto(topic, articles);
+	}
+
+	@Transactional
+	@Override
 	public void deleteTopic(String id) {
 		deleteTopic(id.toLowerCase(), false);
 	}
@@ -178,22 +191,26 @@ public class BlogArticleServiceImpl implements BlogService {
 
 
 	private TopicClientDto toDto(BlogTopic topic) {
-		String base64 = Base64.getEncoder().encodeToString(topic.getImage().getData());
+		String image = hostDomain + "/images/topic/" + topic.getId();
 		return new TopicClientDto(
 				topic.getId(),
 				topic.getName().getTranslations(),
 				topic.getDescription().getTranslations(),
-				base64
+				image
 		);
 	}
 
 	private ArticleClientDto toDto(BlogArticle article) {
 		return new ArticleClientDto(
 				article.getId(),
-				article.getTitle(),
-				article.getContent(),
+				article.getTitle().getTranslations(),
+				article.getContent().getTranslations(),
 				article.getPostSettings(),
 				article.getTopic()
 		);
+	}
+
+	private FullBlogDto toDto(BlogTopic topic, List<BlogArticle> articles) {
+		return new FullBlogDto(toDto(topic), articles.stream().map(this::toDto).toArray(ArticleClientDto[]::new));
 	}
 }

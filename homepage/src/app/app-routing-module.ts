@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ResumeComponent} from './resume/resume/resume-component';
-import {TopicOverview} from './blog/blog/topic-overview/topic-overview.component';
+import {BlogComponent} from './blog/blog/blog-component/blog-component';
 
 const routes: Routes = [
   {
@@ -14,14 +14,17 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'projects',
+    path: 'blog/:topicId',
     pathMatch: 'full',
-    component: TopicOverview
+    component: BlogComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    bindToComponentInputs: true
+  })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

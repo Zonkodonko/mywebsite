@@ -55,11 +55,6 @@ export class TopicOverview implements OnInit {
    */
   private mapTopic(raw: TopicRaw): Topic {
     let lang = this.langService.getCurrentLang();
-    if(raw.image instanceof File) {
-      raw.image = URL.createObjectURL(raw.image);
-    } else if (isString(raw.image) && !(raw.image.startsWith('data:image/jpeg;base64,')|| raw.image.startsWith('blob:http'))) {
-      raw.image = 'data:image/jpeg;base64,' + raw.image;
-    }
     return {...raw, ...{title: raw.title[lang], description: raw.description[lang]}}
   }
 
