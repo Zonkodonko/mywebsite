@@ -1,9 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BlogService} from '../../services/blog-service';
-import {BlogArticle, BlogArticleRaw, Topic, TopicRaw} from '../../data/BlogTypes';
+import {ArticleCreationData, BlogArticle, BlogArticleRaw, Topic, TopicRaw} from '../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {marked} from 'marked';
 import environment from '../../../../environment';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ArticleDialog} from '../../article-dialog/article-dialog';
+import {AuthenticationService} from '../../../authentication/authentication.service';
 
 @Component({
   selector: 'app-blog-component',
@@ -11,7 +14,7 @@ import environment from '../../../../environment';
   templateUrl: './blog-component.html',
   styleUrl: './blog-component.scss',
 })
-export class BlogComponent {
+export class BlogComponent implements OnInit{
 
   private _topicId: string = "";
   private topicRaw?: TopicRaw;
@@ -23,8 +26,12 @@ export class BlogComponent {
   }
   public articlesRaw: BlogArticleRaw[] = [];
   public articles: BlogArticle[] = [];
+  private creating?: BlogArticleRaw;
 
-  constructor(private blogService: BlogService, private langService: TranslateService) {
+  constructor(private blogService: BlogService,
+              private langService: TranslateService,
+              private modalService: NgbModal,
+              private authService: AuthenticationService) {
   }
 
   @Input()
@@ -41,15 +48,49 @@ export class BlogComponent {
           image: `${environment.backendUrl}/images/topic/${id}`
         }
         this.articlesRaw = blog.articles;
-        this.articles = blog.articles.map(raw => {
-          return {
-            ...raw,
-            title: raw.title[lang],
-            content: raw.content[lang],
-          }
-        })
+        //set text according to language
+        this.updateArticles();
       }
-    )
+    );
+  }
+
+  ngOnInit(): void {
+    this.openCreateDialog();
+  }
+
+
+
+  get isLoggedIn() {
+    return this.authService.isLoggedIn;
+  }
+
+  updateArticles() {
+    const lang = this.langService.getCurrentLang();
+    this.articles = this.articlesRaw.map(raw => {
+      return {
+        ...raw,
+        title: raw.title[lang],
+        content: raw.content[lang],
+      }
+    })
+  }
+
+  public openCreateDialog() {
+    const modalRef = this.modalService.open(ArticleDialog, {centered: true, size: 'lg', backdrop: 'static'});
+    if(this.creating !== undefined) {
+      modalRef.componentInstance.article = this.creating;
+    }
+    modalRef.closed.subscribe((result: ArticleCreationData) => {
+      const newArticle = {topic: this._topicId, ...result};
+      this.blogService.createArticle(newArticle).subscribe(id => {
+        this.articlesRaw.push({id: Number(id), ...newArticle});
+        this.updateArticles();
+        this.creating = undefined;
+      },
+      error => {
+        this.creating = result;
+      })
+    })
   }
 
 }

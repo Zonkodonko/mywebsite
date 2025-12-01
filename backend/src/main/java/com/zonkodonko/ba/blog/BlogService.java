@@ -16,7 +16,7 @@ import java.util.List;
 public interface BlogService {
 
 	/**
-	 * Get articles by getTopic.
+	 * Get articles by topic.
 	 *
 	 * @param topic Topic name
 	 * @return List of blog articles sorted by created date in descending order
@@ -47,7 +47,7 @@ public interface BlogService {
 	void deleteArticle(@NotNull Long id);
 
 	/**
-	 * Save getTopic.
+	 * Save topic.
 	 * @param topic Topic to save
 	 */
 	String saveTopic(@NotNull TopicDto topic, MultipartFile image);
@@ -59,7 +59,7 @@ public interface BlogService {
 	Collection<TopicClientDto> getTopics();
 
 	/**
-	 * Get getTopic by id.
+	 * Get topic by id.
 	 * @param id Topic id
 	 * @return Topic
 	 */
@@ -73,15 +73,15 @@ public interface BlogService {
 	FullBlogDto getFullBlog(@NotNull String topicId);
 
 	/**
-	 * Delete getTopic by id.
+	 * Delete topic by id.
 	 * @param id Topic id
 	 */
 	void deleteTopic(@NotNull String id);
 
 	/**
-	 * Delete getTopic by id and all articles associated with it.
+	 * Delete topic by id and all articles associated with it.
 	 * @param id Topic id
-	 * @param withArticles Delete articles associated with getTopic?
+	 * @param withArticles Delete articles associated with topic?
 	 */
 	void deleteTopic(@NotNull String id, boolean withArticles);
 }

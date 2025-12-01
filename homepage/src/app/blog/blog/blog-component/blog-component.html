@@ -6,4 +6,14 @@
       <span [innerHTML]="topic.description"></span>
     </div>
   </div>
+
+  @if (isLoggedIn) {
+    <button class="btn w-100 border " (click)="openCreateDialog()">
+      <i class="bi bi-plus-circle"></i>
+    </button>
+  }
+  @for(article of articles; track article) {
+    <app-article-card [article]="article"></app-article-card>
+
+  }
 </div>

@@ -18,6 +18,7 @@ export class ArticleOverview implements OnInit{
   rawArticles: BlogArticleRaw[] = [];
 
   constructor(private blogService: BlogService, private translateService: TranslateService) {
+
   }
 
   ngOnInit(): void {

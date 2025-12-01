@@ -39,7 +39,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
-	private ArticleSettings postSettings;
+	private ArticleSettings appearanceSettings;
 
 	private String topic; //todo add foreign key constraint
 
@@ -52,13 +52,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long createdDate,
 			List<Image> images,
-			ArticleSettings postSettings,
+			ArticleSettings appearanceSettings,
 			String topic) {
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
 		this.images = images;
-		this.postSettings = postSettings;
+		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
 
@@ -68,14 +68,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long createdDate,
 			List<Image> images,
-			ArticleSettings postSettings,
+			ArticleSettings appearanceSettings,
 			String topic) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
 		this.images = images;
-		this.postSettings = postSettings;
+		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
 
@@ -99,8 +99,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return images;
 	}
 
-	public ArticleSettings getPostSettings() {
-		return postSettings;
+	public ArticleSettings getAppearanceSettings() {
+		return appearanceSettings;
 	}
 
 	public String getTopic() {
@@ -117,25 +117,25 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				Objects.equals(this.content, that.content) &&
 				Objects.equals(this.createdDate, that.createdDate) &&
 				Objects.equals(this.images, that.images) &&
-				Objects.equals(this.postSettings, that.postSettings) &&
+				Objects.equals(this.appearanceSettings, that.appearanceSettings) &&
 				Objects.equals(this.topic, that.topic);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, createdDate, images, postSettings, topic);
+		return Objects.hash(id, title, content, createdDate, images, appearanceSettings, topic);
 	}
 
 	@Override
 	public String toString() {
 		return "BlogPost[" +
 				"id=" + id + ", " +
-				"getTitle=" + title + ", " +
-				"getContent=" + content + ", " +
+				"title=" + title + ", " +
+				"content=" + content + ", " +
 				"createdDate=" + createdDate + ", " +
 				"image=" + images + ", " +
-				"postSettings=" + postSettings + ", " +
-				"getTopic=" + topic + ']';
+				"postSettings=" + appearanceSettings + ", " +
+				"topic=" + topic + ']';
 	}
 
 	public static Builder builder() {

@@ -49,7 +49,7 @@ public class TestBlogArticleData {
 		assertEquals(testPost.getTitle(), savedPost.getTitle());
 		Optional<BlogArticle> fromDb = blogPostRepository.findById(savedPost.getId());
 		assertTrue(fromDb.isPresent());
-		assertEquals(savedPost.getPostSettings(), fromDb.get().getPostSettings());
+		assertEquals(savedPost.getAppearanceSettings(), fromDb.get().getAppearanceSettings());
 	}
 
 	@Test

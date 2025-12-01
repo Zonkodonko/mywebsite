@@ -1,7 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {BlogService} from '../services/blog-service';
 import {TopicRaw} from '../data/BlogTypes';
 import {ImageService} from '../../shared/image-service/image-service';
 
@@ -21,14 +20,14 @@ export class TopicDialog {
   fileInput?: ElementRef;
 
   public topicForm: FormGroup = new FormGroup({
-    id: new FormControl("",[Validators.required]),
+    id: new FormControl("", [Validators.required]),
     title: new FormGroup({
-      de: new FormControl("",[Validators.minLength(1), Validators.required]),
-      en: new FormControl("",[Validators.minLength(1), Validators.required])
+      de: new FormControl("", [Validators.minLength(1), Validators.required]),
+      en: new FormControl("", [Validators.minLength(1), Validators.required])
     }),
     description: new FormGroup({
-      de: new FormControl("",[Validators.minLength(1), Validators.required]),
-      en: new FormControl("",[Validators.minLength(1), Validators.required])
+      de: new FormControl("", [Validators.minLength(1), Validators.required]),
+      en: new FormControl("", [Validators.minLength(1), Validators.required])
     }),
     image: new FormControl(null, Validators.required)
   });
@@ -43,13 +42,13 @@ export class TopicDialog {
 
   public setData(topic: TopicRaw) {
     this.topicForm.patchValue(topic);
-    if(topic.image) {
-      this.imageService.getImageFor("topic",topic.id).subscribe((img) => {
-        const imgFile = new File( [img.fileData], img.filename);
+    if (topic.image) {
+      this.imageService.getImageFor("topic", topic.id).subscribe((img) => {
+        const imgFile = new File([img.fileData], img.filename);
         this.image = imgFile;
         this.topicForm.controls["image"].setValue(imgFile);
         this.imagePreview = URL.createObjectURL(imgFile);
-      } )
+      })
     }
   }
 
@@ -77,7 +76,7 @@ export class TopicDialog {
     this.image = event.target.files[0];
     this.topicForm.controls["image"].setValue(this.image);
     const fileReader = new FileReader();
-    fileReader.onload=(() => {
+    fileReader.onload = (() => {
       this.imagePreview = fileReader.result as string;
     })
     fileReader.readAsDataURL(this.image!);

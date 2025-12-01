@@ -1,7 +1,8 @@
 package com.zonkodonko.ba.blog.rest.dtos;
 
 import com.zonkodonko.ba.blog.data.post.ArticleSettings;
-import com.zonkodonko.ba.storage.LocalizedText;
+
+import java.util.Map;
 
 /**
  * Dto to receive new articles
@@ -10,10 +11,8 @@ import com.zonkodonko.ba.storage.LocalizedText;
  * @version 14.11.2025
  */
 public record CreateArticleDto(
-		Long id,
-		Long createdDate,
-		LocalizedText getTitle,
-		LocalizedText getContent,
-		ArticleSettings getSettings,
-		String getTopic){
+		Map<String, String> title,
+		Map<String, String> content,
+		ArticleSettings settings,
+		String topic) {
 }

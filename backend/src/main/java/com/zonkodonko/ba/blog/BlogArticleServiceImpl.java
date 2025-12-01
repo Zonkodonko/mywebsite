@@ -71,11 +71,12 @@ public class BlogArticleServiceImpl implements BlogService {
 		Objects.requireNonNull(article);
 		Image imageEntity = toImageEntity(image);
 		BlogArticle articleEntity = BlogArticle.builder()
-				.setTitle(article.getTitle())
-				.setContent(article.getContent())
-				.setTopic(article.getTopic())
-				.setSettings(article.getSettings())
+				.setTitle(new LocalizedText(article.title()))
+				.setContent(new LocalizedText(article.content()))
+				.setTopic(article.topic())
+				.setSettings(article.settings())
 				.setImages(List.of(imageEntity))
+				.setCreatedDate(System.currentTimeMillis())
 				.build();
 		return blogArticleRepository.save(articleEntity).getId();
 	}
@@ -205,7 +206,7 @@ public class BlogArticleServiceImpl implements BlogService {
 				article.getId(),
 				article.getTitle().getTranslations(),
 				article.getContent().getTranslations(),
-				article.getPostSettings(),
+				article.getAppearanceSettings(),
 				article.getTopic()
 		);
 	}

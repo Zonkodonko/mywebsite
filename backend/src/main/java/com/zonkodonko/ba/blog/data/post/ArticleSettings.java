@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Settings for a blog post.
  *
  * @param imagePosition position where to place image in post.
- * @param titleImage id of image to use as getTitle image.
+ * @param titleImage id of image to use as title image.
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public record ArticleSettings(ImagePosition imagePosition, Long titleImage) {

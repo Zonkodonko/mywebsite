@@ -26,16 +26,43 @@ export type Topic = {
   description: string
 }
 
-export interface BlogArticleRaw {
+export type BlogArticleRaw = {
+  id?: number,
   image?: any,
   title: LocalizedText,
   content: LocalizedText,
-  date: number,
+  createdDate?: number,
+  appearanceSettings: {
+    imagePosition: string,
+    titleImage?: any
+  }
+}
+
+export type NewArticle = BlogArticleRaw & {
+  topic: string
 }
 
 export interface BlogArticle {
   image?: any,
   title: string,
   content: string,
-  date: number,
+  createdDate?: number,
+  appearanceSettings: {
+    imagePosition: string,
+    titleImage?: any
+  }
 }
+
+/**
+ * Date to provide from user when creating a new article.
+ */
+export type ArticleCreationData = {
+  title: LocalizedText,
+  content: LocalizedText,
+  image: File
+  appearanceSettings: {
+    imagePosition: imagePosition,
+  }
+}
+
+export type imagePosition = 'LEFT' | 'RIGHT' | 'TOP'

@@ -3,7 +3,7 @@ package com.zonkodonko.ba.blog.rest.dtos;
 import java.util.Map;
 
 /**
- * Contains getTopic data to create new getTopic.
+ * Contains topic data to create new topic.
  *
  * @author Timm
  * @version 14.11.2025

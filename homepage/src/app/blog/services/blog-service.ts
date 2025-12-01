@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BlogArticleRaw, FullTopic, NewTopic, TopicRaw} from '../data/BlogTypes';
+import {BlogArticleRaw, FullTopic, NewArticle, NewTopic, TopicRaw} from '../data/BlogTypes';
 import environment from '../../../environment';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication.service';
@@ -51,6 +51,24 @@ export class BlogService {
       headers: this.authService.getAuthHeaders(),
       responseType: 'text'
     });
+  }
+
+  createArticle(article: NewArticle) {
+    console.log(JSON.stringify(article));
+    const {image, ...articleData} = article;
+    const formData = new FormData();
+    const articleBlob = new Blob([JSON.stringify(articleData)], {
+      type: 'application/json'
+    });
+    formData.append('article', articleBlob);
+
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+    return this.http.post(`${this.url}/article`, formData, {
+      headers: this.authService.getAuthHeaders(),
+      responseType: 'text'
+    })
   }
 
 

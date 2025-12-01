@@ -13,6 +13,7 @@ import {ArticleOverview} from './blog/article-overview/article-overview';
 import {ArticleCard} from './blog/article-overview/article-card/article-card';
 import { BlogComponent } from './blog/blog-component/blog-component';
 import {RouterLink} from '@angular/router';
+import { ArticleDialog } from './article-dialog/article-dialog';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {RouterLink} from '@angular/router';
     TopicCard,
     ArticleOverview,
     ArticleCard,
-    BlogComponent
+    BlogComponent,
+    ArticleDialog
   ],
   imports: [
     CommonModule,
