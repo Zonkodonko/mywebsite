@@ -32,6 +32,15 @@
       "dialog": {
         "title": "Thema erstellen/bearbeiten"
       }
+    },
+    "article": {
+      "dialog": {
+        "title": "Artikel erstellen/bearbeiten",
+        "appearance": {
+          "title": "Anzeige-Einstellungen",
+          "position": "Bild-Position"
+        }
+      }
     }
   },
   "period": "von {{from}} bis {{to}}",
@@ -40,6 +49,7 @@
     "description": "Beschreibung",
     "image": "Bild",
     "cancel": "Abbrechen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "content": "Inhalt"
   }
 }

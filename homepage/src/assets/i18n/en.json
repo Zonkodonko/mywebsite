@@ -32,6 +32,15 @@
       "dialog": {
         "title": "Create/Edit Topic"
       }
+    },
+    "article": {
+      "dialog": {
+        "title": "Create/Edit Article",
+        "appearance": {
+          "title": "Display Settings",
+          "position": "Image position:"
+        }
+      }
     }
   },
   "period": "from {{from}} to {{to}}",
