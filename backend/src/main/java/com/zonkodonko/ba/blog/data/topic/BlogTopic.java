@@ -34,6 +34,9 @@ public final class BlogTopic {
 			orphanRemoval = true)
 	private Image image;
 
+	@Column(name = "last_change")
+	private Long lastChange;
+
 
 	public BlogTopic() {
 	}
@@ -41,11 +44,12 @@ public final class BlogTopic {
 	/**
 	 *
 	 */
-	public BlogTopic(String id, LocalizedText name, LocalizedText description, Image image) {
+	public BlogTopic(String id, LocalizedText name, LocalizedText description, Image image, Long lastChange) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.image = image;
+		this.lastChange = lastChange;
 	}
 
 	public String getId() {
@@ -64,6 +68,14 @@ public final class BlogTopic {
 		return image;
 	}
 
+	public Long getLastChange() {
+		return lastChange;
+	}
+
+	public void setLastChange(Long lastChange) {
+		this.lastChange = lastChange;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
@@ -72,12 +84,13 @@ public final class BlogTopic {
 		return Objects.equals(this.id, that.id) &&
 				Objects.equals(this.name, that.name) &&
 				Objects.equals(this.description, that.description) &&
-				Objects.equals(this.image, that.image);
+				Objects.equals(this.image, that.image) &&
+				Objects.equals(this.lastChange, that.lastChange);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, description, image);
+		return Objects.hash(id, name, description, image, lastChange);
 	}
 
 	@Override
@@ -86,7 +99,8 @@ public final class BlogTopic {
 				"id=" + id + ", " +
 				"name=" + name + ", " +
 				"description=" + description + ", " +
-				"image=" + (image != null ? image.getFilename() : "null") + ']';
+				"image=" + (image != null ? image.getFilename() : "null") + ", " +
+				"lastChange=" + lastChange + ']';
 	}
 
 	public static Builder builder() {
@@ -98,6 +112,7 @@ public final class BlogTopic {
 		private LocalizedText name;
 		private LocalizedText description;
 		private Image image;
+		private Long lastChange;
 		private String defaultLanguage = "de"; // Default language is German
 
 		private Builder() {
@@ -139,13 +154,18 @@ public final class BlogTopic {
 			return this;
 		}
 
+		public Builder setLastChange(Long lastChange) {
+			this.lastChange = lastChange;
+			return this;
+		}
+
 		public Builder setDefaultLanguage(String language) {
 			this.defaultLanguage = language;
 			return this;
 		}
 
 		public BlogTopic build() {
-			return new BlogTopic(id, name, description, image);
+			return new BlogTopic(id, name, description, image, lastChange);
 		}
 	}
 

@@ -10,6 +10,7 @@ import java.util.Map;
  * @param title topic title
  * @param description topic description
  * @param image BASE64 encoded image
+ * @param lastChange last change timestamp
  */
-public record TopicClientDto(String id, Map<String, String> title, Map<String, String> description, String image) {
+public record TopicClientDto(String id, Map<String, String> title, Map<String, String> description, String image, Long lastChange) {
 }

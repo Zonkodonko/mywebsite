@@ -47,7 +47,7 @@ export class ArticleDialog {
     this.form.patchValue(article);
     console.log(article);
     if(article.id != undefined) {
-      this.imageService.getImageFor("article",article.id!+'').subscribe((img) => {
+      this.imageService.getImageFor(article.id!, "article", article.lastChange).subscribe((img) => {
         this.titleImage = {
           name: img.filename,
           url: URL.createObjectURL(img.fileData)

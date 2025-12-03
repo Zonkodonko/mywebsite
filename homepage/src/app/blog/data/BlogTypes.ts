@@ -4,7 +4,8 @@ export type TopicRaw = {
   id: string,
   image: any,
   title: LocalizedText,
-  description: LocalizedText
+  description: LocalizedText,
+  lastChange?: number
 }
 
 export type NewTopic = {

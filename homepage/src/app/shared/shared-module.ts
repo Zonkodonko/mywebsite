@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IntersectAnimation } from './intersect-animation/intersect-animation';
 import { AutoHeight } from './auto-resize/auto-height.directive';
 import { LogoutNotifcationModal } from './logout-notifcation-modal/logout-notifcation-modal';
+import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
 
 
 
@@ -10,7 +11,8 @@ import { LogoutNotifcationModal } from './logout-notifcation-modal/logout-notifc
   declarations: [
     IntersectAnimation,
     AutoHeight,
-    LogoutNotifcationModal
+    LogoutNotifcationModal,
+    ConfirmDialog
   ],
   exports: [
     IntersectAnimation,

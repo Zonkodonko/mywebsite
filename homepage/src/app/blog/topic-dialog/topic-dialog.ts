@@ -43,7 +43,7 @@ export class TopicDialog {
   public setData(topic: TopicRaw) {
     this.topicForm.patchValue(topic);
     if (topic.image) {
-      this.imageService.getImageFor("topic", topic.id).subscribe((img) => {
+      this.imageService.getImageFor(topic.id).subscribe((img) => {
         const imgFile = new File([img.fileData], img.filename);
         this.image = imgFile;
         this.topicForm.controls["image"].setValue(imgFile);

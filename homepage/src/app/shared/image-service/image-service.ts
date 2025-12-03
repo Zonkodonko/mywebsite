@@ -20,9 +20,10 @@ export class ImageService {
    * Get for entity
    * @param type entity type
    * @param id id of entity
+   * @param lastChange
    */
-  getImageFor(type: "topic" | "article" = "topic", id: string): Observable<Image> {
-    return this.httpClient.get(`${environment.backendUrl}/images/${type}/${id}`, {
+  getImageFor(id: string|number, type: "topic" | "article" = "topic", lastChange: number = Date.now()): Observable<Image> {
+    return this.httpClient.get(`${environment.backendUrl}/images/${type}/${id}?time=${lastChange}`, {
       observe: 'response',
       responseType: 'blob'
     })

@@ -119,18 +119,22 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public String saveTopic(TopicDto topic, MultipartFile image) {
 		Objects.requireNonNull(topic);
-		if (topic.id() != null && !topic.id().isBlank()) {
+		Image imageEntity = null;
+		if (topic.id() != null && !topic.id().isBlank()) {//is updating topic
 			Image oldImg = blogTopicRepository.findById(topic.id()).orElseThrow().getImage();
 			if (oldImg != null) {
-				imageRepository.delete(oldImg);
+				imageEntity = updateImage(oldImg, image);
 			}
 		}
-		Image imageEntity = toImageEntity(image);
+		if(imageEntity == null) {
+			imageEntity = toImageEntity(image);
+		}
 		BlogTopic blogTopic = BlogTopic.builder()
 				.setId(topic.id().toLowerCase())
 				.setName(new LocalizedText(topic.title()))
 				.setDescription(new LocalizedText(topic.description()))
 				.setImage(imageEntity)
+				.setLastChange(System.currentTimeMillis()) //todo implement time utils to get current time in timezone
 				.build();
 		blogTopic = blogTopicRepository.save(blogTopic);
 		return blogTopic.getId();
@@ -177,6 +181,19 @@ public class BlogServiceImpl implements BlogService {
 	public void deleteTopic(String id, boolean withArticles) {
 		blogTopicRepository.deleteById(id);
 		blogArticleRepository.deleteByTopic(id);
+	}
+
+	/**
+	 * Get data from an image file and save it to database.
+	 * @param image entity to update
+	 * @param imageFile to get new data from
+	 * @return updated image entity
+	 */
+	Image updateImage(Image image, MultipartFile imageFile) {
+		image.setData(getImageData(imageFile));
+		image.setContentType(imageFile.getContentType());
+		image.setFilename(imageFile.getOriginalFilename());
+		return imageRepository.save(image);
 	}
 
 	/**
@@ -232,12 +249,13 @@ public class BlogServiceImpl implements BlogService {
 
 
 	private TopicClientDto toDto(BlogTopic topic) {
-		String image = hostDomain + "/images/topic/" + topic.getId();
+		String image = hostDomain + "/images/topic/" + topic.getId()+"?="+topic.getLastChange();
 		return new TopicClientDto(
 				topic.getId(),
 				topic.getName().getTranslations(),
 				topic.getDescription().getTranslations(),
-				image
+				image,
+				topic.getLastChange()
 		);
 	}
 

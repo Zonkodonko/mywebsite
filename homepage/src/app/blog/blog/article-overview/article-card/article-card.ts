@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BlogArticle, BlogArticleRaw} from '../../../data/BlogTypes';
+import {BlogArticleRaw} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {marked} from 'marked';
 import environment from '../../../../../environment';
@@ -45,7 +45,7 @@ export class ArticleCard {
 
   public get content() {
     const lang = this.langService.getCurrentLang();
-    return marked.parse(this.article.content[lang],{async: false});
+    return marked.parse(this.article.content[lang], {async: false});
   }
 
   public get title() {

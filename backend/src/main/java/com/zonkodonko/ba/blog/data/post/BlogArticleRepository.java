@@ -1,5 +1,6 @@
 package com.zonkodonko.ba.blog.data.post;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -15,6 +16,7 @@ public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long>
 
 	List<BlogArticle> getBlogArticlesByTopic(String topic);
 
+	@Modifying
 	@Query("DELETE FROM Image i WHERE i.relatedEntity = ?1")
 	void deleteRelatedImages(Long articleId);
 
