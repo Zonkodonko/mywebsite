@@ -43,6 +43,7 @@ export type NewArticle = BlogArticleRaw & {
 }
 
 export interface BlogArticle {
+  id: number,
   image?: any,
   title: string,
   content: string,

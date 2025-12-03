@@ -2,6 +2,7 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.images.Image;
 import com.zonkodonko.ba.blog.data.images.ImageRepository;
+import com.zonkodonko.ba.blog.data.post.ArticleSettings;
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
@@ -74,11 +75,14 @@ public class BlogArticleServiceImpl implements BlogService {
 				.setTitle(new LocalizedText(article.title()))
 				.setContent(new LocalizedText(article.content()))
 				.setTopic(article.topic())
-				.setSettings(article.settings())
+				.setSettings(article.appearanceSettings())
 				.setImages(List.of(imageEntity))
 				.setCreatedDate(System.currentTimeMillis())
 				.build();
-		return blogArticleRepository.save(articleEntity).getId();
+		Long articleID = blogArticleRepository.save(articleEntity).getId();
+		imageEntity.setRelatedEntity(articleID);
+		imageRepository.save(imageEntity);
+		return articleID;
 	}
 
 
@@ -157,11 +161,22 @@ public class BlogArticleServiceImpl implements BlogService {
 	 * @return image entity
 	 */
 	private Image toImageEntity(MultipartFile image) {
+		return toImageEntity(image, null);
+	}
+
+	/**
+	 * Save image to database.
+	 *
+	 * @param image image to save
+	 * @return image entity
+	 */
+	private Image toImageEntity(MultipartFile image, Long relatedEntity) {
 		byte[] imgData = getImageData(image);
 		Image imageEntity =
 				Image.builder()
 						.setContentType(image.getContentType())
 						.setFilename(image.getOriginalFilename())
+						.setRelatedEntity(relatedEntity)
 						.setData(imgData)
 						.build();
 		imageEntity = imageRepository.save(imageEntity);

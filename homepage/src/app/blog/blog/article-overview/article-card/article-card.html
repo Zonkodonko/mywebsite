@@ -1,4 +1,12 @@
-<div>
-  <h1>{{article?.title}}</h1>
-  <p>{{article?.content}}</p>
+<div class="d-flex"
+     [ngClass]="{
+        'flex-row': imagePosition == 'left' || imagePosition == 'right',
+        'flex-column': imagePosition == 'top'
+     }"
+>
+  <img [src]="image" class="article-image" alt="Article image">
+  <div class="d-flex flex-column justify-content-center">
+    <h1>{{article.title}}</h1>
+    <p>{{article.content}}</p>
+  </div>
 </div>

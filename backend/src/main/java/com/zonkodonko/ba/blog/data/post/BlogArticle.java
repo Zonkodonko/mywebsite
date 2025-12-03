@@ -30,13 +30,6 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@Column(columnDefinition = "jsonb")
 	private LocalizedText content;
 
-	@OneToMany(
-			mappedBy = "relatedEntity",
-			cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY,
-			orphanRemoval = true)
-	private List<Image> images;
-
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
 	private ArticleSettings appearanceSettings;
@@ -51,13 +44,11 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText title,
 			LocalizedText content,
 			Long createdDate,
-			List<Image> images,
 			ArticleSettings appearanceSettings,
 			String topic) {
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
-		this.images = images;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
@@ -67,14 +58,12 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText title,
 			LocalizedText content,
 			Long createdDate,
-			List<Image> images,
 			ArticleSettings appearanceSettings,
 			String topic) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.createdDate = createdDate;
-		this.images = images;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
@@ -95,10 +84,6 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return createdDate;
 	}
 
-	public List<Image> getImages() {
-		return images;
-	}
-
 	public ArticleSettings getAppearanceSettings() {
 		return appearanceSettings;
 	}
@@ -116,14 +101,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				Objects.equals(this.title, that.title) &&
 				Objects.equals(this.content, that.content) &&
 				Objects.equals(this.createdDate, that.createdDate) &&
-				Objects.equals(this.images, that.images) &&
 				Objects.equals(this.appearanceSettings, that.appearanceSettings) &&
 				Objects.equals(this.topic, that.topic);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, createdDate, images, appearanceSettings, topic);
+		return Objects.hash(id, title, content, createdDate, appearanceSettings, topic);
 	}
 
 	@Override
@@ -133,7 +117,6 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				"title=" + title + ", " +
 				"content=" + content + ", " +
 				"createdDate=" + createdDate + ", " +
-				"image=" + images + ", " +
 				"postSettings=" + appearanceSettings + ", " +
 				"topic=" + topic + ']';
 	}
@@ -148,7 +131,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private LocalizedText content;
 		private Long createdDate;
 		private List<Image> images;
-		private ArticleSettings postSettings;
+		private ArticleSettings appearanceSettings;
 		private String topic;
 		private String defaultLanguage = "de";
 
@@ -200,7 +183,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		}
 
 		public Builder setSettings(ArticleSettings postSettings) {
-			this.postSettings = postSettings;
+			this.appearanceSettings = postSettings;
 			return this;
 		}
 
@@ -210,7 +193,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		}
 
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, createdDate, images, postSettings, topic);
+			return new BlogArticle(id, title, content, createdDate, appearanceSettings, topic);
 		}
 	}
 }

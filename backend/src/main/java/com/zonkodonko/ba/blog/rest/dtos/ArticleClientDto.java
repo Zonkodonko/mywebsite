@@ -9,7 +9,7 @@ import java.util.Map;
  * Article data transfer object to send to client.
  *
  * @param topic    topic id
- * @param settings article settings
+ * @param appearanceSettings article appearanceSettings
  * @author Timm
  * @version 18.11.2025
  */
@@ -17,7 +17,7 @@ public record ArticleClientDto(
 		Long id,
 		Map<String, String> title,
 		Map<String, String> content,
-		ArticleSettings settings,
+		ArticleSettings appearanceSettings,
 		String topic
 ) {
 }

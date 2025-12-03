@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {BlogArticle, BlogArticleRaw} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {marked} from 'marked';
+import environment from '../../../../../environment';
 
 @Component({
   selector: 'app-article-card',
@@ -12,7 +13,7 @@ import {marked} from 'marked';
 export class ArticleCard {
 
   @Input()
-  public article?: BlogArticle;
+  public article!: BlogArticle;
 
   // public article!: BlogArticle;
 
@@ -33,5 +34,13 @@ export class ArticleCard {
   //     }
   //   }
   // }
+
+  public get imagePosition() {
+    return this.article.appearanceSettings.imagePosition;
+  }
+
+  public get image() {
+    return `${environment.backendUrl}/images/article/${this.article.id}`;
+  }
 
 }

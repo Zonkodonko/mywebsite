@@ -21,7 +21,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors(Customizer.withDefaults());
 		http.csrf(csrf ->
-				csrf.ignoringRequestMatchers("/auth/**", "/resume/**")
+				csrf.ignoringRequestMatchers("/auth/**", "/resume/**", "/blog/**", "/images/**")
 		);
 		http.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers(HttpMethod.OPTIONS, "/auth/**").permitAll()

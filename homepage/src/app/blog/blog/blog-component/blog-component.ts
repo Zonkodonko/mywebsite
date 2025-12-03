@@ -55,7 +55,6 @@ export class BlogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.openCreateDialog();
   }
 
 
@@ -71,6 +70,7 @@ export class BlogComponent implements OnInit{
         ...raw,
         title: raw.title[lang],
         content: raw.content[lang],
+        id: Number(raw.id)
       }
     })
   }

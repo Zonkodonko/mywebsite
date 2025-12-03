@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * todo write comment
  *
@@ -42,8 +44,8 @@ public class ImageServiceImpl implements ImageService {
 	public Image getImageBy(String type, String id) {
 		if(type.equals("article")) {
 			BlogArticle article = blogArticleRepository.findById(Long.valueOf(id)).orElseThrow(() -> new IllegalArgumentException("Article not found"));
-			Hibernate.initialize(article.getImages());
-			return article.getImages().get(0);
+			List<Image> images = imageRepository.getImagesByRelatedEntity(article.getId());
+			return images.getFirst();
 		} else if(type.equals("topic")) {
 			BlogTopic topic = blogTopicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Topic not found"));
 			Hibernate.initialize(topic.getImage());

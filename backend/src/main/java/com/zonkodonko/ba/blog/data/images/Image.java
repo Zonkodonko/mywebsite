@@ -16,6 +16,7 @@ public class Image {
 	@Column(nullable = false)
 	private String contentType;
 
+	@Column(name = "related_entity")
 	private Long relatedEntity;
 
 	@Lob
@@ -60,6 +61,7 @@ public class Image {
 
 	/**
 	 * Size in byte
+	 *
 	 * @return size of image in bytes.
 	 */
 	public Long getSize() {
@@ -68,6 +70,10 @@ public class Image {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public void setRelatedEntity(Long relatedEntity) {
+		this.relatedEntity = relatedEntity;
 	}
 
 	public void setFilename(String filename) {
@@ -89,6 +95,7 @@ public class Image {
 		private String contentType;
 		private byte[] data;
 		private Long size;
+		private Long relatedEntity;
 
 		public Builder setId(Long id) {
 			this.id = id;
@@ -111,11 +118,17 @@ public class Image {
 			return this;
 		}
 
+		public Builder setRelatedEntity(Long relatedEntity) {
+			this.relatedEntity = relatedEntity;
+			return this;
+		}
+
 		public Image build() {
 			Image image = new Image();
 			image.setId(id);
 			image.setFilename(filename);
 			image.setContentType(contentType);
+			image.setRelatedEntity(relatedEntity);
 			image.setData(data);
 			return image;
 		}

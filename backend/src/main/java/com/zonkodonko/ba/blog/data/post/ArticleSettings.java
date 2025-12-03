@@ -1,5 +1,6 @@
 package com.zonkodonko.ba.blog.data.post;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @param titleImage id of image to use as title image.
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public record ArticleSettings(ImagePosition imagePosition, Long titleImage) {
+public record ArticleSettings(ImagePosition imagePosition, String titleImage) {
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	public enum ImagePosition {
@@ -20,6 +21,11 @@ public record ArticleSettings(ImagePosition imagePosition, Long titleImage) {
 		@Override
 		public String toString() {
 			return super.toString();
+		}
+
+		@JsonCreator
+		public static ImagePosition fromString(String value) {
+			return valueOf(value.toUpperCase());
 		}
 	}
 

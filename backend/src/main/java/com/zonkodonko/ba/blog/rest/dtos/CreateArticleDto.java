@@ -13,6 +13,6 @@ import java.util.Map;
 public record CreateArticleDto(
 		Map<String, String> title,
 		Map<String, String> content,
-		ArticleSettings settings,
+		ArticleSettings appearanceSettings,
 		String topic) {
 }

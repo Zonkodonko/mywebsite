@@ -9,7 +9,6 @@ import {AppModule} from '../app-module';
 import {TopicOverview} from './blog/topic-overview/topic-overview.component';
 import {TopicDialog} from './topic-dialog/topic-dialog';
 import {TopicCard} from './blog/topic-card/topic-card';
-import {ArticleOverview} from './blog/article-overview/article-overview';
 import {ArticleCard} from './blog/article-overview/article-card/article-card';
 import { BlogComponent } from './blog/blog-component/blog-component';
 import {RouterLink} from '@angular/router';
@@ -20,7 +19,6 @@ import { ArticleDialog } from './article-dialog/article-dialog';
     TopicOverview,
     TopicDialog,
     TopicCard,
-    ArticleOverview,
     ArticleCard,
     BlogComponent,
     ArticleDialog
