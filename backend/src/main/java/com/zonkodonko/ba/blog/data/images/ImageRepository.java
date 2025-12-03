@@ -11,4 +11,6 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
 
 
 	List<Image> getImagesByRelatedEntity(Long relatedEntity);
+
+	void deleteByRelatedEntity(Long relatedEntity);
 }

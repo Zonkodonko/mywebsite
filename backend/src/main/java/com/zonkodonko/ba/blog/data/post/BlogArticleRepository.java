@@ -1,6 +1,5 @@
 package com.zonkodonko.ba.blog.data.post;
 
-import com.zonkodonko.ba.blog.data.images.Image;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,9 +7,9 @@ import java.util.List;
 
 public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long> {
 
-	List<BlogArticle> findAllByOrderByCreatedDateDesc();
+	List<BlogArticle> findAllByOrderByLastChangeDesc();
 
-	List<BlogArticle> findAllByTopicOrderByCreatedDateDesc(String topic);
+	List<BlogArticle> findAllByTopicOrderByLastChange(String topic);
 
 	void deleteByTopic(String topic);
 
@@ -23,5 +22,14 @@ public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long>
 	default void delete(BlogArticle entity) {
 		deleteRelatedImages(entity.getId());
 		deleteById(entity.getId());
+	}
+
+	/**
+	 * Deletes article and all related images.
+	 * @param id Article id
+	 */
+	default void deleteWithImages(Long id) {
+		deleteRelatedImages(id);
+		deleteById(id);
 	}
 }

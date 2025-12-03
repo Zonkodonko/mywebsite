@@ -32,8 +32,8 @@ public class TestBlogArticleData {
 	void setUp() {
 		testPost = BlogArticle.builder().setTitle("Test Title")
 				.setContent("Test Content")
-				.setSettings(new ArticleSettings(ArticleSettings.ImagePosition.TOP))
-				.setCreatedDate(System.currentTimeMillis())
+				.setSettings(new ArticleSettings(ArticleSettings.ImagePosition.TOP,"title.jpg"))
+				.setLastChange(System.currentTimeMillis())
 				.build();
 	}
 

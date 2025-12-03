@@ -1,12 +1,23 @@
-<div class="d-flex"
+<div class="d-flex p-2 article-card position-relative align-items-center"
      [ngClass]="{
-        'flex-row': imagePosition == 'left' || imagePosition == 'right',
-        'flex-column': imagePosition == 'top'
+        'flex-row': imagePosition == 'LEFT',
+        'flex-column': imagePosition == 'TOP',
+        'flex-row-reverse': imagePosition == 'RIGHT'
      }"
 >
-  <img [src]="image" class="article-image" alt="Article image">
-  <div class="d-flex flex-column justify-content-center">
-    <h1>{{article.title}}</h1>
-    <p>{{article.content}}</p>
+  <img [src]="image" class="article-image" [class.top-image]="imagePosition == 'TOP'" alt="Article image">
+  <div class="d-flex flex-column flex-grow-1 justify-content-center ms-2 position-relative py-3 ">
+    <h1>{{title}}</h1>
+    <div class="article-content" [innerHTML]="content"></div>
   </div>
+  @if (canEdit) {
+    <div class="edit-container">
+      <button class="btn edit-button" (click)="edit()">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <button class="btn delete-button" (click)="delete()">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  }
 </div>

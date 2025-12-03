@@ -45,9 +45,12 @@ public class ImageController {
 	@GetMapping("/{entityType}/{entityId}")
 	public ResponseEntity<byte[]> getTopicImage(@PathVariable String entityType, @PathVariable String entityId) {
 		Image image = imageService.getImageBy(entityType, entityId);
+		if(image == null) {
+			return ResponseEntity.notFound().build();
+		}
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(image.getContentType()))
-				.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePublic())
+				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.getFilename() + "\"")
 				.body(image.getData());
 	}

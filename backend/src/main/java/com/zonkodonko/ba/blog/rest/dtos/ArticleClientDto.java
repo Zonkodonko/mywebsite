@@ -18,6 +18,7 @@ public record ArticleClientDto(
 		Map<String, String> title,
 		Map<String, String> content,
 		ArticleSettings appearanceSettings,
-		String topic
+		String topic,
+		Long lastChange
 ) {
 }

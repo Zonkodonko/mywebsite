@@ -20,6 +20,10 @@ export class BlogService {
   }
 
 
+  deleteArticle(id: number) {
+    return this.http.delete(`${this.url}/article/${id}`, {headers: this.authService.getAuthHeaders()});
+  }
+
   getArticles(topic: string): Observable<BlogArticleRaw[]> {
     return this.http.get<any[]>(`${this.url}/articles/${topic}`)
   }
@@ -32,6 +36,20 @@ export class BlogService {
     return this.http.get<TopicRaw[]>(`${this.url}/topics`).pipe(
       tap(topics => this.topicsCache = topics)
     );
+  }
+
+  updateArticle(article: NewArticle) {
+    const {image, ...articleData} = article;
+    const formData = new FormData();
+    const articleBlob = new Blob([JSON.stringify(articleData)], {
+      type: 'application/json'
+    });
+    formData.append('article', articleBlob);
+
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+    return this.http.put(`${this.url}/article/${article.id}`, formData, {headers: this.authService.getAuthHeaders()});
   }
 
   createTopic(topic: NewTopic) {

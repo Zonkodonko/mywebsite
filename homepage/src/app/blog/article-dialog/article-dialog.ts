@@ -35,7 +35,7 @@ export class ArticleDialog {
     }),
     images: new FormArray([]),
     appearanceSettings: new FormGroup({
-      imagePosition: new FormControl('left', Validators.required),
+      imagePosition: new FormControl('LEFT', Validators.required),
       titleImage: new FormControl(""),
     }),
   });
@@ -45,6 +45,7 @@ export class ArticleDialog {
 
   set article(article: BlogArticleRaw) {
     this.form.patchValue(article);
+    console.log(article);
     if(article.id != undefined) {
       this.imageService.getImageFor("article",article.id!+'').subscribe((img) => {
         this.titleImage = {

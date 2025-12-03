@@ -33,6 +33,13 @@ class BlogController {
 		return blogArticleService.saveArticle(article, image);
 	}
 
+	@PutMapping("/article/{id}")
+	public void updateArticle(@PathVariable Long id,
+	                          @RequestPart("article") CreateArticleDto article,
+	                          @RequestPart(name = "image", required = false) MultipartFile image) {
+		blogArticleService.updateArticle(id, article,image);
+	}
+
 	@GetMapping("/topics")
 	public Collection<TopicClientDto> getTopics() {
 		return blogArticleService.getTopics();

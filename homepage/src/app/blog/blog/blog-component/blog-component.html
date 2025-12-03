@@ -7,12 +7,18 @@
     </div>
   </div>
 
-  @if (isLoggedIn) {
-    <button class="btn w-100 border " (click)="openCreateDialog()">
-      <i class="bi bi-plus-circle"></i>
-    </button>
-  }
-  @for(article of articles; track article) {
-    <app-article-card [article]="article"></app-article-card>
-  }
+  <div class="d-flex flex-column align-items-center mt-2">
+    @if (isLoggedIn) {
+      <button class="btn w-100 border add-button " (click)="openArticleDialog()">
+        <i class="bi bi-plus-circle"></i>
+      </button>
+    }
+    @for(article of articlesRaw; track article) {
+      <app-article-card [article]="article"
+                        [canEdit]="isLoggedIn"
+                        (editArticle)="openArticleDialog($event.id)"
+                        (deleteArticle)="deleteArticle($event.id!)"
+      ></app-article-card>
+    }
+  </div>
 </div>

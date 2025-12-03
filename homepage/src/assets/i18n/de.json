@@ -50,6 +50,9 @@
     "image": "Bild",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "content": "Inhalt"
+    "content": "Inhalt",
+    "left": "Links",
+    "right": "Rechts",
+    "top": "Oben"
   }
 }

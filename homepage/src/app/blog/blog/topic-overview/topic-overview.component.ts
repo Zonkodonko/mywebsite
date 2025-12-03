@@ -5,7 +5,6 @@ import {BlogService} from '../../services/blog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TopicDialog} from '../../topic-dialog/topic-dialog';
-import isString from '../../../shared/utils/utils';
 
 @Component({
   selector: 'app-topic-overview-component',
@@ -74,7 +73,7 @@ export class TopicOverview implements OnInit {
           if(existingTopicI === -1) {
             this._topicsRaw.push(result);
           } else {
-            this._topicsRaw[existingTopicI] = result;
+            this._topicsRaw[existingTopicI] = {...result, image: URL.createObjectURL(result.image)};
           }
           this.creating = undefined;
           this.updateTopics();

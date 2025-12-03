@@ -4,6 +4,7 @@ package com.zonkodonko.ba.blog;
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
 import com.zonkodonko.ba.blog.rest.dtos.*;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +39,15 @@ public interface BlogService {
 	 * @return id of saved article
 	 */
 	Long saveArticle(@NotNull CreateArticleDto article, MultipartFile image);
+
+
+	/**
+	 * Update article.
+	 * @param id Article id
+	 * @param article Article to update
+	 * @param image Image to update
+	 */
+	void updateArticle(@NotNull Long id, @NotNull CreateArticleDto article, @Nullable MultipartFile image);
 
 	/**
 	 * Delete article by id.

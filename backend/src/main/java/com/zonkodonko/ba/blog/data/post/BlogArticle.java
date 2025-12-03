@@ -20,7 +20,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	private Long createdDate;
+	@Column(name = "last_change")
+	private Long lastChange;
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
@@ -43,12 +44,12 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	public BlogArticle(
 			LocalizedText title,
 			LocalizedText content,
-			Long createdDate,
+			Long lastChange,
 			ArticleSettings appearanceSettings,
 			String topic) {
 		this.title = title;
 		this.content = content;
-		this.createdDate = createdDate;
+		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
@@ -57,13 +58,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			Long id,
 			LocalizedText title,
 			LocalizedText content,
-			Long createdDate,
+			Long lastChange,
 			ArticleSettings appearanceSettings,
 			String topic) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
-		this.createdDate = createdDate;
+		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 	}
@@ -80,8 +81,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return content;
 	}
 
-	public Long getCreatedDate() {
-		return createdDate;
+	public Long getLastChange() {
+		return lastChange;
 	}
 
 	public ArticleSettings getAppearanceSettings() {
@@ -100,14 +101,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return Objects.equals(this.id, that.id) &&
 				Objects.equals(this.title, that.title) &&
 				Objects.equals(this.content, that.content) &&
-				Objects.equals(this.createdDate, that.createdDate) &&
+				Objects.equals(this.lastChange, that.lastChange) &&
 				Objects.equals(this.appearanceSettings, that.appearanceSettings) &&
 				Objects.equals(this.topic, that.topic);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, createdDate, appearanceSettings, topic);
+		return Objects.hash(id, title, content, lastChange, appearanceSettings, topic);
 	}
 
 	@Override
@@ -116,7 +117,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				"id=" + id + ", " +
 				"title=" + title + ", " +
 				"content=" + content + ", " +
-				"createdDate=" + createdDate + ", " +
+				"lastChange=" + lastChange + ", " +
 				"postSettings=" + appearanceSettings + ", " +
 				"topic=" + topic + ']';
 	}
@@ -129,7 +130,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private Long id;
 		private LocalizedText title;
 		private LocalizedText content;
-		private Long createdDate;
+		private Long lastChange;
 		private List<Image> images;
 		private ArticleSettings appearanceSettings;
 		private String topic;
@@ -151,6 +152,11 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			return this;
 		}
 
+		public Builder setTitle(Map<String, String> title) {
+			this.title = new LocalizedText(title);
+			return this;
+		}
+
 		public Builder setContent(LocalizedText content) {
 			this.content = content;
 			return this;
@@ -158,6 +164,11 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 
 		public Builder setContent(String content) {
 			this.content = new LocalizedText(Map.of(defaultLanguage, content));
+			return this;
+		}
+
+		public Builder setContent(Map<String, String> content) {
+			this.content = new LocalizedText(content);
 			return this;
 		}
 
@@ -172,8 +183,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			return this;
 		}
 
-		public Builder setCreatedDate(Long createdDate) {
-			this.createdDate = createdDate;
+		public Builder setLastChange(Long createdDate) {
+			this.lastChange = createdDate;
 			return this;
 		}
 
@@ -193,7 +204,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		}
 
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, createdDate, appearanceSettings, topic);
+			return new BlogArticle(id, title, content, lastChange, appearanceSettings, topic);
 		}
 	}
 }

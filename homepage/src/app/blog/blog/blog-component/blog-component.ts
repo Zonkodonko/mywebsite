@@ -7,6 +7,7 @@ import environment from '../../../../environment';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ArticleDialog} from '../../article-dialog/article-dialog';
 import {AuthenticationService} from '../../../authentication/authentication.service';
+import {findAndDelete} from '../../../shared/utils/utils';
 
 @Component({
   selector: 'app-blog-component',
@@ -48,7 +49,6 @@ export class BlogComponent implements OnInit{
           image: `${environment.backendUrl}/images/topic/${id}`
         }
         this.articlesRaw = blog.articles;
-        //set text according to language
         this.updateArticles();
       }
     );
@@ -75,21 +75,40 @@ export class BlogComponent implements OnInit{
     })
   }
 
-  public openCreateDialog() {
+  deleteArticle(id: number) {
+    this.blogService.deleteArticle(id).subscribe(()=> {
+      findAndDelete(this.articlesRaw, a => a.id === id);
+      this.updateArticles();
+    });
+  }
+
+  public openArticleDialog(id: number | undefined = undefined) {
     const modalRef = this.modalService.open(ArticleDialog, {centered: true, size: 'lg', backdrop: 'static'});
-    if(this.creating !== undefined) {
-      modalRef.componentInstance.article = this.creating;
+    if(id !== undefined) {
+      modalRef.componentInstance.article = this.articlesRaw.find(a => a.id === id);
+    } else {
+      if(this.creating !== undefined) {
+        modalRef.componentInstance.article = this.creating;
+      }
     }
+
     modalRef.closed.subscribe((result: ArticleCreationData) => {
       const newArticle = {topic: this._topicId, ...result};
-      this.blogService.createArticle(newArticle).subscribe(id => {
-        this.articlesRaw.push({id: Number(id), ...newArticle});
-        this.updateArticles();
-        this.creating = undefined;
-      },
-      error => {
-        this.creating = result;
-      })
+      if(id !== undefined) {
+        this.blogService.updateArticle({id:id,...newArticle}).subscribe( () => {
+          Object.assign(this.articlesRaw.find(a => a.id == id)!,newArticle);
+          this.updateArticles();
+        });
+      } else {
+        this.blogService.createArticle(newArticle).subscribe(id => {
+          this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: new Date().getDate() });
+          this.updateArticles();
+          this.creating = undefined;
+        },
+        error => {
+          this.creating = result;
+        })
+      }
     })
   }
 

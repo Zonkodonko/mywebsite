@@ -31,7 +31,7 @@ export type BlogArticleRaw = {
   image?: any,
   title: LocalizedText,
   content: LocalizedText,
-  createdDate?: number,
+  lastChange?: number,
   appearanceSettings: {
     imagePosition: string,
     titleImage?: any
@@ -47,7 +47,7 @@ export interface BlogArticle {
   image?: any,
   title: string,
   content: string,
-  createdDate?: number,
+  lastChange?: number,
   appearanceSettings: {
     imagePosition: string,
     titleImage?: any

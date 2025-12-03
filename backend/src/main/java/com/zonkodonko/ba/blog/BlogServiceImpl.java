@@ -2,7 +2,6 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.images.Image;
 import com.zonkodonko.ba.blog.data.images.ImageRepository;
-import com.zonkodonko.ba.blog.data.post.ArticleSettings;
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.post.BlogArticleRepository;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
@@ -18,7 +17,10 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Implementation of {@link BlogService}.
@@ -27,7 +29,7 @@ import java.util.*;
  * @version 14.11.2025
  */
 @Component
-public class BlogArticleServiceImpl implements BlogService {
+public class BlogServiceImpl implements BlogService {
 
 	final BlogArticleRepository blogArticleRepository;
 
@@ -36,7 +38,7 @@ public class BlogArticleServiceImpl implements BlogService {
 
 	final String hostDomain;
 
-	public BlogArticleServiceImpl(
+	public BlogServiceImpl(
 			BlogArticleRepository blogArticleRepository,
 			BlogTopicRepository blogTopicRepository,
 			ImageRepository imageRepository,
@@ -52,9 +54,9 @@ public class BlogArticleServiceImpl implements BlogService {
 	public List<ArticleClientDto> getArticles(String topic) {
 		Collection<BlogArticle> articles;
 		if (topic == null || topic.isBlank()) {
-			articles = blogArticleRepository.findAllByOrderByCreatedDateDesc();
+			articles = blogArticleRepository.findAllByOrderByLastChangeDesc();
 		} else {
-			articles = blogArticleRepository.findAllByTopicOrderByCreatedDateDesc(topic);
+			articles = blogArticleRepository.findAllByTopicOrderByLastChange(topic);
 		}
 		return articles.stream().map(this::toDto).toList();
 	}
@@ -77,7 +79,7 @@ public class BlogArticleServiceImpl implements BlogService {
 				.setTopic(article.topic())
 				.setSettings(article.appearanceSettings())
 				.setImages(List.of(imageEntity))
-				.setCreatedDate(System.currentTimeMillis())
+				.setLastChange(System.currentTimeMillis())
 				.build();
 		Long articleID = blogArticleRepository.save(articleEntity).getId();
 		imageEntity.setRelatedEntity(articleID);
@@ -85,20 +87,43 @@ public class BlogArticleServiceImpl implements BlogService {
 		return articleID;
 	}
 
+	@Transactional
+	@Override
+	public void updateArticle(Long id, CreateArticleDto article, MultipartFile image) {
+		BlogArticle articleToSave = BlogArticle.builder()
+				.setId(id)
+				.setSettings(article.appearanceSettings())
+				.setTitle(article.title())
+				.setTopic(article.topic())
+				.setContent(article.content())
+				.setLastChange(System.currentTimeMillis())
+				.build();
+		blogArticleRepository.save(articleToSave);
+		if (image != null) {
+			Image dbImage = imageRepository.getImagesByRelatedEntity(id).getFirst();
+			dbImage.setData(getImageData(image));
+			dbImage.setContentType(image.getContentType());
+			dbImage.setFilename(image.getOriginalFilename());
+			imageRepository.save(dbImage);
+		}
+
+	}
 
 	@Override
 	public void deleteArticle(Long id) {
 		Objects.requireNonNull(id);
-		blogArticleRepository.deleteById(id);
+		blogArticleRepository.deleteWithImages(id);
 	}
 
 	@Transactional
 	@Override
 	public String saveTopic(TopicDto topic, MultipartFile image) {
 		Objects.requireNonNull(topic);
-		if(topic.id() != null && !topic.id().isBlank()) {
+		if (topic.id() != null && !topic.id().isBlank()) {
 			Image oldImg = blogTopicRepository.findById(topic.id()).orElseThrow().getImage();
-			imageRepository.delete(oldImg);
+			if (oldImg != null) {
+				imageRepository.delete(oldImg);
+			}
 		}
 		Image imageEntity = toImageEntity(image);
 		BlogTopic blogTopic = BlogTopic.builder()
@@ -222,7 +247,8 @@ public class BlogArticleServiceImpl implements BlogService {
 				article.getTitle().getTranslations(),
 				article.getContent().getTranslations(),
 				article.getAppearanceSettings(),
-				article.getTopic()
+				article.getTopic(),
+				article.getLastChange()
 		);
 	}
 

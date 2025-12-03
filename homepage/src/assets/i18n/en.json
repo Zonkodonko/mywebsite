@@ -49,6 +49,9 @@
     "description": "Description",
     "image": "Image",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "left": "Left",
+    "right": "Right",
+    "top": "Top"
   }
 }
