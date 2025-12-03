@@ -1,4 +1,6 @@
 <div class="p-3 min-vh-100">
+
+<!--  TOPIC  -->
   <div class="topic-header d-flex flex-row">
     <img [src]="topic.image" class="topic-image">
     <div class="d-flex flex-column justify-content-center ms-3">
@@ -8,11 +10,13 @@
   </div>
 
   <div class="d-flex flex-column align-items-center mt-2">
+<!--    ADD BUTTON -->
     @if (isLoggedIn) {
       <button class="btn w-100 border add-button " (click)="openArticleDialog()">
         <i class="bi bi-plus-circle"></i>
       </button>
     }
+<!--    ARTICLE LIST -->
     @for(article of articlesRaw; track article) {
       <app-article-card [article]="article"
                         [canEdit]="isLoggedIn"
