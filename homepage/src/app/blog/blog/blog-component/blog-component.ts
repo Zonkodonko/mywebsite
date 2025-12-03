@@ -8,6 +8,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ArticleDialog} from '../../article-dialog/article-dialog';
 import {AuthenticationService} from '../../../authentication/authentication.service';
 import {findAndDelete} from '../../../shared/utils/utils';
+import {ConfirmDialog} from '../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-blog-component',
@@ -76,10 +77,12 @@ export class BlogComponent implements OnInit{
   }
 
   deleteArticle(id: number) {
-    this.blogService.deleteArticle(id).subscribe(()=> {
-      findAndDelete(this.articlesRaw, a => a.id === id);
-      this.updateArticles();
-    });
+    this.modalService.open(ConfirmDialog, {centered: true, size: 'sm'}).closed.subscribe(confirm => {
+      this.blogService.deleteArticle(id).subscribe(()=> {
+        findAndDelete(this.articlesRaw, a => a.id === id);
+        this.updateArticles();
+      });
+    })
   }
 
   public openArticleDialog(id: number | undefined = undefined) {
