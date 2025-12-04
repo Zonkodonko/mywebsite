@@ -19,6 +19,7 @@ public record ArticleClientDto(
 		Map<String, String> content,
 		ArticleSettings appearanceSettings,
 		String topic,
-		Long lastChange
+		Long lastChange,
+		Long created
 ) {
 }

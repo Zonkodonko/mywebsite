@@ -33,14 +33,19 @@ export type BlogArticleRaw = {
   title: LocalizedText,
   content: LocalizedText,
   lastChange?: number,
+  created: number,
   appearanceSettings: {
     imagePosition: string,
     titleImage?: any
   }
 }
 
-export type NewArticle = BlogArticleRaw & {
+export type NewArticle = ArticleCreationData & {
   topic: string
+}
+
+export type EditArticle = ArticleCreationData & {
+  id: number
 }
 
 export interface BlogArticle {

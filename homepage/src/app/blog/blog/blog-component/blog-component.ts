@@ -28,7 +28,7 @@ export class BlogComponent implements OnInit{
   }
   public articlesRaw: BlogArticleRaw[] = [];
   public articles: BlogArticle[] = [];
-  private creating?: BlogArticleRaw;
+  private creating?: ArticleCreationData;
 
   constructor(private blogService: BlogService,
               private langService: TranslateService,
@@ -104,7 +104,7 @@ export class BlogComponent implements OnInit{
         });
       } else {
         this.blogService.createArticle(newArticle).subscribe(id => {
-          this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: new Date().getDate() });
+          this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: new Date().getDate(), created: new Date().getTime() });
           this.updateArticles();
           this.creating = undefined;
         },

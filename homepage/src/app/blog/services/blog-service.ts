@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BlogArticleRaw, FullTopic, NewArticle, NewTopic, TopicRaw} from '../data/BlogTypes';
+import {BlogArticleRaw, EditArticle, FullTopic, NewArticle, NewTopic, TopicRaw} from '../data/BlogTypes';
 import environment from '../../../environment';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication.service';
@@ -38,7 +38,7 @@ export class BlogService {
     );
   }
 
-  updateArticle(article: NewArticle) {
+  updateArticle(article: EditArticle) {
     const {image, ...articleData} = article;
     const formData = new FormData();
     const articleBlob = new Blob([JSON.stringify(articleData)], {

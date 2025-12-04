@@ -34,8 +34,12 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(columnDefinition = "jsonb")
 	private ArticleSettings appearanceSettings;
+	
+	@Column(name = "created")
+	private Long created;
 
 	private String topic; //todo add foreign key constraint
+
 
 
 	public BlogArticle() {
@@ -46,12 +50,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long lastChange,
 			ArticleSettings appearanceSettings,
-			String topic) {
+			String topic,
+			Long created) {
 		this.title = title;
 		this.content = content;
 		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
+		this.created = created;
 	}
 
 	public BlogArticle(
@@ -60,13 +66,15 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			LocalizedText content,
 			Long lastChange,
 			ArticleSettings appearanceSettings,
-			String topic) {
+			String topic,
+			Long created) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
+		this.created = created;
 	}
 
 	public Long getId() {
@@ -93,6 +101,38 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return topic;
 	}
 
+	public Long getCreated() {
+		return created;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setLastChange(Long lastChange) {
+		this.lastChange = lastChange;
+	}
+
+	public void setTitle(LocalizedText title) {
+		this.title = title;
+	}
+
+	public void setContent(LocalizedText content) {
+		this.content = content;
+	}
+
+	public void setAppearanceSettings(ArticleSettings appearanceSettings) {
+		this.appearanceSettings = appearanceSettings;
+	}
+
+	public void setCreated(Long created) {
+		this.created = created;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
@@ -103,12 +143,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				Objects.equals(this.content, that.content) &&
 				Objects.equals(this.lastChange, that.lastChange) &&
 				Objects.equals(this.appearanceSettings, that.appearanceSettings) &&
-				Objects.equals(this.topic, that.topic);
+				Objects.equals(this.topic, that.topic) &&
+				Objects.equals(this.created, that.created);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, lastChange, appearanceSettings, topic);
+		return Objects.hash(id, title, content, lastChange, appearanceSettings, topic, created);
 	}
 
 	@Override
@@ -119,7 +160,8 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				"content=" + content + ", " +
 				"lastChange=" + lastChange + ", " +
 				"postSettings=" + appearanceSettings + ", " +
-				"topic=" + topic + ']';
+				"topic=" + topic + ", " +
+				"created=" + created + ']';
 	}
 
 	public static Builder builder() {
@@ -134,6 +176,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private List<Image> images;
 		private ArticleSettings appearanceSettings;
 		private String topic;
+		private Long created;
 		private String defaultLanguage = "de";
 
 		public Builder setId(Long id) {
@@ -203,8 +246,13 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			return this;
 		}
 
+		public Builder setCreated(Long created) {
+			this.created = created;
+			return this;
+		}
+
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, lastChange, appearanceSettings, topic);
+			return new BlogArticle(id, title, content, lastChange, appearanceSettings, topic, created);
 		}
 	}
 }

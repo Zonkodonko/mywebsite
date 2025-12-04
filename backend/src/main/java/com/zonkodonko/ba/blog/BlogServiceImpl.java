@@ -80,6 +80,7 @@ public class BlogServiceImpl implements BlogService {
 				.setSettings(article.appearanceSettings())
 				.setImages(List.of(imageEntity))
 				.setLastChange(System.currentTimeMillis())
+				.setCreated(System.currentTimeMillis())
 				.build();
 		Long articleID = blogArticleRepository.save(articleEntity).getId();
 		imageEntity.setRelatedEntity(articleID);
@@ -90,15 +91,23 @@ public class BlogServiceImpl implements BlogService {
 	@Transactional
 	@Override
 	public void updateArticle(Long id, CreateArticleDto article, MultipartFile image) {
-		BlogArticle articleToSave = BlogArticle.builder()
-				.setId(id)
-				.setSettings(article.appearanceSettings())
-				.setTitle(article.title())
-				.setTopic(article.topic())
-				.setContent(article.content())
-				.setLastChange(System.currentTimeMillis())
-				.build();
-		blogArticleRepository.save(articleToSave);
+		BlogArticle existingArticle = blogArticleRepository.findById(id).orElseThrow();
+
+		if (article.appearanceSettings() != null) {
+			existingArticle.setAppearanceSettings(article.appearanceSettings());
+		}
+		if (article.title() != null) {
+			existingArticle.setTitle(new LocalizedText(article.title()));
+		}
+		if (article.topic() != null) {
+			existingArticle.setTopic(article.topic());
+		}
+		if (article.content() != null) {
+			existingArticle.setContent(new LocalizedText(article.content()));
+		}
+
+		existingArticle.setLastChange(System.currentTimeMillis());
+		blogArticleRepository.save(existingArticle);
 		if (image != null) {
 			Image dbImage = imageRepository.getImagesByRelatedEntity(id).getFirst();
 			dbImage.setData(getImageData(image));
@@ -266,7 +275,8 @@ public class BlogServiceImpl implements BlogService {
 				article.getContent().getTranslations(),
 				article.getAppearanceSettings(),
 				article.getTopic(),
-				article.getLastChange()
+				article.getLastChange(),
+				article.getCreated()
 		);
 	}
 
