@@ -15,9 +15,12 @@ export class ResumeComponent implements OnInit {
 
   public resume!: ResumeData;
 
+  public backgroundParticles: number[] = []
+
   constructor(public viewportScroller: ViewportScroller,
               private translate: TranslateService,
               private resumeService: ResumeApiService) {
+    this.backgroundParticles = Array(50).fill(0);
   }
 
   ngOnInit(): void {
