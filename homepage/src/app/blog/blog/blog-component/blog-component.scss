@@ -1,7 +1,27 @@
-.topic-image {
-  height: 20rem;
-  width: 20rem;
+.topic-header {
+  height: 15rem;
+  padding: 2rem;
+  align-items: center;
 }
+
+.topic-image {
+  max-height: 10rem;
+  max-width: 10rem;
+}
+
+//.article-container {
+//  display: flex;
+//  flex-direction: row;
+//  flex-wrap: wrap;
+//
+//  :first-child {
+//    flex-grow: 1;
+//  }
+//
+//  > * {
+//    max-width: 30rem;
+//  }
+//}
 
 .add-button {
   max-width: 80vw;

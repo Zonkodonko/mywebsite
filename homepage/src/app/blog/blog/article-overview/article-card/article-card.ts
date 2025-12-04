@@ -3,6 +3,8 @@ import {BlogArticleRaw} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {marked} from 'marked';
 import environment from '../../../../../environment';
+import {DomSanitizer} from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-article-card',
@@ -30,7 +32,8 @@ export class ArticleCard {
 
   constructor(private translateService: TranslateService,
               private authService: TranslateService,
-              private langService: TranslateService) {
+              private langService: TranslateService,
+              private sanitizer: DomSanitizer) {
   }
 
   // private updateArticle() {
@@ -45,7 +48,7 @@ export class ArticleCard {
 
   public get content() {
     const lang = this.langService.getCurrentLang();
-    return marked.parse(this.article.content[lang], {async: false});
+    return this.sanitizer.bypassSecurityTrustHtml(marked.parse(this.article.content[lang], {async: false}));
   }
 
   public get title() {
@@ -66,6 +69,14 @@ export class ArticleCard {
 
   edit() {
     this.editArticle.emit(this.article);
+  }
+
+  get locale() {
+    return this.translateService.getCurrentLang();
+  }
+
+  get timezoneOffset() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone
   }
 
 }

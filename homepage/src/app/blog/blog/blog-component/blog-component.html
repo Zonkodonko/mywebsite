@@ -1,7 +1,7 @@
-<div class="p-3 min-vh-100">
+<div class="min-vh-100">
 
 <!--  TOPIC  -->
-  <div class="topic-header d-flex flex-row">
+  <div class="topic-header d-flex flex-row border-bottom border-light-subtle">
     <img [src]="topic.image" class="topic-image">
     <div class="d-flex flex-column justify-content-center ms-3">
       <h1>{{topic.title}}</h1>
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="d-flex flex-column align-items-center mt-2">
+  <div class="d-flex flex-column align-items-center mt-2 p-3 gap-4">
 <!--    ADD BUTTON -->
     @if (isLoggedIn) {
       <button class="btn w-100 border add-button " (click)="openArticleDialog()">
