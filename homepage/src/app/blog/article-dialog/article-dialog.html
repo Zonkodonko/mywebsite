@@ -13,7 +13,7 @@
            class="form-control mt-3"
            type="text" [formControl]="titleControl" placeholder="Title">
     <!-- TITLE LANGUAGE   -->
-    <div class="lang-switch btn-group btn-group-sm">
+    <div class="lang-input-switch btn-group btn-group-sm">
       <input id="titleLangDe" class="btn-check"
              type="radio"
              name="titleLang"
@@ -35,7 +35,7 @@
     <textarea id="contentInput" class="form-control align-self-start mt-3" [formControl]="contentControl"
               [placeholder]="'global.content' | translate"></textarea>
     <!-- CONTENT LANGUAGE      -->
-    <div class="lang-switch btn-group btn-group-sm">
+    <div class="lang-input-switch btn-group btn-group-sm">
       <input id="contentLangDe" class="btn-check"
              type="radio"
              name="contentLang"

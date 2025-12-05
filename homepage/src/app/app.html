@@ -1,5 +1,24 @@
-<div class="lang-switch" (click)="toggleLanguage()">
-  <span class="fi" [ngClass]="{'fi-de': currentLanguage =='de', 'fi-gb': currentLanguage != 'de'}"></span>
+<link type="text/css" rel="stylesheet" [href]="getStyles()">
+<div class="global-options-container" (mouseenter)="onHoverInOptions()" (mouseleave)="onHoverOutOptions()">
+  <ng-template #themepopup>
+    <select [(ngModel)]="currentTheme">
+      @for(theme of allThemes; track theme) {
+        <option value="{{theme}}">{{"themes." + theme | translate}}</option>
+      }
+    </select>
+  </ng-template>
+<!--  -->
+  <div class="collapse" [ngbCollapse]="!showMoreOptions">
+    <button class="theme-switch btn border-0" [ngbPopover]="themepopup"
+            autoClose="outside"
+            (shown)="isPopUpOpen = true"
+            (hidden)="isPopUpOpen = false; showMoreOptions = false">
+      <i class="bi bi-pen"></i>
+    </button>
+  </div>
+  <div class="lang-switch" (click)="toggleLanguage()">
+    <span class="fi" [ngClass]="{'fi-de': currentLanguage =='de', 'fi-gb': currentLanguage != 'de'}"></span>
+  </div>
 </div>
 <div id="login-container" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()">
   <button (click)="clickLoginLogoutButton()" [class.hidden]="!isShowLoginButton" class="bg-transparent border-0">

@@ -9,6 +9,7 @@ import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
 import {UnauthorizedHandlerInterceptor} from './shared/http-interceptors/unauthorized-handler-interceptor';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {UnauthorizedHandlerInterceptor} from './shared/http-interceptors/unautho
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    TranslateModule.forRoot()
+    TranslateModule.forRoot(),
+    FormsModule
   ],
   providers: [
     DatePipe,
