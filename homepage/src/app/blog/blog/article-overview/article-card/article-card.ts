@@ -1,9 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BlogArticleRaw} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
-import {marked} from 'marked';
+import {marked, Renderer} from 'marked';
 import environment from '../../../../../environment';
 import {DomSanitizer} from '@angular/platform-browser';
+import {isStringEmpty} from '../../../../shared/utils/utils';
+import {getArticleRenderer} from '../../../../shared/utils/marked-extension';
 
 
 @Component({
@@ -48,6 +50,7 @@ export class ArticleCard {
 
   public get content() {
     const lang = this.langService.getCurrentLang();
+    marked.use({renderer: getArticleRenderer(this.article.id!, this.article.lastChange!)})
     return this.sanitizer.bypassSecurityTrustHtml(marked.parse(this.article.content[lang], {async: false}));
   }
 
@@ -60,7 +63,11 @@ export class ArticleCard {
   }
 
   public get image() {
-    return `${environment.backendUrl}/images/article/${this.article.id}?time=${this.article.lastChange}`;
+    const fileName = this.article.appearanceSettings.titleImage;
+    if(!isStringEmpty(fileName)) {
+      return `${environment.backendUrl}/images/article/${this.article.id}?time=${this.article.lastChange}`;
+    }
+    return null;
   }
 
   delete() {

@@ -15,7 +15,10 @@ export class ThemeService {
   currentTheme: Theme = Theme.DEFAULT;
 
 
+  private readonly THEME_KEY = 'theme';
+
   constructor(private sanitizer: DomSanitizer) {
+    localStorage.getItem(this.THEME_KEY) === Theme.BLUE ? this.changeTheme(Theme.BLUE) : this.changeTheme(Theme.DEFAULT);
   }
 
   /**
@@ -32,6 +35,7 @@ export class ThemeService {
   public changeTheme(theme: Theme) {
     this.currentTheme = theme;
     this.themeChange.emit(theme);
+    localStorage.setItem(this.THEME_KEY, theme);
   }
 
 

@@ -1,17 +1,24 @@
 package com.zonkodonko.ba.blog.rest;
 
 import com.zonkodonko.ba.blog.ImageService;
+import com.zonkodonko.ba.blog.data.EntityType;
 import com.zonkodonko.ba.blog.data.images.Image;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * todo write comment
@@ -43,8 +50,8 @@ public class ImageController {
 	}
 
 	@GetMapping("/{entityType}/{entityId}")
-	public ResponseEntity<byte[]> getTopicImage(@PathVariable String entityType, @PathVariable String entityId) {
-		Image image = imageService.getImageBy(entityType, entityId);
+	public ResponseEntity<byte[]> getImage(@PathVariable String entityType, @PathVariable String entityId) {
+		Image image = imageService.getImageBy(EntityType.valueOf(entityType.toUpperCase()), entityId);
 		if(image == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -53,6 +60,49 @@ public class ImageController {
 				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.getFilename() + "\"")
 				.body(image.getData());
+	}
+
+	@GetMapping("/{entityType}/{entityId}/{filename}")
+	public ResponseEntity<byte[]> getImageFromEntity(@PathVariable String entityType, @PathVariable String entityId, @PathVariable String filename) {
+		Image image = imageService.getImageBy(EntityType.valueOf(entityType.toUpperCase()), entityId, filename);
+		if(image == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(image.getContentType()))
+				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.getFilename() + "\"")
+				.body(image.getData());
+	}
+
+	@GetMapping("/{entityType}/{entityId}/all")
+	public ResponseEntity<byte[]> getImagesFromEntity(@PathVariable String entityType, @PathVariable String entityId) {
+		Collection<Image> images = imageService.getAllByRelatedEntity(EntityType.valueOf(entityType.toUpperCase()), entityId);
+		if (images.isEmpty()) {
+			return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(new byte[0]);
+		}
+		ByteArrayOutputStream zipStream = zipImages(images);
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"images.zip\"")
+				.body(zipStream.toByteArray());
+	}
+
+	private ByteArrayOutputStream zipImages(Collection<Image> images) {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		     ZipOutputStream zos = new ZipOutputStream(baos)) {
+			for (Image image : images) {
+				ZipEntry entry = new ZipEntry(image.getFilename());
+				zos.putNextEntry(entry);
+				zos.write(image.getData());
+				zos.closeEntry();
+			}
+			zos.close();
+			return baos;
+
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to zip images", e);
+		}
 	}
 
 

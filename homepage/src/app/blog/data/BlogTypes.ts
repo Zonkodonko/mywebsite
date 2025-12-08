@@ -46,6 +46,7 @@ export type NewArticle = ArticleCreationData & {
 
 export type EditArticle = ArticleCreationData & {
   id: number
+  imagesToDelete?: string[]
 }
 
 export interface BlogArticle {
@@ -66,7 +67,7 @@ export interface BlogArticle {
 export type ArticleCreationData = {
   title: LocalizedText,
   content: LocalizedText,
-  image: File
+  images: File[]
   appearanceSettings: {
     imagePosition: imagePosition,
   }

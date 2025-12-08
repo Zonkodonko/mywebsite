@@ -1,6 +1,7 @@
 package com.zonkodonko.ba.blog.rest;
 
 import com.zonkodonko.ba.blog.BlogService;
+import com.zonkodonko.ba.blog.ImageService;
 import com.zonkodonko.ba.blog.rest.dtos.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -8,16 +9,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/blog")
 class BlogController {
 
 	private final BlogService blogArticleService;
+	private final ImageService imageService;
 
 
-	BlogController(BlogService blogArticleService) {
+	BlogController(BlogService blogArticleService, ImageService imageService) {
 		this.blogArticleService = blogArticleService;
+		this.imageService = imageService;
 	}
 
 	@GetMapping("/{topic}/articles")
@@ -29,15 +33,21 @@ class BlogController {
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public Long saveArticle(
 			@RequestPart("article") CreateArticleDto article,
-			@RequestPart(name = "image", required = false) MultipartFile image) throws IOException {
+			@RequestPart(name = "image", required = false) List<MultipartFile> image) throws IOException {
 		return blogArticleService.saveArticle(article, image);
 	}
 
-	@PutMapping("/article/{id}")
+	@PutMapping(path= "/article/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void updateArticle(@PathVariable Long id,
 	                          @RequestPart("article") CreateArticleDto article,
-	                          @RequestPart(name = "image", required = false) MultipartFile image) {
-		blogArticleService.updateArticle(id, article,image);
+							  @RequestPart(name = "imagesToDelete",required = false) Collection<String> imagesToDelete,
+	                          @RequestPart(name = "images", required = false) Collection<MultipartFile> images) {
+		if(imagesToDelete != null) {
+			for(String imageToDelete : imagesToDelete) {
+				imageService.deleteForEntity(id, imageToDelete);
+			}
+		}
+		blogArticleService.updateArticle(id, article,images);
 	}
 
 	@GetMapping("/topics")

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import environment from '../../../environment';
-import {from, Observable, switchMap} from 'rxjs';
+import {from, Observable, of, switchMap} from 'rxjs';
+import * as JSZip from 'jszip';
 
 export type Image = {
   filename: string,
@@ -40,6 +41,37 @@ export class ImageService {
           return from(imagePromise);
         })
       )
+  }
+
+  getAllImagesForArticle(id: number, lastChange: number): Observable<Image[]> {
+    return this.httpClient.get(`${environment.backendUrl}/images/article/${id}/all?time=${lastChange}`, {
+      observe: "response",
+      responseType: "arraybuffer"
+    })
+      .pipe(
+        switchMap(async (data) => {
+          // JSZip load data
+          if(data.body == null || data.body.byteLength === 0) {
+            return [] as Image[]
+          }
+          const zip = await JSZip.loadAsync(data.body! as ArrayBuffer);
+          const filePromises: Promise<Image>[] = [];
+
+          // Extract file from zip entries
+          zip.forEach((relativePath, zipEntry) => {
+            if (!zipEntry.dir) {
+              const promise = zipEntry.async('blob').then(blob => {
+                return {
+                  filename: zipEntry.name,
+                  fileData: blob
+                } as Image;
+              });
+              filePromises.push(promise);
+            }
+          });
+          return Promise.all(filePromises);
+        })
+      );
   }
 
 

@@ -5,8 +5,10 @@
         'flex-row-reverse': imagePosition == 'RIGHT'
      }"
 >
-  <img [src]="image" class="article-image" [class.top-image]="imagePosition == 'TOP'" alt="Article image">
-  <div class="d-flex flex-column flex-grow-1 justify-content-center ms-2 position-relative py-3 ">
+  @if (image != null) {
+    <img [src]="image" class="article-image" [class.top-image]="imagePosition == 'TOP'" alt="Article image">
+  }
+  <div class="d-flex flex-column flex-grow-1 justify-content-center ms-2 position-relative py-3 overflow-hidden ">
     <h1>{{ title }}</h1>
     <div class="article-content" [innerHTML]="content"></div>
   </div>

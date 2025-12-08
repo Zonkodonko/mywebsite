@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ArticleCreationData, BlogArticleRaw, NewArticle} from '../data/BlogTypes';
-import {ImageService} from '../../shared/image-service/image-service';
+import {ArticleCreationData, BlogArticleRaw, EditArticle, NewArticle} from '../data/BlogTypes';
+import {Image, ImageService} from '../../shared/image-service/image-service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {LocalizedText} from '../../shared/translation/LocalizedText';
+import {isStringEmpty} from '../../shared/utils/utils';
 
 @Component({
   selector: 'app-article-dialog',
@@ -23,6 +24,16 @@ export class ArticleDialog {
   public titleLang: "de" | "en" = "de";
   public contentLang: "de" | "en" = "de";
 
+  private _images: Image[] = [];
+
+  public imagesToRemove: string[] = [];
+  public imagesToOverwrite: string[] = [];
+  public newImages: string[] = [];
+
+  /**
+   * Images to fall back to if file input changes and image should not be overwritten or deleted anymore
+   */
+  private legacyImages: Image[] = [];
 
   form: FormGroup = new FormGroup({
     title: new FormGroup({
@@ -33,7 +44,7 @@ export class ArticleDialog {
       de: new FormControl("",Validators.required),
       en: new FormControl("",Validators.required)
     }),
-    images: new FormArray([]),
+    images: new FormControl(new Set<File>()),
     appearanceSettings: new FormGroup({
       imagePosition: new FormControl('LEFT', Validators.required),
       titleImage: new FormControl(""),
@@ -47,21 +58,127 @@ export class ArticleDialog {
     this.form.patchValue(article);
     console.log(article);
     if(article.id != undefined) {
-      this.imageService.getImageFor(article.id!, "article", article.lastChange).subscribe((img) => {
-        this.titleImage = {
-          name: img.filename,
-          url: URL.createObjectURL(img.fileData)
+      this.imageService.getAllImagesForArticle(article.id!, article.lastChange!).subscribe((remoteImages) => {
+        this._images = remoteImages;
+        if(!isStringEmpty(article.appearanceSettings?.titleImage)) {
+          const foundTitleImg = this._images.find(img => img.filename === article.appearanceSettings.titleImage)!;
+          this.titleImage = {
+            name: foundTitleImg.filename,
+            url: URL.createObjectURL(foundTitleImg.fileData)
+          }
         }
       })
     }
   }
 
-  onSelectFile(event: any) {
-    this.titleImageUpload = event.target.files[0];
-    this.settingsControl.controls["titleImage"].setValue(this.titleImageUpload);
-    this.titleImage = {
-      name: this.titleImageUpload!.name,
-      url: URL.createObjectURL(this.titleImageUpload!)
+  onSelectFile(event: Event) {
+    const uploadFiles = (event.target as HTMLInputElement).files!;
+    for (let file of uploadFiles) {
+      const fileName = file.name;
+      const imageObject:Image = {
+        filename: fileName,
+        fileData: file
+      }
+      if(this._images.findIndex(img => img.filename == fileName) !== -1) { //file already exists
+        if(this.imagesToRemove.includes(fileName)) { //file was removed before
+          this.imagesToRemove.splice(this.imagesToRemove.indexOf(fileName), 1);
+          this.imagesToOverwrite.push(fileName);
+
+        } else if(this.newImages.includes(fileName) && this.imagesToOverwrite.includes(fileName)) { //file was added or overwritten before
+          this._images[this._images.findIndex(img => img.filename == fileName)] = imageObject;
+
+        } else { //filename already exists in legacy data
+          const localIndex = this._images.findIndex(img => img.filename == fileName);
+          this.imagesToOverwrite.push(fileName);
+          this.legacyImages.push(Object.assign({},this._images[localIndex]));
+          this._images[localIndex] = imageObject;
+        }
+      } else {
+        this._images.push(imageObject);
+        this.newImages.push(fileName);
+      }
+      this.imageController.setValue(new Set([...this.imageController.value.values(), file]));
+    }
+
+  }
+
+  /**
+   * Images that are not about to be deleted.
+   */
+  get validImages(): string[] {
+    return this._images
+      .map(img => img.filename)
+      .filter(filename => !this.imagesToRemove.includes(filename))
+      .sort((a, b) => a.localeCompare(b));
+  }
+
+  get images(): Image[] {
+    return this._images.sort((a, b) => {
+      if(this.newImages.includes(a.filename) && !this.newImages.includes(b.filename)) {
+        return -1;
+      } else if(!this.newImages.includes(a.filename) && this.newImages.includes(b.filename)) {
+        return 1;
+      } else if(this.imagesToRemove.includes(a.filename) && !this.imagesToRemove.includes(b.filename)) {
+        return 1;
+      } else if(!this.imagesToRemove.includes(a.filename) && this.imagesToRemove.includes(b.filename)) {
+        return -1;
+      } else {
+        return a.filename.localeCompare(b.filename);
+      }
+    });
+  }
+
+  get imageController(): FormControl<Set<File>> {
+    return this.form.controls["images"] as FormControl;
+  }
+
+  isImageNew(filename: string): boolean {
+    return this.newImages.includes(filename);
+  }
+
+  isImageRemoved(filename: string): boolean {
+    return this.imagesToRemove.includes(filename);
+  }
+
+  isImageOverwritten(filename: string): boolean {
+    return this.imagesToOverwrite.includes(filename);
+  }
+
+  getImageDataUrl(fileName: string): string {
+    return URL.createObjectURL(this._images.find(img => img.filename == fileName)!.fileData);
+  }
+
+  removeImage(filename: string) {
+    if(this.isImageNew(filename)) {
+      this.newImages.splice(this.newImages.indexOf(filename), 1);
+    } else if( this.isImageOverwritten(filename)) {
+      this.imagesToOverwrite.splice(this.imagesToOverwrite.indexOf(filename), 1);
+      this.imagesToRemove.push(filename);
+    } else { //is old image
+      this.legacyImages.push(Object.assign({},this._images.find(img => img.filename == filename)!));
+      this.imagesToRemove.push(filename);
+    }
+    this.imageController.value.delete(this._images.find(img => img.filename == filename)!.fileData as File);
+    if(this.settingsControl.controls["titleImage"].value == filename) {
+      this.settingsControl.controls["titleImage"].setValue("");
+    }
+  }
+
+  resetImage(fileName: string) {
+    const index = this._images.findIndex(img => img.filename == fileName);
+    const deleteSuccess = this.imageController.value.delete(this._images[index].fileData as File);
+    console.log(`Deleted file ${fileName} from image controller: ${deleteSuccess}`)
+    const legacyIndex = this.legacyImages.findIndex(img => img.filename == fileName);
+    console.log(`Legacy index: ${legacyIndex}`)
+    if(legacyIndex !== -1) {
+      this._images[index] = Object.assign({},this.legacyImages[legacyIndex]);
+      this.legacyImages.splice(legacyIndex, 1);
+      if(this.imagesToRemove.includes(fileName)) {
+        this.imagesToRemove.splice(this.imagesToRemove.indexOf(fileName), 1);
+      }
+      if(this.imagesToOverwrite.includes(fileName)) {
+        this.imagesToOverwrite.splice(this.imagesToOverwrite.indexOf(fileName), 1);
+      }
     }
   }
 
@@ -91,14 +208,16 @@ export class ArticleDialog {
 
   save(): void {
     const rawValue = this.form.getRawValue();
-    const articleData: ArticleCreationData = {
+    let articleData: ArticleCreationData | EditArticle = {
       content: rawValue.content as LocalizedText,
       title: rawValue.title as LocalizedText,
-      image: this.titleImageUpload!,
-      appearanceSettings: {
-        imagePosition: rawValue.appearanceSettings.imagePosition
-      }
+      images: [...(rawValue.images as Set<File>).values()],
+      appearanceSettings: rawValue.appearanceSettings,
     }
+    if(this.imagesToRemove.length > 0) {
+      articleData = Object.assign(articleData, {imagesToDelete: this.imagesToRemove});
+    }
+    console.log("sending data: " + JSON.stringify(articleData));
     this.modal.close(articleData);
   }
 

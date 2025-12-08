@@ -10,7 +10,7 @@ public interface BlogArticleRepository extends CrudRepository<BlogArticle, Long>
 
 	List<BlogArticle> findAllByOrderByLastChangeDesc();
 
-	List<BlogArticle> findAllByTopicOrderByLastChange(String topic);
+	List<BlogArticle> findAllByTopicOrderByCreatedDesc(String topic);
 
 	void deleteByTopic(String topic);
 

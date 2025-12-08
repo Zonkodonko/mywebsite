@@ -39,15 +39,23 @@ export class BlogService {
   }
 
   updateArticle(article: EditArticle) {
-    const {image, ...articleData} = article;
+    const {images, imagesToDelete, ...articleData} = article;
     const formData = new FormData();
     const articleBlob = new Blob([JSON.stringify(articleData)], {
       type: 'application/json'
     });
     formData.append('article', articleBlob);
 
-    if (image) {
-      formData.append('image', image, image.name);
+    if (images) {
+      for(const image of images) {
+        formData.append('images', image, image.name);
+      }
+    }
+    if (imagesToDelete) {
+      const imagesToDeleteBlob = new Blob([JSON.stringify(imagesToDelete)], {
+        type: 'application/json'
+      });
+      formData.append('imagesToDelete', imagesToDeleteBlob);
     }
     return this.http.put(`${this.url}/article/${article.id}`, formData, {headers: this.authService.getAuthHeaders()});
   }
@@ -73,15 +81,17 @@ export class BlogService {
 
   createArticle(article: NewArticle) {
     console.log(JSON.stringify(article));
-    const {image, ...articleData} = article;
+    const {images, ...articleData} = article;
     const formData = new FormData();
     const articleBlob = new Blob([JSON.stringify(articleData)], {
       type: 'application/json'
     });
     formData.append('article', articleBlob);
 
-    if (image) {
-      formData.append('image', image, image.name);
+    if (images) {
+      for(const image of images) {
+        formData.append('images', image, image.name);
+      }
     }
     return this.http.post(`${this.url}/article`, formData, {
       headers: this.authService.getAuthHeaders(),

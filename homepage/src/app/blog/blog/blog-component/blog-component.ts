@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BlogService} from '../../services/blog-service';
-import {ArticleCreationData, BlogArticle, BlogArticleRaw, Topic, TopicRaw} from '../../data/BlogTypes';
+import {ArticleCreationData, BlogArticle, BlogArticleRaw, EditArticle, Topic, TopicRaw} from '../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {marked} from 'marked';
 import environment from '../../../../environment';
@@ -74,6 +74,7 @@ export class BlogComponent implements OnInit{
         id: Number(raw.id)
       }
     })
+      .sort((a, b) => b.created ?? 0 - a.created ?? 0);
   }
 
   deleteArticle(id: number) {
@@ -88,23 +89,23 @@ export class BlogComponent implements OnInit{
   public openArticleDialog(id: number | undefined = undefined) {
     const modalRef = this.modalService.open(ArticleDialog, {centered: true, size: 'lg', backdrop: 'static'});
     if(id !== undefined) {
-      modalRef.componentInstance.article = this.articlesRaw.find(a => a.id === id);
+      modalRef.componentInstance.article = {...this.articlesRaw.find(a => a.id === id)!};
     } else {
       if(this.creating !== undefined) {
         modalRef.componentInstance.article = this.creating;
       }
     }
 
-    modalRef.closed.subscribe((result: ArticleCreationData) => {
+    modalRef.closed.subscribe((result: ArticleCreationData | EditArticle) => {
       const newArticle = {topic: this._topicId, ...result};
       if(id !== undefined) {
         this.blogService.updateArticle({id:id,...newArticle}).subscribe( () => {
-          Object.assign(this.articlesRaw.find(a => a.id == id)!,newArticle);
+          Object.assign(this.articlesRaw.find(a => a.id == id)!,{lastChange: Date.now(),...newArticle});
           this.updateArticles();
         });
       } else {
         this.blogService.createArticle(newArticle).subscribe(id => {
-          this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: new Date().getDate(), created: new Date().getTime() });
+          this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: Date.now(), created: Date.now() });
           this.updateArticles();
           this.creating = undefined;
         },

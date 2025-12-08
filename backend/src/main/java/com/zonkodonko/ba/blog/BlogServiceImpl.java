@@ -56,7 +56,7 @@ public class BlogServiceImpl implements BlogService {
 		if (topic == null || topic.isBlank()) {
 			articles = blogArticleRepository.findAllByOrderByLastChangeDesc();
 		} else {
-			articles = blogArticleRepository.findAllByTopicOrderByLastChange(topic);
+			articles = blogArticleRepository.findAllByTopicOrderByCreatedDesc(topic);
 		}
 		return articles.stream().map(this::toDto).toList();
 	}
@@ -70,27 +70,28 @@ public class BlogServiceImpl implements BlogService {
 
 	@Transactional
 	@Override
-	public Long saveArticle(CreateArticleDto article, MultipartFile image) {
+	public Long saveArticle(CreateArticleDto article, Collection<MultipartFile> images) {
 		Objects.requireNonNull(article);
-		Image imageEntity = toImageEntity(image);
 		BlogArticle articleEntity = BlogArticle.builder()
 				.setTitle(new LocalizedText(article.title()))
 				.setContent(new LocalizedText(article.content()))
 				.setTopic(article.topic())
 				.setSettings(article.appearanceSettings())
-				.setImages(List.of(imageEntity))
 				.setLastChange(System.currentTimeMillis())
 				.setCreated(System.currentTimeMillis())
 				.build();
 		Long articleID = blogArticleRepository.save(articleEntity).getId();
-		imageEntity.setRelatedEntity(articleID);
-		imageRepository.save(imageEntity);
+		if (images != null && !images.isEmpty()) {
+			for (MultipartFile image : images) {
+				toImageEntity(image, articleID);
+			}
+		}
 		return articleID;
 	}
 
 	@Transactional
 	@Override
-	public void updateArticle(Long id, CreateArticleDto article, MultipartFile image) {
+	public void updateArticle(Long id, CreateArticleDto article, Collection<MultipartFile> images) {
 		BlogArticle existingArticle = blogArticleRepository.findById(id).orElseThrow();
 
 		if (article.appearanceSettings() != null) {
@@ -108,16 +109,22 @@ public class BlogServiceImpl implements BlogService {
 
 		existingArticle.setLastChange(System.currentTimeMillis());
 		blogArticleRepository.save(existingArticle);
-		if (image != null) {
-			Image dbImage = imageRepository.getImagesByRelatedEntity(id).getFirst();
-			dbImage.setData(getImageData(image));
-			dbImage.setContentType(image.getContentType());
-			dbImage.setFilename(image.getOriginalFilename());
-			imageRepository.save(dbImage);
+		if (images != null && !images.isEmpty()) {
+			for (MultipartFile image : images) {
+				Image dbImage = imageRepository.getImageByRelatedEntityAndFilename(id, image.getOriginalFilename());
+				if(dbImage == null) {
+					toImageEntity(image, id);
+				} else {
+					dbImage.setData(getImageData(image));
+					dbImage.setContentType(image.getContentType());
+					imageRepository.save(dbImage);
+				}
+			}
 		}
 
 	}
 
+	@Transactional
 	@Override
 	public void deleteArticle(Long id) {
 		Objects.requireNonNull(id);

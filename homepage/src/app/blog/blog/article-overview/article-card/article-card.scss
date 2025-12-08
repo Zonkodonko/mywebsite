@@ -5,7 +5,12 @@
 }
 
 .article-content {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  * {
+    overflow: hidden;
+  }
 }
 
 .article-image {
@@ -22,6 +27,7 @@
     object-fit: contain;
   }
 }
+
 
 .bottom-container {
   display: flex;

@@ -36,18 +36,19 @@ public interface BlogService {
 	 * Create or update article.
 	 *
 	 * @param article Article to save
+	 * @param images Images to save
 	 * @return id of saved article
 	 */
-	Long saveArticle(@NotNull CreateArticleDto article, MultipartFile image);
+	Long saveArticle(@NotNull CreateArticleDto article, Collection<MultipartFile> images);
 
 
 	/**
 	 * Update article.
 	 * @param id Article id
 	 * @param article Article to update
-	 * @param image Image to update
+	 * @param images Image to update
 	 */
-	void updateArticle(@NotNull Long id, @NotNull CreateArticleDto article, @Nullable MultipartFile image);
+	void updateArticle(@NotNull Long id, @NotNull CreateArticleDto article, @Nullable Collection<MultipartFile> images);
 
 	/**
 	 * Delete article by id.
