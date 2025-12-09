@@ -33,7 +33,7 @@ class BlogController {
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public Long saveArticle(
 			@RequestPart("article") CreateArticleDto article,
-			@RequestPart(name = "image", required = false) List<MultipartFile> image) throws IOException {
+			@RequestPart(name = "images", required = false) List<MultipartFile> image) throws IOException {
 		return blogArticleService.saveArticle(article, image);
 	}
 

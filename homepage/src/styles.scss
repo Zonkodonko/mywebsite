@@ -24,13 +24,13 @@
   overflow: hidden;
   grid-column: 2 / 2;
   justify-self: end;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem !important;
   margin-right: 1rem;
 
   label:nth-of-type(1) {
-    border-radius: 0 0 0 0.5rem;
+    border-radius: 0 0 0 0.5rem !important;
   }
   label:last-of-type {
-    border-radius: 0 0 0.5rem 0;
+    border-radius: 0 0 0.5rem 0 !important;
   }
 }

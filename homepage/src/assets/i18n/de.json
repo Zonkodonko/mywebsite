@@ -38,7 +38,11 @@
         "title": "Artikel erstellen/bearbeiten",
         "appearance": {
           "title": "Anzeige-Einstellungen",
-          "position": "Bild-Position"
+          "position": "Bild-Position",
+          "image": "Titel Bild",
+          "images": "Upload",
+          "noImage": "Kein Bild"
+
         }
       }
     }

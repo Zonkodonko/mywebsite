@@ -1,7 +1,8 @@
 @use './default' with (
-  $body-bg: white,
-  $body-color: black,
+  $body-bg: #0C1F42FF,
+  $body-color: white,
   $body-secondary-bg: #000b9b,
-  $primary: #0C1F42FF,
-  $secondary: #14336d
+  $primary: #14336d,
+  $secondary: white,
+  $tertiary: rgb(12, 51, 109)
 );

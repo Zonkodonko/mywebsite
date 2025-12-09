@@ -6,6 +6,7 @@ import environment from '../../../../../environment';
 import {DomSanitizer} from '@angular/platform-browser';
 import {isStringEmpty} from '../../../../shared/utils/utils';
 import {getArticleRenderer} from '../../../../shared/utils/marked-extension';
+import {localeIdMapping} from '../../../../shared/translation/Translation';
 
 
 @Component({
@@ -28,25 +29,16 @@ export class ArticleCard {
   @Output()
   public deleteArticle: EventEmitter<BlogArticleRaw> = new EventEmitter<BlogArticleRaw>();
 
+  public titleImage!: string;
+
   // public article!: BlogArticle;
 
   public editMode: boolean = false;
 
-  constructor(private translateService: TranslateService,
-              private authService: TranslateService,
+  constructor(
               private langService: TranslateService,
               private sanitizer: DomSanitizer) {
   }
-
-  // private updateArticle() {
-  //   if(this.articleRaw) {
-  //     this.article = {
-  //       ...this.articleRaw,
-  //       title: this.articleRaw.title[this.translateService.getCurrentLang()],
-  //       content: marked.parse(this.articleRaw.content[this.translateService.getCurrentLang()],{async: false})
-  //     }
-  //   }
-  // }
 
   public get content() {
     const lang = this.langService.getCurrentLang();
@@ -65,7 +57,7 @@ export class ArticleCard {
   public get image() {
     const fileName = this.article.appearanceSettings.titleImage;
     if(!isStringEmpty(fileName)) {
-      return `${environment.backendUrl}/images/article/${this.article.id}?time=${this.article.lastChange}`;
+      return `${environment.backendUrl}/images/article/${this.article.id}/${fileName}?time=${this.article.lastChange}`;
     }
     return null;
   }
@@ -78,8 +70,8 @@ export class ArticleCard {
     this.editArticle.emit(this.article);
   }
 
-  get locale() {
-    return this.translateService.getCurrentLang();
+  get localeId() {
+    return localeIdMapping[this.langService.getCurrentLang()]! as string;
   }
 
   get timezoneOffset() {

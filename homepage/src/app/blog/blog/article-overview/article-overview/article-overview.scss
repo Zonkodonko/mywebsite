@@ -1,0 +1,24 @@
+.topic-header {
+  height: 7rem;
+  padding: 1rem;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.topic-image {
+  max-height: 5rem;
+  max-width: 10rem;
+}
+
+.add-button {
+  max-width: 40rem;
+  max-height: 10rem;
+  height: 10rem;
+}
+
+.topic-description {
+  ::ng-deep > p:last-child  {
+    margin-bottom: 0 !important;
+  }
+}
+

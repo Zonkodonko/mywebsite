@@ -1,26 +1,12 @@
-<div class="d-flex p-2 article-card position-relative align-items-center rounded rounded-2 shadow"
-     [ngClass]="{
-        'flex-row': imagePosition == 'LEFT',
-        'flex-column': imagePosition == 'TOP',
-        'flex-row-reverse': imagePosition == 'RIGHT'
-     }"
->
+<div class="p-2 article-card border-light shadow bg-primary ">
   @if (image != null) {
-    <img [src]="image" class="article-image" [class.top-image]="imagePosition == 'TOP'" alt="Article image">
+    <img [src]="image" class="article-image align-items-center" [alt]="title">
   }
-  <div class="d-flex flex-column flex-grow-1 justify-content-center ms-2 position-relative py-3 overflow-hidden ">
-    <h1>{{ title }}</h1>
-    <div class="article-content" [innerHTML]="content"></div>
+  <div class="d-block overflow-hidden article-text">
+    <h3 id="article-title">{{title}}</h3>
+    <div class="article-description" [innerHTML]="content"></div>
   </div>
-  <div class="bottom-container">
-    @if (canEdit) {
-      <button class="btn edit-button" (click)="edit()">
-        <i class="bi bi-pencil-square"></i>
-      </button>
-      <button class="btn delete-button" (click)="delete()">
-        <i class="bi bi-trash"></i>
-      </button>
-    }
-    <span class="article-date text-light ">{{ article.created | date:'dd MMMM, yyyy':timezoneOffset }}</span>
+  <div class="corner-date bg-body">
+    <span class="article-date text-light ">{{ article.created | date:'dd MMMM, yyyy':timezoneOffset:localeId }}</span>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ResumeComponent} from './resume/resume/resume-component';
-import {BlogComponent} from './blog/blog/blog-component/blog-component';
+import {ArticleOverview} from './blog/blog/article-overview/article-overview/article-overview';
 
 const routes: Routes = [
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'blog/:topicId',
     pathMatch: 'full',
-    component: BlogComponent
+    component: ArticleOverview
   }
 ];
 

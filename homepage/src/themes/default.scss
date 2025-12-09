@@ -13,20 +13,20 @@ $enable-smooth-scroll: true;
 
 $box-shadow: 2px 2px 20px 1px rgba(0,0,0,0.5);
 
+$tertiary: #a67600 !default;
+
 $custom-themes: (
-  "body": $body-bg,
+  "tertiary": $tertiary
 );
 
 
 // 3. Include remainder of required Bootstrap stylesheets
 $primary: #212121 !default;
+
 @import "../../node_modules/bootstrap/scss/variables";
 
 // 4. Include any default map overrides here
 $theme-colors: map-merge($theme-colors, $custom-themes);
-
-$body-tertiary-color: white !default;
-$body-tertiary-bg: #a67600 !default;
 
 // 5. Include remainder of required parts
 @import "../../node_modules/bootstrap/scss/maps";
@@ -100,11 +100,13 @@ html, body, *{
   transition: all .75s;
 }
 
+.form-control::file-selector-button {
+  background-color: $tertiary !important;
+}
 
 @each$name, $color in $theme-colors {
   .bg-#{$name} {
     background-color: $color !important;
-    color: color-contrast($color);
   }
 
   .bg-on-#{$name} {
@@ -125,6 +127,15 @@ html, body, *{
 
   .border-#{$name} {
     border-color: transparentize(color-contrast($color),0.2) !important;
+  }
+
+  .text-on-#{$name} {
+    color: color-contrast($color) !important;
+  }
+
+  .#{$name}-container {
+    background-color: $color;
+    color: color-contrast($color);
   }
 
 }

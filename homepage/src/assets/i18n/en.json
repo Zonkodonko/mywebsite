@@ -38,7 +38,10 @@
         "title": "Create/Edit Article",
         "appearance": {
           "title": "Display Settings",
-          "position": "Image position:"
+          "position": "Image position:",
+          "image": "Titel Image",
+          "images": "Upload",
+          "noImage": "No Image"
         }
       }
     }
