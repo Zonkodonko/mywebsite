@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import environment from '../../environment';
-import {tap} from 'rxjs';
+import {Subject, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,8 @@ import {tap} from 'rxjs';
 export class AuthenticationService {
 
   private _isLoggedIn: boolean = false;
+
+  public logoutEvent: Subject<void> = new Subject<void>();
 
   constructor(private http: HttpClient) {
     const loginStatus = sessionStorage.getItem('login');
@@ -48,6 +50,7 @@ export class AuthenticationService {
   }
 
   logout() {
+    this.logoutEvent.next();
     return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getAuthHeaders(true)}).subscribe({
       complete: () => {
         this.invalidateSessionLocal();

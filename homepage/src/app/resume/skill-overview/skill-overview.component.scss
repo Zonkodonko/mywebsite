@@ -1,7 +1,8 @@
-$skill-bubble-color: rgb(255, 255, 255);
+$skill-bubble-color: var(--surface-color-on-body);
+$skill-bubble-color-rgb: var(--surface-color-on-body-rgb);
 
 .category-header {
-  border-bottom: 0.05rem solid rgba(255, 255, 255, 0.34);
+  border-bottom: 0.05rem solid;
 }
 
 .category-content-container {
@@ -38,7 +39,7 @@ $skill-bubble-color: rgb(255, 255, 255);
 
   .level-indicator:hover {
     cursor: pointer;
-    background-color: transparentize( $skill-bubble-color, 0.5);
+    background-color: rgba($skill-bubble-color-rgb, 0.5);
   }
 }
 

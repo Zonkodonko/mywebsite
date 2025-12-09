@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {Skill} from '../data/ResumeData';
 import {ResumeApiService} from '../services/resume-api-service';
@@ -49,6 +49,7 @@ export class SkillOverviewComponent implements OnInit {
     'brown',
   ]
 
+
   constructor(private authenticationService: AuthenticationService, private resumeService: ResumeApiService) {
   }
 
@@ -59,6 +60,11 @@ export class SkillOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isEditMode = sessionStorage.getItem(SkillOverviewComponent.MODE_KEY) == 'true';
+    this.authenticationService.logoutEvent.subscribe(() => {
+      this.isEditMode = false;
+      sessionStorage.setItem(SkillOverviewComponent.MODE_KEY, this.isEditMode.toString());
+      this.skills = this.originalSkills;
+    });
   }
 
   @Input()

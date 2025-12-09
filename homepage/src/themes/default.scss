@@ -1,6 +1,4 @@
-@use "../../node_modules/flag-icons/sass/flag-icons" with (
-  $flag-icons-included-countries: ("de", "gb")
-);
+
 /* You can add global styles to this file, and also import other style files */
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../../node_modules/bootstrap/scss/functions";
@@ -13,13 +11,19 @@ $body-color: #fff !default;
 $font-family-sans-serif: 'Roboto', sans-serif;
 $enable-smooth-scroll: true;
 
-$box-shadow: 3px 2px 20px 5px rgba(0,0,0,0.5);
+$box-shadow: 2px 2px 20px 1px rgba(0,0,0,0.5);
+
+$custom-themes: (
+  "body": $body-bg,
+);
+
 
 // 3. Include remainder of required Bootstrap stylesheets
-$primary: #00398f;
+$primary: #212121 !default;
 @import "../../node_modules/bootstrap/scss/variables";
 
 // 4. Include any default map overrides here
+$theme-colors: map-merge($theme-colors, $custom-themes);
 
 $body-tertiary-color: white !default;
 $body-tertiary-bg: #a67600 !default;
@@ -51,8 +55,15 @@ $body-tertiary-bg: #a67600 !default;
   --bs-padding-3: #{map-get($spacers,3)};
   --bs-padding-4: #{map-get($spacers,4)};
 
-  --primary-color: #00398f;
 }
+
+@each $name, $color in $theme-colors {
+  :root {
+    --surface-color-on-#{$name}: #{color-contrast($color)};
+    --surface-color-on-#{$name}-rgb: #{to-rgb(color-contrast($color))};
+  }
+}
+
 
 html, body, *{
   scroll-behavior: smooth !important;
@@ -87,6 +98,35 @@ html, body, *{
 
 .intersection-observer {
   transition: all .75s;
+}
+
+
+@each$name, $color in $theme-colors {
+  .bg-#{$name} {
+    background-color: $color !important;
+    color: color-contrast($color);
+  }
+
+  .bg-on-#{$name} {
+    background-color: color-contrast($color) !important;
+  }
+
+  .bottom-gradient-#{$name}::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    width: 100%;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparentize($color,0) 0%, transparentize($color,0.75) 50%,  transparentize($color, 1) 100%);
+  }
+
+  .border-#{$name} {
+    border-color: transparentize(color-contrast($color),0.2) !important;
+  }
+
 }
 
 @each $name, $color in $colors {

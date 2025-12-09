@@ -2,7 +2,7 @@
 <div class="skill-container overflow-hidden position-relative" [class.editmode-border]="isEditMode">
   @for (category of sortedCategories; track category;) {
     <span>
-      <div class="category-header">
+      <div class="category-header border-body">
         <span>{{ 'resume.skills.category.' + category.cat | translate }}</span>
         @if (isEditMode) { <!-- Add Button -->
           <button class="btn bg-transparent border-0" (click)="addSkill(category.cat)">

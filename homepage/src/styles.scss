@@ -1,3 +1,6 @@
+@use "../node_modules/flag-icons/sass/flag-icons" with (
+  $flag-icons-included-countries: ("de", "gb")
+);
 
 .shiny::before {
   background: rgba(255, 255, 255, 0.2);
