@@ -38,8 +38,11 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	@Column(name = "created")
 	private Long created;
 
-	private String topic; //todo add foreign key constraint
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(columnDefinition = "jsonb")
+	private LocalizedText description;
 
+	private String topic; //todo add foreign key constraint
 
 
 	public BlogArticle() {
@@ -48,12 +51,14 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 	public BlogArticle(
 			LocalizedText title,
 			LocalizedText content,
+			LocalizedText description,
 			Long lastChange,
 			ArticleSettings appearanceSettings,
 			String topic,
 			Long created) {
 		this.title = title;
 		this.content = content;
+		this.description = description;
 		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
@@ -64,6 +69,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 			Long id,
 			LocalizedText title,
 			LocalizedText content,
+			LocalizedText description,
 			Long lastChange,
 			ArticleSettings appearanceSettings,
 			String topic,
@@ -71,10 +77,19 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		this.id = id;
 		this.title = title;
 		this.content = content;
+		this.description = description;
 		this.lastChange = lastChange;
 		this.appearanceSettings = appearanceSettings;
 		this.topic = topic;
 		this.created = created;
+	}
+
+	public LocalizedText getDescription() {
+		return description;
+	}
+
+	public void setDescription(LocalizedText description) {
+		this.description = description;
 	}
 
 	public Long getId() {
@@ -141,6 +156,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		return Objects.equals(this.id, that.id) &&
 				Objects.equals(this.title, that.title) &&
 				Objects.equals(this.content, that.content) &&
+				Objects.equals(this.description, that.description) &&
 				Objects.equals(this.lastChange, that.lastChange) &&
 				Objects.equals(this.appearanceSettings, that.appearanceSettings) &&
 				Objects.equals(this.topic, that.topic) &&
@@ -149,7 +165,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, content, lastChange, appearanceSettings, topic, created);
+		return Objects.hash(id, title, content, description, lastChange, appearanceSettings, topic, created);
 	}
 
 	@Override
@@ -158,6 +174,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 				"id=" + id + ", " +
 				"title=" + title + ", " +
 				"content=" + content + ", " +
+				"description=" + description + ", " +
 				"lastChange=" + lastChange + ", " +
 				"postSettings=" + appearanceSettings + ", " +
 				"topic=" + topic + ", " +
@@ -172,12 +189,28 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		private Long id;
 		private LocalizedText title;
 		private LocalizedText content;
+		private LocalizedText description;
 		private Long lastChange;
 		private List<Image> images;
 		private ArticleSettings appearanceSettings;
 		private String topic;
 		private Long created;
 		private String defaultLanguage = "de";
+
+		public Builder setDescription(LocalizedText description) {
+			this.description = description;
+			return this;
+		}
+
+		public Builder setDescription(String description) {
+			this.description = new LocalizedText(Map.of(defaultLanguage, description));
+			return this;
+		}
+
+		public Builder setDescription(Map<String, String> description) {
+			this.description = new LocalizedText(description);
+			return this;
+		}
 
 		public Builder setId(Long id) {
 			this.id = id;
@@ -252,7 +285,7 @@ public final class BlogArticle implements com.zonkodonko.ba.storage.Entity<Long>
 		}
 
 		public BlogArticle build() {
-			return new BlogArticle(id, title, content, lastChange, appearanceSettings, topic, created);
+			return new BlogArticle(id, title, content, description, lastChange, appearanceSettings, topic, created);
 		}
 	}
 }

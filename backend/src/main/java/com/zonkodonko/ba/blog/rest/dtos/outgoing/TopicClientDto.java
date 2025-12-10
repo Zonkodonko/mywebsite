@@ -1,6 +1,4 @@
-package com.zonkodonko.ba.blog.rest.dtos;
-
-import com.zonkodonko.ba.storage.LocalizedText;
+package com.zonkodonko.ba.blog.rest.dtos.outgoing;
 
 import java.util.Map;
 

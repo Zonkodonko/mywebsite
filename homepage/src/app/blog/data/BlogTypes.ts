@@ -17,7 +17,7 @@ export type NewTopic = {
 
 export type FullTopic = {
   topic: TopicRaw,
-  articles: BlogArticleRaw[]
+  articles: ArticleWithoutContent[]
 }
 
 export type Topic = {
@@ -27,17 +27,35 @@ export type Topic = {
   description: string
 }
 
-export type BlogArticleRaw = {
-  id?: number,
-  image?: any,
+
+export type ArticleWithoutContent = {
+  id: number,
   title: LocalizedText,
-  content: LocalizedText,
-  lastChange?: number,
+  description: LocalizedText,
+  lastChange: number,
   created: number,
   appearanceSettings: {
-    imagePosition: string,
+    imagePosition: ImagePosition,
     titleImage?: any
   }
+  topic: string
+}
+
+/**
+ * Article as it is stored in backend.
+ */
+export type BlogArticleRaw = {
+  id: number,
+  title: LocalizedText,
+  content: LocalizedText,
+  description: LocalizedText,
+  lastChange: number,
+  created: number,
+  appearanceSettings: {
+    imagePosition: ImagePosition,
+    titleImage?: any
+  }
+  topic: string
 }
 
 export type NewArticle = ArticleCreationData & {
@@ -49,14 +67,31 @@ export type EditArticle = ArticleCreationData & {
   imagesToDelete?: string[]
 }
 
+/**
+ * Article how it is displayed in frontend.
+ */
 export interface BlogArticle {
   id: number,
-  image?: any,
   title: string,
   content: string,
-  lastChange?: number,
+  description: string,
+  lastChange: number,
   appearanceSettings: {
     imagePosition: string,
+    titleImage?: any
+  }
+}
+
+/**
+ * Article how it is displayed in frontend.
+ */
+export interface BlogArticleWithoutContent {
+  id: number,
+  title: string,
+  description: string,
+  lastChange: number,
+  appearanceSettings: {
+    imagePosition: ImagePosition,
     titleImage?: any
   }
 }
@@ -67,10 +102,12 @@ export interface BlogArticle {
 export type ArticleCreationData = {
   title: LocalizedText,
   content: LocalizedText,
+  description: LocalizedText,
   images: File[]
   appearanceSettings: {
-    imagePosition: imagePosition,
+    imagePosition: ImagePosition,
+    titleImage?: string
   }
 }
 
-export type imagePosition = 'LEFT' | 'RIGHT' | 'TOP'
+export type ImagePosition = 'LEFT' | 'RIGHT' | 'TOP' | null

@@ -12,11 +12,6 @@
   }
 }
 
-.form-control::placeholder {
-  -webkit-text-security: none;
-  color: color-mix(in srgb, currentColor 54%, transparent);
-}
-
 .image-bullet {
   max-width: 20rem;
   height: 3rem;

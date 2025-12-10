@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ResumeComponent} from './resume/resume/resume-component';
 import {ArticleOverview} from './blog/blog/article-overview/article-overview/article-overview';
+import {ArticleComponent} from './blog/blog/article-component/article-component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
     path: 'blog/:topicId',
     pathMatch: 'full',
     component: ArticleOverview
+  },
+  {
+    path: 'blog/:topicId/:article',
+    pathMatch: 'full',
+    component: ArticleComponent
   }
 ];
 

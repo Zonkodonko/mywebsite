@@ -1,0 +1,11 @@
+<div id="article-container" class="d-flex flex-column secondary-container">
+  @if(article != null) {
+    <div class="header-container">
+      <h3> {{title}} </h3>
+      <span class="date">{{"global.lastChange" | translate}} {{article.lastChange | date:'dd MMMM, yyyy':timezoneOffset:locale}}</span>
+    </div>
+    <div [innerHTML]="content"></div>
+  } @else {
+    <div>Loading...</div>
+  }
+</div>

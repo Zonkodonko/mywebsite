@@ -1,4 +1,4 @@
-package com.zonkodonko.ba.blog.rest.dtos;
+package com.zonkodonko.ba.blog.rest.dtos.incoming;
 
 import java.util.Map;
 

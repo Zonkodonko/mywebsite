@@ -3,7 +3,12 @@ package com.zonkodonko.ba.blog;
 
 import com.zonkodonko.ba.blog.data.post.BlogArticle;
 import com.zonkodonko.ba.blog.data.topic.BlogTopic;
-import com.zonkodonko.ba.blog.rest.dtos.*;
+import com.zonkodonko.ba.blog.rest.dtos.incoming.CreateArticleDto;
+import com.zonkodonko.ba.blog.rest.dtos.incoming.TopicDto;
+import com.zonkodonko.ba.blog.rest.dtos.outgoing.ArticleClientDto;
+import com.zonkodonko.ba.blog.rest.dtos.outgoing.ArticleWithoutContent;
+import com.zonkodonko.ba.blog.rest.dtos.outgoing.FullBlogDto;
+import com.zonkodonko.ba.blog.rest.dtos.outgoing.TopicClientDto;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +29,15 @@ public interface BlogService {
 	 */
 	List<ArticleClientDto> getArticles(@NotNull String topic);
 
+	Collection<ArticleWithoutContent> getArticlesWithoutContent(@NotNull String topic);
+
 	/**
 	 * Get article by id.
 	 *
 	 * @param id Article id
 	 * @return Article
 	 */
-	BlogArticle getArticle(@NotNull Long id);
+	ArticleClientDto getArticle(@NotNull Long id);
 
 	/**
 	 * Create or update article.

@@ -3,10 +3,21 @@ import {marked} from 'marked';
 import environment from '../../../../../environment';
 import {BlogService} from '../../../services/blog-service';
 import {TranslateService} from '@ngx-translate/core';
-import {ArticleCreationData, BlogArticle, BlogArticleRaw, EditArticle, Topic, TopicRaw} from '../../../data/BlogTypes';
+import {
+  ArticleCreationData,
+  ArticleWithoutContent,
+  BlogArticle,
+  BlogArticleRaw, BlogArticleWithoutContent,
+  EditArticle,
+  Topic,
+  TopicRaw
+} from '../../../data/BlogTypes';
 import {AuthenticationService} from '../../../../authentication/authentication.service';
 import {ArticleDialog} from '../../../article-dialog/article-dialog';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ConfirmDialog} from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import {findAndDelete} from '../../../../shared/utils/utils';
+import {ArticleApi} from '../../../services/article-service/article-api';
 
 @Component({
   selector: 'app-article-overview',
@@ -24,14 +35,15 @@ export class ArticleOverview {
     description: " Loading...",
     image: ""
   }
-  public articlesRaw: BlogArticleRaw[] = [];
-  public articles: BlogArticle[] = [];
+  public articlesRaw: ArticleWithoutContent[] = [];
+  public articlesDisplay: BlogArticleWithoutContent[] = [];
   private creating?: ArticleCreationData;
 
   constructor(private blogService: BlogService,
               private langService: TranslateService,
               private authService: AuthenticationService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private articleService:ArticleApi) {
   }
 
   @Input()
@@ -55,11 +67,11 @@ export class ArticleOverview {
 
   updateArticles() {
     const lang = this.langService.getCurrentLang();
-    this.articles = this.articlesRaw.map(raw => {
+    this.articlesDisplay = this.articlesRaw.map(raw => {
       return {
         ...raw,
         title: raw.title[lang],
-        content: raw.content[lang],
+        description: raw.description[lang],
         id: Number(raw.id)
       }
     })
@@ -68,6 +80,16 @@ export class ArticleOverview {
 
   get isLoggedIn() {
     return this.authService.isLoggedIn;
+  }
+
+
+  deleteArticle(id: number) {
+    this.modalService.open(ConfirmDialog, {centered: true, size: 'sm'}).closed.subscribe(confirm => {
+      this.articleService.deleteArticle(id).subscribe(()=> {
+        findAndDelete(this.articlesRaw, a => a.id === id);
+        this.updateArticles();
+      });
+    })
   }
 
   public openArticleDialog(id: number | undefined = undefined) {
@@ -83,18 +105,24 @@ export class ArticleOverview {
     modalRef.closed.subscribe((result: ArticleCreationData | EditArticle) => {
       const newArticle = {topic: this._topicId, ...result};
       if(id !== undefined) {
-        this.blogService.updateArticle({id:id,...newArticle}).subscribe( () => {
+        this.articleService.updateArticle({id:id,...newArticle}).subscribe( () => {
           Object.assign(this.articlesRaw.find(a => a.id == id)!,{lastChange: Date.now(),...newArticle});
           this.updateArticles();
         });
       } else {
-        this.blogService.createArticle(newArticle).subscribe(id => {
-            this.articlesRaw.push({id: Number(id), ...newArticle,lastChange: Date.now(), created: Date.now() });
+        this.articleService.createArticle(newArticle).subscribe(id => {
+            this.articlesRaw.push({
+              id: Number(id),
+              lastChange: Date.now(),
+              created: Date.now(),
+              ...newArticle
+            });
             this.updateArticles();
             this.creating = undefined;
           },
           error => {
-            this.creating = result;
+            const {images, ...data} = result;
+            this.creating = data as ArticleCreationData;
           })
       }
     })

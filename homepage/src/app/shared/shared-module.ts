@@ -4,6 +4,10 @@ import { IntersectAnimation } from './intersect-animation/intersect-animation';
 import { AutoHeight } from './auto-resize/auto-height.directive';
 import { LogoutNotifcationModal } from './logout-notifcation-modal/logout-notifcation-modal';
 import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
+import { MultiLanguageTextInput } from './components/multi-language-text-input/multi-language-text-input';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import { SlugifyPipe } from './pipes/slugify-pipe';
 
 
 
@@ -12,14 +16,21 @@ import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
     IntersectAnimation,
     AutoHeight,
     LogoutNotifcationModal,
-    ConfirmDialog
+    ConfirmDialog,
+    MultiLanguageTextInput,
+    SlugifyPipe
   ],
   exports: [
     IntersectAnimation,
-    AutoHeight
+    AutoHeight,
+    MultiLanguageTextInput,
+    SlugifyPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

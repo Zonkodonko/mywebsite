@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BlogArticleRaw, EditArticle, FullTopic, NewArticle, NewTopic, TopicRaw} from '../data/BlogTypes';
+import {BlogArticleRaw, FullTopic} from '../data/BlogTypes';
 import environment from '../../../environment';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication.service';
-import {Observable, of} from 'rxjs';
+import {Observable, switchMap} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
 @Injectable({
@@ -13,90 +13,53 @@ export class BlogService {
 
   private readonly url = `${environment.backendUrl}/blog`
 
-  private topicsCache: TopicRaw[] = [];
+  private topicsCache: Map<string, { id: number, names: string[] }[]> = new Map<string, {
+    id: number,
+    names: string[]
+  }[]>();
 
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {
   }
 
-
-  deleteArticle(id: number) {
-    return this.http.delete(`${this.url}/article/${id}`, {headers: this.authService.getAuthHeaders()});
-  }
-
-  getArticles(topic: string): Observable<BlogArticleRaw[]> {
-    return this.http.get<any[]>(`${this.url}/articles/${topic}`)
-  }
-
+  /**
+   * Get topic info and all related articles. Also, caches articles name-id mapping for routing via name
+   * @param topic to get articles from.
+   * @returns Observable of FullTopic with all articles.
+   */
   getFullTopic(topic: string): Observable<FullTopic> {
-    return this.http.get<FullTopic>(`${this.url}/topic/${topic}`);
-  }
-
-  getTopics(): Observable<TopicRaw[]> {
-    return this.http.get<TopicRaw[]>(`${this.url}/topics`).pipe(
-      tap(topics => this.topicsCache = topics)
+    return this.http.get<FullTopic>(`${this.url}/topic/${topic}/articles`).pipe(
+      tap((fullTopic: FullTopic) => {
+        const articles = fullTopic.articles.map(article => {
+          const names: string[] = [];
+          for (let lang in article.title) {
+            names.push(article.title[lang]);
+          }
+          return {id: article.id, names: names}
+        })
+        this.topicsCache.set(topic, articles);
+      })
     );
   }
 
-  updateArticle(article: EditArticle) {
-    const {images, imagesToDelete, ...articleData} = article;
-    const formData = new FormData();
-    const articleBlob = new Blob([JSON.stringify(articleData)], {
-      type: 'application/json'
-    });
-    formData.append('article', articleBlob);
-
-    if (images) {
-      for(const image of images) {
-        formData.append('images', image, image.name);
-      }
+  /**
+   * Get article by name. If topic is not cached, load topic first.
+   * If topic is cached, get id from cache.
+   * @param topic of article to get.
+   * @param article name of article to get.
+   * @returns Observable of BlogArticleRaw with article data.
+   */
+  getArticleByName(topic: string, article: string): Observable<BlogArticleRaw> {
+    console.log("Getting article: " + topic + " " + article + "");
+    console.log(this.topicsCache.get(topic));
+    if (this.topicsCache.size === 0 || !this.topicsCache.has(topic)) {
+      return this.getFullTopic(topic).pipe( // Load topics cache
+        switchMap(() => this.getArticleByName(topic, article))
+      );
+    } else {
+      const id = this.topicsCache.get(topic)!.find(t => t.names.includes(article))!.id;
+      return this.http.get<BlogArticleRaw>(`${this.url}/article/${id}`);
     }
-    if (imagesToDelete) {
-      const imagesToDeleteBlob = new Blob([JSON.stringify(imagesToDelete)], {
-        type: 'application/json'
-      });
-      formData.append('imagesToDelete', imagesToDeleteBlob);
-    }
-    return this.http.put(`${this.url}/article/${article.id}`, formData, {headers: this.authService.getAuthHeaders()});
-  }
-
-  createTopic(topic: NewTopic) {
-    const formData = new FormData();
-    const {image, ...topicData} = topic;
-
-    const topicBlob = new Blob([JSON.stringify(topicData)], {
-      type: 'application/json'
-    });
-    formData.append('topic', topicBlob);
-
-    if (image) {
-      formData.append('image', image, image.name);
-    }
-
-    return this.http.post(`${this.url}/topic`, formData, {
-      headers: this.authService.getAuthHeaders(),
-      responseType: 'text'
-    });
-  }
-
-  createArticle(article: NewArticle) {
-    console.log(JSON.stringify(article));
-    const {images, ...articleData} = article;
-    const formData = new FormData();
-    const articleBlob = new Blob([JSON.stringify(articleData)], {
-      type: 'application/json'
-    });
-    formData.append('article', articleBlob);
-
-    if (images) {
-      for(const image of images) {
-        formData.append('images', image, image.name);
-      }
-    }
-    return this.http.post(`${this.url}/article`, formData, {
-      headers: this.authService.getAuthHeaders(),
-      responseType: 'text'
-    })
   }
 
 

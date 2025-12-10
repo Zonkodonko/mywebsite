@@ -1,12 +1,10 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BlogArticleRaw} from '../../../data/BlogTypes';
+import {ArticleWithoutContent} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
-import {marked, Renderer} from 'marked';
 import environment from '../../../../../environment';
-import {DomSanitizer} from '@angular/platform-browser';
 import {isStringEmpty} from '../../../../shared/utils/utils';
-import {getArticleRenderer} from '../../../../shared/utils/marked-extension';
 import {localeIdMapping} from '../../../../shared/translation/Translation';
+import {AuthenticationService} from '../../../../authentication/authentication.service';
 
 
 @Component({
@@ -18,16 +16,16 @@ import {localeIdMapping} from '../../../../shared/translation/Translation';
 export class ArticleCard {
 
   @Input()
-  public article!: BlogArticleRaw;
+  public article!: ArticleWithoutContent;
 
   @Input()
   public canEdit: boolean = false;
 
   @Output()
-  public editArticle: EventEmitter<BlogArticleRaw> = new EventEmitter<BlogArticleRaw>();
+  public editArticle: EventEmitter<number> = new EventEmitter<number>();
 
   @Output()
-  public deleteArticle: EventEmitter<BlogArticleRaw> = new EventEmitter<BlogArticleRaw>();
+  public deleteArticle: EventEmitter<number> = new EventEmitter<number>();
 
   public titleImage!: string;
 
@@ -36,14 +34,13 @@ export class ArticleCard {
   public editMode: boolean = false;
 
   constructor(
-              private langService: TranslateService,
-              private sanitizer: DomSanitizer) {
+    private langService: TranslateService,
+    private authService: AuthenticationService) {
   }
 
-  public get content() {
+  public get description() {
     const lang = this.langService.getCurrentLang();
-    marked.use({renderer: getArticleRenderer(this.article.id!, this.article.lastChange!)})
-    return this.sanitizer.bypassSecurityTrustHtml(marked.parse(this.article.content[lang], {async: false}));
+    return this.article.description[lang];
   }
 
   public get title() {
@@ -56,18 +53,23 @@ export class ArticleCard {
 
   public get image() {
     const fileName = this.article.appearanceSettings.titleImage;
-    if(!isStringEmpty(fileName)) {
+    if (!isStringEmpty(fileName)) {
       return `${environment.backendUrl}/images/article/${this.article.id}/${fileName}?time=${this.article.lastChange}`;
     }
     return null;
   }
 
-  delete() {
-    this.deleteArticle.emit(this.article);
+  delete(event: Event) {
+    event.stopPropagation();
+    this.deleteArticle.emit(this.article.id);
   }
 
   edit() {
-    this.editArticle.emit(this.article);
+    this.editArticle.emit(this.article.id);
+  }
+
+  get isLoggedIn() {
+    return this.authService.isLoggedIn;
   }
 
   get localeId() {

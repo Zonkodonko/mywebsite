@@ -1,0 +1,21 @@
+<ng-template #componentWrapper>
+  <label for="contentInput" class="mt-3 align-self-start"> {{label | translate}} </label>
+  <textarea id="contentInput"
+            class="form-control align-self-start mt-3 {{size}}"
+
+            [formControl]="selectedControl"
+            [placeholder]="label | translate"></textarea>
+
+  <div class="lang-input-switch btn-group btn-group-sm">
+    @for (lang of languages; track $index;) {
+      <input [id]="label+'-langswitch'+lang" class="btn-check"
+             type="radio"
+             name="{{label}}-Lang"
+             [value]="lang"
+             [(ngModel)]="selectedLang">
+      <label [for]="label+'-langswitch'+lang" class="btn" [ngClass]="getFormControl(lang).invalid ? 'btn-outline-primary' : 'btn-outline-success'">
+        {{lang | uppercase}}
+      </label>
+    }
+  </div>
+</ng-template>

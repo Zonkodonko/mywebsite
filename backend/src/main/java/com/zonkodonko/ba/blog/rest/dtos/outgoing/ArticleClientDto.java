@@ -1,4 +1,4 @@
-package com.zonkodonko.ba.blog.rest.dtos;
+package com.zonkodonko.ba.blog.rest.dtos.outgoing;
 
 import com.zonkodonko.ba.blog.data.post.ArticleSettings;
 
@@ -17,6 +17,7 @@ public record ArticleClientDto(
 		Long id,
 		Map<String, String> title,
 		Map<String, String> content,
+		Map<String, String> description,
 		ArticleSettings appearanceSettings,
 		String topic,
 		Long lastChange,

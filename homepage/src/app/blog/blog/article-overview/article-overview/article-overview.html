@@ -18,6 +18,8 @@
     @for(article of articlesRaw; track article) {
       <app-article-card [article]="article"
                         [canEdit]="isLoggedIn"
+                        (deleteArticle)="deleteArticle($event)"
+                        (editArticle)="openArticleDialog($event)"
       ></app-article-card>
     }
   </div>

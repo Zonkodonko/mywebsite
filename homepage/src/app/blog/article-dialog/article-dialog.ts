@@ -25,6 +25,7 @@ export class ArticleDialog {
   public contentLang: "de" | "en" = "de";
 
   private _images: Image[] = [];
+  private _originalArticle?: BlogArticleRaw;
 
   public imagesToRemove: string[] = [];
   public imagesToOverwrite: string[] = [];
@@ -37,6 +38,10 @@ export class ArticleDialog {
 
   form: FormGroup = new FormGroup({
     title: new FormGroup({
+      de: new FormControl("",Validators.required),
+      en: new FormControl("",Validators.required)
+    }),
+    description: new FormGroup({
       de: new FormControl("",Validators.required),
       en: new FormControl("",Validators.required)
     }),
@@ -68,6 +73,7 @@ export class ArticleDialog {
           }
         }
       })
+      this._originalArticle = article;
     }
   }
 
@@ -126,6 +132,10 @@ export class ArticleDialog {
         return a.filename.localeCompare(b.filename);
       }
     });
+  }
+
+  get descriptionControlGroup(): FormGroup {
+    return this.form.controls["description"] as FormGroup;
   }
 
   get imageController(): FormControl<Set<File>> {
@@ -198,6 +208,14 @@ export class ArticleDialog {
     return (this.form.controls["content"] as FormGroup).controls[lang] as FormControl;
   }
 
+  get contentControlGroup() {
+    return this.form.controls["content"] as FormGroup;
+  }
+
+  get titleControlGroup() {
+    return this.form.controls["title"] as FormGroup;
+  }
+
   get contentControl(): FormControl {
     return this.getContentControl(this.contentLang);
   }
@@ -212,10 +230,14 @@ export class ArticleDialog {
       content: rawValue.content as LocalizedText,
       title: rawValue.title as LocalizedText,
       images: [...(rawValue.images as Set<File>).values()],
+      description: rawValue.description as LocalizedText,
       appearanceSettings: rawValue.appearanceSettings,
     }
-    if(this.imagesToRemove.length > 0) {
-      articleData = Object.assign(articleData, {imagesToDelete: this.imagesToRemove});
+    if(this._originalArticle !== undefined) {
+      articleData = Object.assign(articleData,{id: this._originalArticle.id} )
+      if(this.imagesToRemove.length > 0) {
+        articleData = Object.assign(articleData, {imagesToDelete: this.imagesToRemove});
+      }
     }
     console.log("sending data: " + JSON.stringify(articleData));
     this.modal.close(articleData);

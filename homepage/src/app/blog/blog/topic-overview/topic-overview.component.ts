@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../../authentication/authentication.service';
 import {NewTopic, Topic, TopicRaw} from '../../data/BlogTypes';
-import {BlogService} from '../../services/blog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TopicDialog} from '../../topic-dialog/topic-dialog';
+import {TopicApi} from '../../services/topic-service/topic-api';
 
 @Component({
   selector: 'app-topic-overview-component',
@@ -20,7 +20,7 @@ export class TopicOverview implements OnInit {
   private creating?: TopicRaw;
 
   constructor(private authService: AuthenticationService,
-              private blogService: BlogService,
+              private topicService: TopicApi,
               private langService: TranslateService,
               private modalService: NgbModal) {
 
@@ -30,7 +30,7 @@ export class TopicOverview implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogService.getTopics().subscribe(topics => {
+    this.topicService.getTopics().subscribe(topics => {
       this._topicsRaw = topics
       this._topics = topics.map(t => this.mapTopic(t));
     });
@@ -67,10 +67,10 @@ export class TopicOverview implements OnInit {
     }
 
     ngbModalRef.closed.subscribe((result: NewTopic) => {
-      this.blogService.createTopic(result).subscribe(
+      this.topicService.createTopic(result).subscribe(
         () => {
           const existingTopicI = this._topics.findIndex(t => t.id === result.id);
-          if(existingTopicI === -1) {
+          if (existingTopicI === -1) {
             this._topicsRaw.push(result);
           } else {
             this._topicsRaw[existingTopicI] = {...result, image: URL.createObjectURL(result.image)};

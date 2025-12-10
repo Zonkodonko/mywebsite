@@ -91,6 +91,11 @@ html, body, *{
   border: 1px none #ffffff;
 }
 
+.form-control::placeholder {
+  -webkit-text-security: none;
+  color: color-mix(in srgb, currentColor 54%, transparent);
+}
+
 .clickable {
   cursor: pointer;
 }

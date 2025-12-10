@@ -1,0 +1,16 @@
+#article-container {
+  max-width: 100vw;
+  overflow-y: auto;
+  min-height: 100vh;
+  padding: 6rem;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content-container {
+
+}
