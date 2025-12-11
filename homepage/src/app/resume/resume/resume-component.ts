@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {de, en} from '../resources/resume';
 import {ViewportScroller} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
 import {ResumeData} from '../data/ResumeData';
 import {ResumeApiService} from '../services/resume-api-service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-resume',
@@ -11,11 +12,13 @@ import {ResumeApiService} from '../services/resume-api-service';
   templateUrl: './resume-component.html',
   styleUrl: './resume-component.scss'
 })
-export class ResumeComponent implements OnInit {
+export class ResumeComponent implements OnInit, OnDestroy {
 
   public resume!: ResumeData;
 
   public backgroundParticles: number[] = []
+
+  private languageSubscription!: Subscription;
 
   constructor(public viewportScroller: ViewportScroller,
               private translate: TranslateService,
@@ -24,10 +27,14 @@ export class ResumeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.translate.onLangChange.subscribe((l) => {
+    this.languageSubscription = this.translate.onLangChange.subscribe((l) => {
       this.fetchResume();
     })
     this.fetchResume();
+  }
+
+  ngOnDestroy(): void {
+    this.languageSubscription.unsubscribe();
   }
 
   private fetchResume() {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BlogArticleRaw, EditArticle} from '../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import {AuthenticationService} from '../../../authentication/authentication.serv
 import {ArticleApi} from '../../services/article-service/article-api';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ArticleDialog} from '../../article-dialog/article-dialog';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-article-component',
@@ -17,7 +18,7 @@ import {ArticleDialog} from '../../article-dialog/article-dialog';
   templateUrl: './article-component.html',
   styleUrl: './article-component.scss'
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, OnDestroy {
 
   public article!: BlogArticleRaw;
 
@@ -34,6 +35,8 @@ export class ArticleComponent implements OnInit {
   // article data
   public title: string = 'loading';
   public content: string | SafeHtml = 'loading';
+
+  private languageSubscription!: Subscription;
 
   constructor(
     private authService: AuthenticationService,
@@ -58,8 +61,16 @@ export class ArticleComponent implements OnInit {
         this.updateDisplayData();
       });
     })
-    this.langService.onLangChange.subscribe(() => this.updateDisplayData());
+    this.languageSubscription = this.langService.onLangChange.subscribe(() => {
+      console.log("lang changed");
+      this.updateDisplayData();
+    });
   }
+
+  ngOnDestroy(): void {
+    this.languageSubscription.unsubscribe();
+  }
+
 
   /**
    * Updates the displayed data according to language.

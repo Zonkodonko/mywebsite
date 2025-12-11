@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../../authentication/authentication.service';
 import {NewTopic, Topic, TopicRaw} from '../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TopicDialog} from '../../topic-dialog/topic-dialog';
 import {TopicApi} from '../../services/topic-service/topic-api';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-topic-overview-component',
@@ -12,19 +13,20 @@ import {TopicApi} from '../../services/topic-service/topic-api';
   templateUrl: './topic-overview.component.html',
   styleUrl: './topic-overview.component.scss'
 })
-export class TopicOverview implements OnInit {
+export class TopicOverview implements OnInit, OnDestroy {
 
   private _topicsRaw: TopicRaw[] = [];
   private _topics: Topic[] = [];
 
   private creating?: TopicRaw;
+  private languageSubscription!: Subscription;
 
   constructor(private authService: AuthenticationService,
               private topicService: TopicApi,
               private langService: TranslateService,
               private modalService: NgbModal) {
 
-    langService.onLangChange.subscribe(() => {
+    this.languageSubscription = langService.onLangChange.subscribe(() => {
       this.updateTopics();
     })
   }
@@ -34,6 +36,10 @@ export class TopicOverview implements OnInit {
       this._topicsRaw = topics
       this._topics = topics.map(t => this.mapTopic(t));
     });
+  }
+
+  ngOnDestroy(): void {
+    this.languageSubscription.unsubscribe();
   }
 
   isLoggedIn() {
