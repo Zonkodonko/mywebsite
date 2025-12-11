@@ -64,7 +64,8 @@ export class ArticleCard {
     this.deleteArticle.emit(this.article.id);
   }
 
-  edit() {
+  edit(event: Event) {
+    event.stopPropagation();
     this.editArticle.emit(this.article.id);
   }
 

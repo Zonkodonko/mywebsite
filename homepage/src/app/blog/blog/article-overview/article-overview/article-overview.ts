@@ -95,7 +95,9 @@ export class ArticleOverview {
   public openArticleDialog(id: number | undefined = undefined) {
     const modalRef = this.modalService.open(ArticleDialog, {centered: true, size: 'lg', backdrop: 'static'});
     if(id !== undefined) {
-      modalRef.componentInstance.article = {...this.articlesRaw.find(a => a.id === id)!};
+      this.articleService.getArticle(id).subscribe(article => {
+        modalRef.componentInstance.article = article;
+      });
     } else {
       if(this.creating !== undefined) {
         modalRef.componentInstance.article = this.creating;

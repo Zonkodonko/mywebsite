@@ -48,13 +48,15 @@
   },
   "period": "from {{from}} to {{to}}",
   "global": {
-    "title": "Title",
+    "cancel": "Cancel",
+    "content": "Content",
     "description": "Description",
     "image": "Image",
-    "cancel": "Cancel",
-    "save": "Save",
+    "lastChange": "Last Change",
     "left": "Left",
     "right": "Right",
+    "save": "Save",
+    "title": "Title",
     "top": "Top"
   }
 }

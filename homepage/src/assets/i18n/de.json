@@ -49,14 +49,15 @@
   },
   "period": "von {{from}} bis {{to}}",
   "global": {
-    "title": "Titel",
+    "cancel": "Abbrechen",
+    "content": "Inhalt",
     "description": "Beschreibung",
     "image": "Bild",
-    "cancel": "Abbrechen",
-    "save": "Speichern",
-    "content": "Inhalt",
+    "lastChange": "Letzte Änderung",
     "left": "Links",
     "right": "Rechts",
+    "save": "Speichern",
+    "title": "Titel",
     "top": "Oben"
   }
 }

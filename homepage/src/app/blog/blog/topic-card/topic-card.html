@@ -1,4 +1,7 @@
-<div class="card topic-card primary-container shiny shadow-sm clickable" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+<div class="card topic-card container-primary shiny shadow-sm clickable"
+     [routerLink]="['/blog', topic.id]"
+     (mouseenter)="isHovered = true"
+     (mouseleave)="isHovered = false">
   <img class="card-img-top" [src]="topic.image" [alt]="topic.title"/>
   <div class="card-body">
     <h5 class="card-title">{{topic.title}}</h5>
@@ -6,7 +9,7 @@
   </div>
   <div class="card-corner-buttons" [hidden]="!isHovered">
     @if(isLoggedIn) {
-      <button class="btn text-on-primary" (click)="open()">
+      <button class="btn text-on-primary" (click)="open($event)">
         <i class="bi bi-pencil-square"></i>
       </button>
     }

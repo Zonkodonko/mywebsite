@@ -1,10 +1,24 @@
-<div id="article-container" class="d-flex flex-column secondary-container">
-  @if(article != null) {
-    <div class="header-container">
-      <h3> {{title}} </h3>
-      <span class="date">{{"global.lastChange" | translate}} {{article.lastChange | date:'dd MMMM, yyyy':timezoneOffset:locale}}</span>
+<div id="body-container" class="d-flex flex-column">
+  @if (article != null) {
+    <a routerLink=".." class="back-button align-self-start clickable">
+      <i class="bi bi-arrow-left me-1"></i>{{topic}}
+    </a>
+    @if (canEdit) {
+      <div class="button-container container-primary">
+        <button class="btn btn-primary" (click)="openEditDialog()">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-primary" (click)="openEditDialog()">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    }
+    <div class="header-container pb-3">
+      <h1 class="m-0 fw-bold justify-self-end"> {{ title }} </h1>
+      <span class="date text-light ">{{ "global.lastChange" | translate }}
+        : {{ article.lastChange | date:'dd MMMM, yyyy':timezoneOffset:locale }}</span>
     </div>
-    <div [innerHTML]="content"></div>
+    <div class="content-container" [innerHTML]="content"></div>
   } @else {
     <div>Loading...</div>
   }

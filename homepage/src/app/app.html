@@ -22,7 +22,7 @@
 </div>
 <div id="login-container" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()">
   <button (click)="clickLoginLogoutButton()" [class.hidden]="!isShowLoginButton" class="bg-transparent border-0">
-    <i class="bi text-white"
+    <i class="bi"
        [class.bi-key-fill]="!isLoggedIn"
        [class.bi-box-arrow-right]="isLoggedIn"
     ></i>

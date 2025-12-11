@@ -24,7 +24,8 @@ export class TopicCard {
     return this.authService.isLoggedIn;
   }
 
-  open() {
+  open(event: Event) {
+    event.stopPropagation();
     this.openTopic.emit(this.topic);
   }
 

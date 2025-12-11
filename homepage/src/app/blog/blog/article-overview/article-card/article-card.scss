@@ -7,12 +7,15 @@
   max-width: 40rem;
   position: relative;
   overflow: hidden;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
   .article-text {
     max-height: 10rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
     margin-left: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     #article-title {
       min-height: 20%;
@@ -25,33 +28,21 @@
       text-overflow: ellipsis;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
-      flex-flow: column wrap;
-      max-height: 80%;
-      position: relative;
+      max-height: 10rem;
+      height: 100%;
+    }
 
-      ::ng-deep {
-        * {
-          font-style: normal !important;
-          font-weight: normal !important;
-          font-size: 1rem !important;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          height: 100%;
-          max-width: 100%;
-          margin-bottom: 0;
-          //white-space: nowrap;
-          //margin: 0;
-        }
-      }
+    .card-footer {
+      max-height: 2rem;
+      overflow: hidden;
     }
   }
 
 
   .corner-date {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 1rem;
+    //position: absolute;
+    //bottom: 0.5rem;
+    //right: 1rem;
     z-index: 1;
     width: fit-content;
     overflow: hidden;
@@ -66,7 +57,7 @@
 }
 
 .article-image {
-  max-height: 30rem;
+  max-height: 25rem;
   min-width: 10rem;
   display: flex;
   font-size: 1rem;

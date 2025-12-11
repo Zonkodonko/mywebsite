@@ -3,6 +3,8 @@
 $bullet-shape-size: 3rem;
 $min-range: 10rem;
 $list-zindex: 2;
+$shape-color: var(--bs-body-color);
+
 #career-list {
   list-style-type: none;
   >li {
@@ -28,7 +30,7 @@ $list-zindex: 2;
 
 .bullet-shape {
   border-radius: 50%;
-  background-color: white;
+  background-color: $shape-color;
   min-width: $bullet-shape-size;
   height: $bullet-shape-size;
   display: inline-block;
@@ -50,7 +52,7 @@ $list-zindex: 2;
 .connection-line {
   height: 100%;
   width: 0.5rem;
-  background-color: white;
+  background-color: $shape-color;
   display: block;
   min-height: $min-range;
   grid-column: 1;

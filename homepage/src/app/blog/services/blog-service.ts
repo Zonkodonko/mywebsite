@@ -5,6 +5,8 @@ import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {Observable, switchMap} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import slugify from 'slugify';
+import {LocalizedText} from '../../shared/translation/LocalizedText';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,8 @@ export class BlogService {
     id: number,
     names: string[]
   }[]>();
+
+  public topicNameCache: Map<string, LocalizedText> = new Map<string, LocalizedText>();
 
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {
@@ -33,11 +37,12 @@ export class BlogService {
         const articles = fullTopic.articles.map(article => {
           const names: string[] = [];
           for (let lang in article.title) {
-            names.push(article.title[lang]);
+            names.push(slugify(article.title[lang]));
           }
           return {id: article.id, names: names}
         })
         this.topicsCache.set(topic, articles);
+        this.topicNameCache.set(topic, fullTopic.topic.title);
       })
     );
   }
@@ -46,7 +51,7 @@ export class BlogService {
    * Get article by name. If topic is not cached, load topic first.
    * If topic is cached, get id from cache.
    * @param topic of article to get.
-   * @param article name of article to get.
+   * @param article name of article to get. <strong>Must be slugified!</strong>.
    * @returns Observable of BlogArticleRaw with article data.
    */
   getArticleByName(topic: string, article: string): Observable<BlogArticleRaw> {

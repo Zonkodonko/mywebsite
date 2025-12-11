@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import environment from '../../../../environment';
-import {ArticleCreationData, EditArticle, NewArticle} from '../../data/BlogTypes';
+import {ArticleCreationData, BlogArticleRaw, EditArticle, NewArticle} from '../../data/BlogTypes';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../../authentication/authentication.service';
 import {Observable} from 'rxjs';
@@ -57,7 +57,7 @@ export class ArticleApi {
   }
 
   getArticle(id: number) {
-    return this.http.get<NewArticle>(`${this.url}/article/${id}`);
+    return this.http.get<BlogArticleRaw>(`${this.url}/article/${id}`);
   }
 
   /**

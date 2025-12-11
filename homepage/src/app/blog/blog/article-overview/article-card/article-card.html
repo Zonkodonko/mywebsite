@@ -1,17 +1,22 @@
-<div class="p-2 article-card border-light shadow bg-primary" routerLink="/blog/{{article.topic}}/{{title | slugify}}">
+<div class="p-2 article-card border-light shadow border border-1 clickable"
+     routerLink="/blog/{{article.topic}}/{{title | slugify}}">
   @if (image != null) {
-    <img [src]="image" class="article-image align-items-center" [alt]="title">
+    <img [src]="image" class="article-image align-items-center align-self-center" [alt]="title">
   }
-  <div class="d-block overflow-hidden article-text">
-    <h3 id="article-title">{{title}}</h3>
-    <div class="article-description">{{description}}</div>
-  </div>
-  <div class="corner-date bg-body">
-    <span class="article-date text-light ">{{ article.created | date:'dd MMMM, yyyy':timezoneOffset:localeId }}</span>
+  <div class="overflow-hidden article-text">
+    <h3 id="article-title">{{ title }}</h3>
+    <div class="article-description">{{ description }}</div>
+    <span class="article-date align-self-end">{{ article.created | date:'dd MMMM, yyyy':timezoneOffset:localeId }}</span>
   </div>
   @if (isLoggedIn) {
-  <button class="btn" (click)="delete($event)">
-    <i class="bi bi-trash"></i>
-  </button>
+    <div class="button-container">
+      <button class="btn" (click)="delete($event)">
+        <i class="bi bi-trash"></i>
+      </button>
+      <button class="btn" (click)="edit($event)">
+        <i class="bi bi-pencil-fill"></i>
+      </button>
+    </div>
   }
+
 </div>

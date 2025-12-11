@@ -41,6 +41,10 @@ export class TopicApi {
     });
   }
 
+  getTopic(topic: string) {
+    return this.http.get<TopicRaw>(`${this.url}/${topic}`);
+  }
+
   getTopics(): Observable<TopicRaw[]> {
     return this.http.get<TopicRaw[]>(`${this.url}/all`);
   }

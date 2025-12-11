@@ -11,6 +11,8 @@ import {ArticleApi} from '../../services/article-service/article-api';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ArticleDialog} from '../../article-dialog/article-dialog';
 import {Subscription} from 'rxjs';
+import {TopicApi} from '../../services/topic-service/topic-api';
+import {LocalizedText} from '../../../shared/translation/LocalizedText';
 
 @Component({
   selector: 'app-article-component',
@@ -22,21 +24,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   public article!: BlogArticleRaw;
 
-  // // editable fields
-  // public contentInput!: string;
-  // public titleInput!: string;
-  // public imagesToDelete: string[] = [];
-  // public imagesToAdd: File[] = [];
-  //
-  // //state
-  // public isEditingTitle: boolean = false;
-  // public isEditingContent: boolean = false;
-
-  // article data
   public title: string = 'loading';
   public content: string | SafeHtml = 'loading';
 
   private languageSubscription!: Subscription;
+
+  private topicNames: LocalizedText | undefined = undefined;
+  public topic:string = "loading...";
 
   constructor(
     private authService: AuthenticationService,
@@ -45,7 +39,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private activatedRoute: ActivatedRoute,
     private articleService: ArticleApi,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private topicService: TopicApi
+  ) {
   }
 
   /**
@@ -58,17 +54,36 @@ export class ArticleComponent implements OnInit, OnDestroy {
       const articleName: string = params.get('article')!;
       this.blogService.getArticleByName(topic, articleName).subscribe(article => {
         this.article = article;
+        this.fetchTopicNames();
         this.updateDisplayData();
       });
-    })
+    });
+
+
     this.languageSubscription = this.langService.onLangChange.subscribe(() => {
-      console.log("lang changed");
-      this.updateDisplayData();
+      if(this.article != undefined){ //should not happen, but sometime language changes before article is loaded
+        console.log("lang changed");
+        this.updateDisplayData();
+      }
     });
   }
 
   ngOnDestroy(): void {
     this.languageSubscription.unsubscribe();
+  }
+
+  /**
+   * If the topic name is not yet cached, it will be fetched from the backend.
+   */
+  private fetchTopicNames() {
+    this.topicNames = this.blogService.topicNameCache.get(this.article.topic);
+    if(this.topicNames == undefined){
+      this.topicService.getTopic(this.article.topic).subscribe((topic) => {
+        this.blogService.topicNameCache.set(this.article.topic, topic.title);
+        this.topicNames = topic.title;
+        this.topic = this.topicNames[this.langService.getCurrentLang()]!;
+      });
+    }
   }
 
 
@@ -81,9 +96,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.title = this.article.title[lang];
     marked.use({renderer: getArticleRenderer(this.article.id, this.article.lastChange)});
     this.content = this.sanitizer.bypassSecurityTrustHtml(marked.parse(this.article.content[lang], {async: false}));
-
-    // this.contentInput = this.article.content[lang];
-    // this.titleInput = this.article.title[lang];
+    if(this.topicNames != undefined){
+      this.topic = this.topicNames[lang];
+    }
   }
 
   public openEditDialog() {
@@ -100,35 +115,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  // toggleEditContent() {
-  //   const currentLang = this.langService.getCurrentLang();
-  //   if(this.isEditingContent) {
-  //     const copy = Object.assign({}, this.article);
-  //     copy.content[currentLang] = this.contentInput;
-  //     this.articleService.updateArticle({images: this.imagesToAdd, imagesToDelete: this.imagesToDelete, ...copy}).subscribe(() => {
-  //       this.article.content[currentLang] = this.contentInput;
-  //       this.imagesToAdd = [];
-  //       this.imagesToDelete = [];
-  //       this.updateDisplayData();
-  //     });
-  //   }
-  //   this.isEditingContent = !this.isEditingContent;
-  // }
-  //
-  // toggleEditTitle() {
-  //   const currentLang = this.langService.getCurrentLang();
-  //   if(this.isEditingContent) {
-  //     const copy = Object.assign({}, this.article);
-  //     copy.title[currentLang] = this.titleInput;
-  //     this.articleService.updateArticle({images: [], imagesToDelete: [], ...copy}).subscribe(() => {
-  //       this.article.title[currentLang] = this.titleInput;
-  //       this.updateDisplayData();
-  //     });
-  //   }
-  //   this.isEditingContent = !this.isEditingContent;
-  // }
-
+  get canEdit() {
+    return this.authService.isLoggedIn;
+  }
 
   get locale() {
     return this.langService.getCurrentLang();
