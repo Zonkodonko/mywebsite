@@ -106,7 +106,8 @@ html, body, *{
 }
 
 .form-control::file-selector-button {
-  background-color: $tertiary !important;
+  @extend .btn;
+  @extend .btn-secondary;
 }
 
 @each$name, $color in $theme-colors {

@@ -1,3 +1,22 @@
+$article-card-width: 30rem;
+$gap: 4vmin;
+
+.article-container {                                     // 1 column
+  grid-template-columns: repeat(1, $article-card-width);
+}
+
+@media screen and (min-width: $article-card-width*2.5) { // 2 columns
+  .article-container {
+    grid-template-columns: repeat(2, $article-card-width);
+  }
+}
+
+@media screen and (min-width: $article-card-width*3.5) { // 3 columns
+  .article-container {
+    grid-template-columns: repeat(3, $article-card-width);
+  }
+}
+
 .topic-header {
   height: 7rem;
   padding: 1rem;
@@ -11,13 +30,58 @@
 }
 
 .add-button {
-  max-width: 40rem;
-  max-height: 10rem;
-  height: 10rem;
+  width: 100%;
+  height:15rem !important;
+}
+
+.article-container {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  height: 100%;
+  flex-grow: 1;
+  gap: $gap;
+  padding-right: $gap;
+  padding-left: $gap;
+
+  > * {
+    height: fit-content;
+  }
+
+  ::ng-deep {
+    > :first-child {
+      min-width: $article-card-width;
+      grid-column: 1 / -1;
+    }
+    > :not(:first-child) {
+      width: $article-card-width;
+      max-width: $article-card-width;
+    }
+
+    @media screen and (min-width: $article-card-width*2.5) and (max-width: $article-card-width*3.5){ // 2 columns
+      > :last-child {
+        &:nth-child(even) {
+          grid-column: 1 / -1;
+          width: 100%;
+          margin-inline: auto;
+        }
+      }
+    }
+
+    @media screen and (min-width: $article-card-width*3.5) { // 3 columns
+      > :last-child {
+        &:nth-child(odd) {
+          grid-column: 1 / -1;
+          width: 100%;
+          margin-inline: auto;
+        }
+      }
+    }
+  }
 }
 
 .topic-description {
-  ::ng-deep > p:last-child  {
+  ::ng-deep > p:last-child {
     margin-bottom: 0 !important;
   }
 }

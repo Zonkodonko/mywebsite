@@ -1,4 +1,4 @@
-<div class="min-vh-100">
+<div class="min-vh-100 d-flex flex-column justify-content-center">
   <!--  TOPIC  -->
   <div class="topic-header d-flex flex-row container-primary shadow">
     <img [src]="topic.image" class="topic-image">
@@ -7,11 +7,10 @@
       <div class="topic-description" [innerHTML]="topic.description"></div>
     </div>
   </div>
-
-  <div class="d-flex flex-column align-items-center mt-2 p-3 gap-4">
+  <div class="mt-2 p-3 article-container">
     <!--    ADD BUTTON -->
     @if (isLoggedIn) {
-      <button class="btn w-100 border add-button btn-primary" (click)="openArticleDialog()">
+      <button class="btn border add-button btn-primary" (click)="openArticleDialog()">
         <i class="bi bi-plus-circle"></i>
       </button>
     }

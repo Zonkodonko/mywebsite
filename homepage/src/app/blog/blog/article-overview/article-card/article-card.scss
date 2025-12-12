@@ -1,59 +1,81 @@
 .article-card {
-  max-height: 10rem;
-  min-width: 30rem;
-  height: 10rem;
+  max-height: 12rem;
+  height: 12rem;
   display: flex;
   flex-direction: row;
-  max-width: 40rem;
+  max-width: inherit;
+  width: inherit;
   position: relative;
-  overflow: hidden;
   padding-top: 1rem;
   padding-bottom: 1rem;
 
   .article-text {
-    max-height: 10rem;
+    max-height: 15rem;
     margin-left: 1rem;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
 
-    #article-title {
-      min-height: 20%;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    .article-title-container {
+
+      display: flex;
+      flex-grow: 1;
+      max-height: 4.4rem;
+      align-items: center;
+
+      #article-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        //display: flex;
+        margin: 0;
+        line-clamp: 2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
     }
+
 
     .article-description {
       flex-grow: 1;
+      min-height: 0;
+      overflow: hidden;
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+
+      max-height: 4.3rem;
+      line-clamp: 3;
+
       text-overflow: ellipsis;
-      overflow: hidden;
+      white-space: normal;
+
+      justify-self: center;
+
+    }
+
+    .date-container {
       display: flex;
-      max-height: 10rem;
-      height: 100%;
+      height: 2rem;
+      align-items: end;
+      justify-content: end;
+      .article-date {
+        flex-grow: 0;
+
+        overflow: hidden;
+        display: block;
+
+        height: 1.3rem;
+        white-space: nowrap;
+      }
     }
 
-    .card-footer {
-      max-height: 2rem;
-      overflow: hidden;
-    }
   }
 
-
-  .corner-date {
-    //position: absolute;
-    //bottom: 0.5rem;
-    //right: 1rem;
-    z-index: 1;
-    width: fit-content;
-    overflow: hidden;
-    height: 2rem;
-    border-radius: 2rem;
-    font-size: 0.8rem;
-    padding: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 .article-image {
@@ -68,16 +90,16 @@
 }
 
 
-//.bottom-container {
-//  display: flex;
-//  flex-direction: row;
-//  justify-content: center;
-//  position: absolute;
-//  bottom: 0;
-//  right: 0;
-//}
-//
-//.edit-button {
-//  width: 2rem;
-//  height: 2rem;
-//}
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+
+  border: none;
+  gap: 0.5rem;
+
+  width: 3rem;
+  height: 100%;
+  margin-left: 1rem;
+  }

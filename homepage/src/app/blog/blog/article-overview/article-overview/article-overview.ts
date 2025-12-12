@@ -59,7 +59,7 @@ export class ArticleOverview {
           description: marked.parse(blog.topic.description[lang], {async: false}),
           image: `${environment.backendUrl}/images/topic/${id}`
         }
-        this.articlesRaw = blog.articles;
+        this.articlesRaw = blog.articles.sort((a, b) => b.created ?? 0 - a.created ?? 0);
         this.updateArticles();
       }
     );
