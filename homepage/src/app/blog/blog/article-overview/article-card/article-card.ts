@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ArticleWithoutContent} from '../../../data/BlogTypes';
+import {ArticleWithoutContent, ArticleWithoutContentRaw, BlogArticle} from '../../../data/BlogTypes';
 import {TranslateService} from '@ngx-translate/core';
 import environment from '../../../../../environment';
 import {isStringEmpty} from '../../../../shared/utils/utils';
@@ -40,11 +40,11 @@ export class ArticleCard {
 
   public get description() {
     const lang = this.langService.getCurrentLang();
-    return this.article.description[lang];
+    return this.article.description;
   }
 
   public get title() {
-    return this.article.title[this.langService.getCurrentLang()];
+    return this.article.title;
   }
 
   public get imagePosition() {

@@ -17,7 +17,7 @@ export type NewTopic = {
 
 export type FullTopic = {
   topic: TopicRaw,
-  articles: ArticleWithoutContent[]
+  articles: ArticleWithoutContentRaw[]
 }
 
 export type Topic = {
@@ -28,10 +28,23 @@ export type Topic = {
 }
 
 
-export type ArticleWithoutContent = {
+export type ArticleWithoutContentRaw = {
   id: number,
   title: LocalizedText,
   description: LocalizedText,
+  lastChange: number,
+  created: number,
+  appearanceSettings: {
+    imagePosition: ImagePosition,
+    titleImage?: any
+  }
+  topic: string
+}
+
+export type ArticleWithoutContent = {
+  id: number,
+  title: string,
+  description: string,
   lastChange: number,
   created: number,
   appearanceSettings: {
@@ -76,6 +89,8 @@ export interface BlogArticle {
   content: string,
   description: string,
   lastChange: number,
+  created: number,
+  topic: string,
   appearanceSettings: {
     imagePosition: string,
     titleImage?: any

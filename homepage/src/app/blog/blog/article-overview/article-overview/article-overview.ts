@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {marked} from 'marked';
 import environment from '../../../../../environment';
 import {BlogService} from '../../../services/blog-service';
@@ -6,8 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {
   ArticleCreationData,
   ArticleWithoutContent,
-  BlogArticle,
-  BlogArticleRaw, BlogArticleWithoutContent,
+  ArticleWithoutContentRaw,
   EditArticle,
   Topic,
   TopicRaw
@@ -25,7 +24,7 @@ import {ArticleApi} from '../../../services/article-service/article-api';
   templateUrl: './article-overview.html',
   styleUrl: './article-overview.scss'
 })
-export class ArticleOverview {
+export class ArticleOverview implements OnInit{
 
   private _topicId: string = "";
   private topicRaw?: TopicRaw;
@@ -35,15 +34,15 @@ export class ArticleOverview {
     description: " Loading...",
     image: ""
   }
-  public articlesRaw: ArticleWithoutContent[] = [];
-  public articlesDisplay: BlogArticleWithoutContent[] = [];
+  public articlesRaw: ArticleWithoutContentRaw[] = [];
+  public articlesDisplay: ArticleWithoutContent[] = [];
   private creating?: ArticleCreationData;
 
   constructor(private blogService: BlogService,
               private langService: TranslateService,
               private authService: AuthenticationService,
               private modalService: NgbModal,
-              private articleService:ArticleApi) {
+              private articleService: ArticleApi) {
   }
 
   @Input()
@@ -59,10 +58,16 @@ export class ArticleOverview {
           description: marked.parse(blog.topic.description[lang], {async: false}),
           image: `${environment.backendUrl}/images/topic/${id}`
         }
-        this.articlesRaw = blog.articles.sort((a, b) => b.created ?? 0 - a.created ?? 0);
+        this.articlesRaw = blog.articles;
         this.updateArticles();
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.langService.onLangChange.subscribe(() => {
+      this.updateArticles();
+    })
   }
 
   updateArticles() {
@@ -72,10 +77,11 @@ export class ArticleOverview {
         ...raw,
         title: raw.title[lang],
         description: raw.description[lang],
+        topic: this.topic.id,
         id: Number(raw.id)
       }
     })
-      .sort((a, b) => b.created ?? 0 - a.created ?? 0);
+      .sort((a, b) => b.created - a.created);
   }
 
   get isLoggedIn() {
@@ -85,7 +91,7 @@ export class ArticleOverview {
 
   deleteArticle(id: number) {
     this.modalService.open(ConfirmDialog, {centered: true, size: 'sm'}).closed.subscribe(confirm => {
-      this.articleService.deleteArticle(id).subscribe(()=> {
+      this.articleService.deleteArticle(id).subscribe(() => {
         findAndDelete(this.articlesRaw, a => a.id === id);
         this.updateArticles();
       });
@@ -94,21 +100,21 @@ export class ArticleOverview {
 
   public openArticleDialog(id: number | undefined = undefined) {
     const modalRef = this.modalService.open(ArticleDialog, {centered: true, size: 'lg', backdrop: 'static'});
-    if(id !== undefined) {
+    if (id !== undefined) {
       this.articleService.getArticle(id).subscribe(article => {
         modalRef.componentInstance.article = article;
       });
     } else {
-      if(this.creating !== undefined) {
+      if (this.creating !== undefined) {
         modalRef.componentInstance.article = this.creating;
       }
     }
 
     modalRef.closed.subscribe((result: ArticleCreationData | EditArticle) => {
       const newArticle = {topic: this._topicId, ...result};
-      if(id !== undefined) {
-        this.articleService.updateArticle({id:id,...newArticle}).subscribe( () => {
-          Object.assign(this.articlesRaw.find(a => a.id == id)!,{lastChange: Date.now(),...newArticle});
+      if (id !== undefined) {
+        this.articleService.updateArticle({id: id, ...newArticle}).subscribe(() => {
+          Object.assign(this.articlesRaw.find(a => a.id == id)!, {lastChange: Date.now(), ...newArticle});
           this.updateArticles();
         });
       } else {
