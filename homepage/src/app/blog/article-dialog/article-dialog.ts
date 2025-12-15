@@ -25,6 +25,7 @@ export class ArticleDialog {
   public contentLang: "de" | "en" = "de";
 
   private _images: Image[] = [];
+  private _imageData: Map<string, string> = new Map();
   private _originalArticle?: BlogArticleRaw;
 
   public imagesToRemove: string[] = [];
@@ -72,6 +73,7 @@ export class ArticleDialog {
             url: URL.createObjectURL(foundTitleImg.fileData)
           }
         }
+        this._images.forEach(img => this._imageData.set(img.filename, URL.createObjectURL(img.fileData)));
       })
       this._originalArticle = article;
     }
@@ -85,6 +87,7 @@ export class ArticleDialog {
         filename: fileName,
         fileData: file
       }
+      this._imageData.set(fileName, URL.createObjectURL(file));
       if(this._images.findIndex(img => img.filename == fileName) !== -1) { //file already exists
         if(this.imagesToRemove.includes(fileName)) { //file was removed before
           this.imagesToRemove.splice(this.imagesToRemove.indexOf(fileName), 1);
@@ -155,7 +158,7 @@ export class ArticleDialog {
   }
 
   getImageDataUrl(fileName: string): string {
-    return URL.createObjectURL(this._images.find(img => img.filename == fileName)!.fileData);
+    return this._imageData.get(fileName)!;
   }
 
   removeImage(filename: string) {
@@ -239,7 +242,6 @@ export class ArticleDialog {
         articleData = Object.assign(articleData, {imagesToDelete: this.imagesToRemove});
       }
     }
-    console.log("sending data: " + JSON.stringify(articleData));
     this.modal.close(articleData);
   }
 
