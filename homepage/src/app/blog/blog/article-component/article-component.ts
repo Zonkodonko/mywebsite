@@ -62,7 +62,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.languageSubscription = this.langService.onLangChange.subscribe(() => {
       if(this.article != undefined){ //should not happen, but sometime language changes before article is loaded
-        console.log("lang changed");
         this.updateDisplayData();
       }
     });
@@ -92,7 +91,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
    */
   updateDisplayData() {
     const lang = this.langService.getCurrentLang();
-    console.log("current lang: " + lang);
     this.title = this.article.title[lang];
     marked.use({renderer: getArticleRenderer(this.article.id, this.article.lastChange)});
     this.content = this.sanitizer.bypassSecurityTrustHtml(marked.parse(this.article.content[lang], {async: false}));

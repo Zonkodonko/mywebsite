@@ -55,8 +55,6 @@ export class BlogService {
    * @returns Observable of BlogArticleRaw with article data.
    */
   getArticleByName(topic: string, article: string): Observable<BlogArticleRaw> {
-    console.log("Getting article: " + topic + " " + article + "");
-    console.log(this.topicsCache.get(topic));
     if (this.topicsCache.size === 0 || !this.topicsCache.has(topic)) {
       return this.getFullTopic(topic).pipe( // Load topics cache
         switchMap(() => this.getArticleByName(topic, article))

@@ -47,7 +47,6 @@ export class ArticleApi {
    * @returns id of created article.
    */
   createArticle(article: NewArticle): Observable<string> {
-    console.log(JSON.stringify(article));
     const formData = this.buildFormData(article);
 
     return this.http.post(`${this.url}/article`, formData, {
