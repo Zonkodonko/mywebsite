@@ -93,7 +93,7 @@ export class ArticleDialog {
           this.imagesToRemove.splice(this.imagesToRemove.indexOf(fileName), 1);
           this.imagesToOverwrite.push(fileName);
 
-        } else if(this.newImages.includes(fileName) && this.imagesToOverwrite.includes(fileName)) { //file was added or overwritten before
+        } else if(this.newImages.includes(fileName) || this.imagesToOverwrite.includes(fileName)) { //file was added or overwritten before
           this._images[this._images.findIndex(img => img.filename == fileName)] = imageObject;
 
         } else { //filename already exists in legacy data
@@ -162,8 +162,10 @@ export class ArticleDialog {
   }
 
   removeImage(filename: string) {
+    let removeFromImages = false;
     if(this.isImageNew(filename)) {
       this.newImages.splice(this.newImages.indexOf(filename), 1);
+      removeFromImages = true;
     } else if( this.isImageOverwritten(filename)) {
       this.imagesToOverwrite.splice(this.imagesToOverwrite.indexOf(filename), 1);
       this.imagesToRemove.push(filename);
@@ -172,6 +174,9 @@ export class ArticleDialog {
       this.imagesToRemove.push(filename);
     }
     this.imageController.value.delete(this._images.find(img => img.filename == filename)!.fileData as File);
+    if(removeFromImages) {
+      this._images.splice(this._images.findIndex(img => img.filename == filename), 1);
+    }
     if(this.settingsControl.controls["titleImage"].value == filename) {
       this.settingsControl.controls["titleImage"].setValue("");
     }
