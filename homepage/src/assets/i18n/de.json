@@ -24,7 +24,8 @@
       }
     },
     "projects": {
-      "title": "Meine privaten Projekte"
+      "title": "Meine öffentlichen Projekte",
+      "link": "Öffentliche Projekte"
     }
   },
   "blog": {

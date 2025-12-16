@@ -32,4 +32,18 @@
     text-overflow: ellipsis;
   }
 
+
+  @media screen and (max-aspect-ratio: 3/4) {
+    flex-direction: column;
+    width: 100%;
+
+    > .card-img-top {
+      height: unset;
+      width: 100%;
+      aspect-ratio: 1/1;
+
+    }
+  }
+
+
 }

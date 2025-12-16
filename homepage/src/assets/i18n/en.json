@@ -24,7 +24,8 @@
       }
     },
     "projects": {
-      "title": "My Projects"
+      "title": "My Projects",
+      "link": "My Projects"
     }
   },
   "blog": {

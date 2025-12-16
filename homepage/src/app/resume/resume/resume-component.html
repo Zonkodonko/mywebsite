@@ -7,13 +7,16 @@
         <h2>{{"resume.greeting.2" | translate}}</h2>
         <ul id="resume-nav" class="ps-0 pt-3">
           <li>
-            <a type="button" (click)="scrollTo('aboutme')">{{"resume.aboutme.title" | translate | lowercase}}</a>
+            <a type="button" (click)="scrollTo('aboutme')">{{"resume.aboutme.title" | translate}}</a>
           </li>
           <li>
-            <a type="button" (click)="scrollTo('experience')">{{"resume.experience.title" | translate | lowercase}}</a>
+            <a type="button" (click)="scrollTo('experience')">{{"resume.experience.title" | translate}}</a>
           </li>
           <li>
-            <a type="button" (click)="scrollTo('skills')">{{"resume.skills.title" | translate | lowercase}}</a>
+            <a type="button" (click)="scrollTo('skills')">{{"resume.skills.title" | translate}}</a>
+          </li>
+          <li>
+            <a type="button" (click)="scrollTo('projects')">{{"resume.projects.link" | translate}}</a>
           </li>
         </ul>
       </div>
@@ -24,18 +27,10 @@
     </div>
   </div>
   <div class="resume-body d-flex flex-column position-relative">
-<!--    @for (bgp of backgroundParticles; track $index) {-->
-<!--      <div class="bg-particle"></div>-->
-<!--    }-->
-    <div id="projects">
-      <h2 class="mb-3">{{"resume.projects.title" | translate}}</h2>
-      <app-topic-overview-component></app-topic-overview-component>
-    </div>
     <div id="aboutme" class="resume-section">
       <h2 class="mb-3">{{"resume.aboutme.title" | translate}}</h2>
       <app-aboutme [aboutMe]="{text:resume.aboutMe, lang: lang} "></app-aboutme>
     </div>
-<!--    <div id="experience-border"></div>-->
     <div id="experience" class="resume-section">
       <h2 class="mb-3">{{"resume.experience.title" | translate}}</h2>
       <app-career-component [career]="resume.experience"></app-career-component>
@@ -43,6 +38,10 @@
     <div id="skills" class="skills resume-section">
       <h2>{{"resume.skills.title" | translate}}</h2>
       <app-skill-overview [skills]="resume.skills"></app-skill-overview>
+    </div>
+    <div id="projects" class="resume-section">
+      <h2 class="mb-3">{{"resume.projects.title" | translate}}</h2>
+      <app-topic-overview-component></app-topic-overview-component>
     </div>
   </div>
 </div>

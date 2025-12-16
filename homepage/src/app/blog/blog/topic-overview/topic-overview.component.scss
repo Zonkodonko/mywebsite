@@ -1,7 +1,10 @@
 .blog-container {
-  height: 100vh;
+  min-height: 50vh;
   padding-top: 6rem;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .topic-carousal {
@@ -9,13 +12,11 @@
   flex-direction: row;
   gap: 2rem;
   align-items: center;
-  justify-content: space-around;
-  padding: 2rem;
+  justify-content: center;
   border-radius: 1rem;
-  //border: 0.1rem solid #bdbdbd;
-  margin-left: 2rem;
-  margin-right: 2rem;
   flex-wrap: wrap;
+  height: 100%;
+  flex-grow: 1;
 
 
 }
