@@ -32,8 +32,6 @@
 
 .topic-card {
   width: 35rem;
-  background-color: #212121;
-  color: white;
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -45,7 +43,7 @@
     justify-content: center;
     align-items: center;
     font-size: 2rem;
-    background-color: #3b7272;
+    background-color: #0f9797;
     object-fit: cover ;
     object-position: center;
   }

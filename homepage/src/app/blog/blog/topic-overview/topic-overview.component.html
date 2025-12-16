@@ -4,7 +4,7 @@
       <app-topic-card [topic]="topic" (openTopic)="openTopicDialog(topic.id)"></app-topic-card>
     }
     @if(isLoggedIn()) {
-      <div id="add-topic-card" class="card topic-card position-relative" (click)="openTopicDialog()">
+      <div id="add-topic-card" class="card topic-card container-primary position-relative" (click)="openTopicDialog()">
         <div id="add-topic-image" class="card-img-top">
           <i class="bi bi-plus-circle"></i>
         </div>

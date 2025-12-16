@@ -3,7 +3,7 @@ import environment from '../../../../environment';
 import {NewTopic, TopicRaw} from '../../data/BlogTypes';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../../authentication/authentication.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
