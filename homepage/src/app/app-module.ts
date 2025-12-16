@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {inject, NgModule, provideEnvironmentInitializer} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing-module';
@@ -12,6 +12,7 @@ import {UnauthorizedHandlerInterceptor} from './shared/http-interceptors/unautho
 import {FormsModule} from '@angular/forms';
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
+import {ThemeByRouteInterception} from './shared/theming/theme-by-route-interception';
 
 registerLocaleData(localeDe, 'de', localeDeExtra);
 
@@ -34,6 +35,9 @@ registerLocaleData(localeDe, 'de', localeDeExtra);
       lang: 'en',
       fallbackLang: 'en',
       loader: provideTranslateHttpLoader()
+    }),
+    provideEnvironmentInitializer(() => {
+      inject(ThemeByRouteInterception);
     })
   ],
   bootstrap: [App]
