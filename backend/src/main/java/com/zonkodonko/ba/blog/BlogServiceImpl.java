@@ -151,7 +151,7 @@ public class BlogServiceImpl implements BlogService {
 	public String saveTopic(TopicDto topic, MultipartFile image) {
 		Objects.requireNonNull(topic);
 		Image imageEntity = null;
-		if (topic.id() != null && !topic.id().isBlank()) {//is updating topic
+		if (blogTopicRepository.existsById(topic.id())) {//is updating topic
 			Image oldImg = blogTopicRepository.findById(topic.id()).orElseThrow().getImage();
 			if (oldImg != null) {
 				imageEntity = updateImage(oldImg, image);

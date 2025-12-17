@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TopicDialog} from '../../topic-dialog/topic-dialog';
 import {TopicApi} from '../../services/topic-service/topic-api';
 import {Subscription} from 'rxjs';
+import {ConfirmDialog} from '../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-topic-overview-component',
@@ -63,13 +64,22 @@ export class TopicOverview implements OnInit, OnDestroy {
     return {...raw, ...{title: raw.title[lang], description: raw.description[lang]}}
   }
 
+  public deleteTopic(id: string) {
+    this.modalService.open(ConfirmDialog, {centered: true, size: 'sm'}).closed.subscribe(confirm => {
+      this.topicService.deleteTopic(id).subscribe(() => {
+        this._topicsRaw.splice(this._topicsRaw.findIndex(t => t.id === id), 1);
+        this.updateTopics();
+      })
+    })
+  }
+
   openTopicDialog(id?: string) {
     let ngbModalRef = this.modalService.open(TopicDialog, {centered: true, size: 'lg', backdrop: 'static'});
     if (id !== undefined) {
       let topic = this._topicsRaw.find(e => e.id === id)!;
       ngbModalRef.componentInstance.setData(topic);
     } else if (this.creating !== undefined) {
-      ngbModalRef.componentInstance.setData(this.creating);
+      ngbModalRef.componentInstance.setData({new: true, ...this.creating});
     }
 
     ngbModalRef.closed.subscribe((result: NewTopic) => {

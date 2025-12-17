@@ -40,9 +40,9 @@ export class TopicDialog {
   }
 
 
-  public setData(topic: TopicRaw) {
+  public setData(topic: TopicRaw&{new:boolean}) {
     this.topicForm.patchValue(topic);
-    if (topic.image) {
+    if (topic.image && !topic.new) {
       this.imageService.getImageFor(topic.id).subscribe((img) => {
         const imgFile = new File([img.fileData], img.filename);
         this.image = imgFile;

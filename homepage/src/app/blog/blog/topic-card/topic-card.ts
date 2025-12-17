@@ -13,6 +13,7 @@ export class TopicCard {
   @Input() topic!: Topic;
 
   @Output() openTopic: EventEmitter<Topic> = new EventEmitter<Topic>();
+  @Output() delete: EventEmitter<Topic> = new EventEmitter<Topic>();
 
   public isHovered: boolean = false;
 
@@ -27,6 +28,11 @@ export class TopicCard {
   open(event: Event) {
     event.stopPropagation();
     this.openTopic.emit(this.topic);
+  }
+
+  deleteTopic(event: Event) {
+    event.stopPropagation();
+    this.delete.emit(this.topic);
   }
 
 

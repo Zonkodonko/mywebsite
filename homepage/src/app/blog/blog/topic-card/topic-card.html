@@ -12,6 +12,9 @@
       <button class="btn text-on-primary" (click)="open($event)">
         <i class="bi bi-pencil-square"></i>
       </button>
+      <button class="btn text-on-primary" (click)="deleteTopic($event)">
+        <i class="bi bi-trash"></i>
+      </button>
     }
     <a class="btn text-on-primary" [routerLink]="['/blog', topic.id]">
       <i class="bi bi-box-arrow-up-right"></i>

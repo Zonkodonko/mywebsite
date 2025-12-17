@@ -1,7 +1,7 @@
 <div class="blog-container">
   <div class="topic-carousal">
     @for(topic of topics; track topic) {
-      <app-topic-card [topic]="topic" (openTopic)="openTopicDialog(topic.id)"></app-topic-card>
+      <app-topic-card [topic]="topic" (openTopic)="openTopicDialog(topic.id)" (delete)="deleteTopic(topic.id)"></app-topic-card>
     }
     @if(isLoggedIn()) {
       <div id="add-topic-card" class="card topic-card container-primary position-relative" (click)="openTopicDialog()">
