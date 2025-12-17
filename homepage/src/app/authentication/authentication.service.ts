@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import environment from '../../environment';
 import {Subject, tap} from 'rxjs';
@@ -11,11 +11,14 @@ export class AuthenticationService {
   private _isLoggedIn: boolean = false;
 
   public logoutEvent: Subject<void> = new Subject<void>();
+  public loginEvent: Subject<void> = new Subject<void>();
+  public expireTime: number = 0;
 
   constructor(private http: HttpClient) {
     const loginStatus = sessionStorage.getItem('login');
-    if (loginStatus != null) {
+    if (loginStatus != null && loginStatus != 'null') {
       this._isLoggedIn = true;
+      this.expireTime = Date.now() + (JSON.parse(loginStatus).expires_in as number * 1000);
     }
   }
 
@@ -35,23 +38,36 @@ export class AuthenticationService {
         }
       }
     ).pipe(
-      tap(response => {
-        this._isLoggedIn = true;
-        sessionStorage.setItem('login', JSON.stringify(response as any));
+      tap((response: any) => {
+        this.safeJwtInfo(response);
+        this.loginEvent.next();
       }));
   }
 
+  /**
+   * Refresh access token.
+   * @returns Observable of new jwt info.
+   */
   refreshToken() {
-    return this.http.post(`${environment.backendUrl}/auth/refresh`, {}, {headers: this.getAuthHeaders(true)}).pipe(
-      tap(response => {
-        this._isLoggedIn = true;
-        sessionStorage.setItem('login', JSON.stringify(response as any));
+    return this.http.post(`${environment.backendUrl}/auth/refresh`, {}, {headers: this.getRefreshHeader()}).pipe(
+      tap((response:any) => {
+        this.safeJwtInfo(response);
       }));
+  }
+
+  /**
+   * Save jwt info to local storage.
+   * @param jwt jwt info.
+   */
+  private safeJwtInfo(jwt: any) {
+    this._isLoggedIn = true;
+    this.expireTime = Date.now() + (jwt.expires_in as number * 1000);
+    sessionStorage.setItem('login', JSON.stringify({expireTime: this.expireTime, ...jwt}));
   }
 
   logout() {
     this.logoutEvent.next();
-    return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getAuthHeaders(true)}).subscribe({
+    return this.http.post(`${environment.backendUrl}/auth/logout`, {}, {headers: this.getRefreshHeader()}).subscribe({
       complete: () => {
         this.invalidateSessionLocal();
       },
@@ -69,14 +85,14 @@ export class AuthenticationService {
     sessionStorage.removeItem('login');
   }
 
-  public getAuthHeaders(withRefresh: boolean = false): HttpHeaders {
+  public getAuthHeaders(): HttpHeaders {
     const jwt = JSON.parse(sessionStorage.getItem('login')!);
     const bearer = jwt.access_token;
-    let headers = new HttpHeaders({'Authorization': `Bearer ${bearer}`})
-    if(withRefresh) {
-      headers = headers.set('refresh_token', jwt.refresh_token);
-    }
-    return headers;
+    return new HttpHeaders({'Authorization': `Bearer ${bearer}`});
+  }
+
+  private getRefreshHeader(): HttpHeaders {
+    return new HttpHeaders({'refresh_token': JSON.parse(sessionStorage.getItem('login')!).refresh_token});
   }
 
 }

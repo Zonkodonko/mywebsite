@@ -2,12 +2,12 @@
 <div class="global-options-container" (mouseenter)="onHoverInOptions()" (mouseleave)="onHoverOutOptions()">
   <ng-template #themepopup>
     <select [(ngModel)]="currentTheme">
-      @for(theme of allThemes; track theme) {
-        <option value="{{theme}}">{{"themes." + theme | translate}}</option>
+      @for (theme of allThemes; track theme) {
+        <option value="{{theme}}">{{ "themes." + theme | translate }}</option>
       }
     </select>
   </ng-template>
-<!--  -->
+  <!--  -->
   <div class="collapse" [ngbCollapse]="!showMoreOptions">
     <button class="theme-switch btn border-0" [ngbPopover]="themepopup"
             autoClose="outside"
@@ -20,12 +20,22 @@
     <span class="fi" [ngClass]="{'fi-de': currentLanguage =='de', 'fi-gb': currentLanguage != 'de'}"></span>
   </div>
 </div>
-<div id="login-container" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()">
-  <button (click)="clickLoginLogoutButton()" [class.hidden]="!isShowLoginButton" class="bg-transparent border-0">
-    <i class="bi"
-       [class.bi-key-fill]="!isLoggedIn"
-       [class.bi-box-arrow-right]="isLoggedIn"
-    ></i>
-  </button>
+<div id="login-surface" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()" [class.hidden]="!isShowLoginButton" >
+  <div id="login-container">
+    <button (click)="clickLoginLogoutButton()" class="bg-transparent border-0">
+      <i class="bi text-body"
+         [class.bi-key-fill]="!isLoggedIn"
+         [class.bi-box-arrow-right]="isLoggedIn"
+      ></i>
+    </button>
+    @if (isLoggedIn) {
+      <button (click)="clickRefresh()" class="bg-transparent border-0">
+        <i class="bi text-body"
+           [class.bi-arrow-clockwise]="isLoggedIn"
+        ></i>
+      </button>
+      <div class="session-countdown text-body">{{ sessionExpireTime | date:'mm:ss' }}</div>
+    }
+  </div>
 </div>
 <router-outlet></router-outlet>

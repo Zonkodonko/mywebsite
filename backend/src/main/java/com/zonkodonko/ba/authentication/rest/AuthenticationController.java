@@ -85,14 +85,14 @@ public class AuthenticationController {
 		form.add("client_secret", clientSecret);
 		form.add("refresh_token", headers.get("refresh_token"));
 		logger.info("refresh request: {}", headers);
-		restClient.post()
+		TokenResponse body = restClient.post()
 				.uri("/token")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.accept(MediaType.APPLICATION_JSON)
 				.body(form)
 				.retrieve()
 				.body(TokenResponse.class);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(body);
 	}
 
 	@PostMapping(path = "/logout")

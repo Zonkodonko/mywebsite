@@ -38,7 +38,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
 		config.setAllowedHeaders(List.of(
 				"Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Cache-Control", "Pragma","refresh_token"
 		));
-		config.setAllowCredentials(true); // nur, wenn du Cookies/Authorization mit sendest
+		config.setAllowCredentials(true);
 		config.setExposedHeaders(List.of("Location", "Content-Disposition"));
 		config.setMaxAge(3600L);
 

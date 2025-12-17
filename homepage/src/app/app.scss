@@ -24,6 +24,7 @@
     border-radius: 50%;
     width: 2.5rem;
     height: 2.5rem;
+
     &:hover {
       opacity: 1;
       cursor: pointer;
@@ -34,7 +35,7 @@
     border-radius: 1rem;
   }
 
-  >.lang-switch {
+  > .lang-switch {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,20 +43,35 @@
 }
 
 
-#login-container {
+#login-surface {
   display: block;
   position: fixed;
   overflow: hidden;
-  width: 3rem;
+  width: 7rem;
   max-height: 3rem;
   top: 0;
   bottom: 0;
   left: 1rem;
   z-index: 3;
+
+  #login-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 1rem;
+
+    .session-countdown {
+      font-size: .8rem;
+      display: inline-block;
+    }
+  }
 }
 
 .hidden {
-  transform: translateY(-4rem);
+  > * {
+    transform: translateY(-4rem);
+  }
 }
 
 .clickable {

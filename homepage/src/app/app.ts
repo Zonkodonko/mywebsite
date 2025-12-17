@@ -19,6 +19,9 @@ export class App implements OnInit {
   private optionsHoverTimer?: NodeJS.Timeout;
 
   public showMoreOptions: boolean = false;
+  public sessionExpireTime: number = 0;
+
+  private _countdownLoop: NodeJS.Timeout | undefined;
 
   constructor(private translateService: TranslateService,
               private modalService: NgbModal,
@@ -34,6 +37,17 @@ export class App implements OnInit {
       this.translateService.use('de')
     } else {
       this.translateService.use('en');
+    }
+    this.authService.logoutEvent.subscribe(() => {
+      if(this._countdownLoop) {
+        clearTimeout(this._countdownLoop);
+      }
+    });
+    this.authService.loginEvent.subscribe(() => {
+      this.startSessionCountdown();
+    });
+    if(this.authService.isLoggedIn) {
+      this.startSessionCountdown();
     }
   }
 
@@ -101,6 +115,17 @@ export class App implements OnInit {
     }
   }
 
+  startSessionCountdown() {
+    //loop every second
+    this._countdownLoop = setInterval(() => {
+      this.sessionExpireTime = this.authService.expireTime - Date.now();
+    }, 1000);
+
+  }
+
+  clickRefresh() {
+    this.authService.refreshToken().subscribe();
+  }
   showLoginButton() {
     this.isShowLoginButton = true;
   }
