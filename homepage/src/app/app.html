@@ -21,20 +21,20 @@
   </div>
 </div>
 <div id="login-surface" (mouseenter)="showLoginButton()" (mouseleave)="hideLoginButton()" [class.hidden]="!isShowLoginButton" >
-  <div id="login-container">
+  <div id="login-container" class="container-primary">
     <button (click)="clickLoginLogoutButton()" class="bg-transparent border-0">
-      <i class="bi text-body"
+      <i class="bi"
          [class.bi-key-fill]="!isLoggedIn"
          [class.bi-box-arrow-right]="isLoggedIn"
       ></i>
     </button>
     @if (isLoggedIn) {
       <button (click)="clickRefresh()" class="bg-transparent border-0">
-        <i class="bi text-body"
+        <i class="bi"
            [class.bi-arrow-clockwise]="isLoggedIn"
         ></i>
       </button>
-      <div class="session-countdown text-body">{{ sessionExpireTime | date:'mm:ss' }}</div>
+      <div class="session-countdown">{{ sessionExpireTime | date:'mm:ss' }}</div>
     }
   </div>
 </div>

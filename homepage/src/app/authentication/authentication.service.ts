@@ -18,7 +18,7 @@ export class AuthenticationService {
     const loginStatus = sessionStorage.getItem('login');
     if (loginStatus != null && loginStatus != 'null') {
       this._isLoggedIn = true;
-      this.expireTime = Date.now() + (JSON.parse(loginStatus).expires_in as number * 1000);
+      this.expireTime = JSON.parse(loginStatus).expires_in as number;
     }
   }
 
