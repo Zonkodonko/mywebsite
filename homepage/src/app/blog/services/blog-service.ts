@@ -52,17 +52,28 @@ export class BlogService {
    * If topic is cached, get id from cache.
    * @param topic of article to get.
    * @param article name of article to get. <strong>Must be slugified!</strong>.
+   * @param throwError if true, throw error if article not found. If false, methode will be called again after a cache refresh. But this time with throwError = true.
    * @returns Observable of BlogArticleRaw with article data.
    */
-  getArticleByName(topic: string, article: string): Observable<BlogArticleRaw> {
-    if (this.topicsCache.size === 0 || !this.topicsCache.has(topic)) {
-      return this.getFullTopic(topic).pipe( // Load topics cache
-        switchMap(() => this.getArticleByName(topic, article))
-      );
-    } else {
-      const id = this.topicsCache.get(topic)!.find(t => t.names.includes(article))!.id;
-      return this.http.get<BlogArticleRaw>(`${this.url}/article/${id}`);
+  getArticleByName(topic: string, article: string, throwError: boolean = false): Observable<BlogArticleRaw> {
+    let id: number | undefined;
+    if (this.topicsCache.size > 0 && this.topicsCache.has(topic)) {
+      const articleEntry = this.topicsCache.get(topic)!.find(t => t.names.includes(article));
+      if (articleEntry != undefined) {
+        id = articleEntry.id;
+      }
     }
+    if (id == undefined) {
+      if (throwError) {
+        throw new Error(`Article ${article} not found in topic ${topic}!`);
+      } else {
+        return this.getFullTopic(topic).pipe( // Load topics cache
+          switchMap(() => this.getArticleByName(topic, article, true))
+        );
+      }
+    }
+    return this.http.get<BlogArticleRaw>(`${this.url}/article/${id}`);
+
   }
 
 
