@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Theme, ThemeService} from './theme-service';
 import {EventType, Router} from '@angular/router';
 
@@ -8,7 +8,7 @@ import {EventType, Router} from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class ThemeByRouteInterception {
+export class ThemeByRouteInterception implements OnInit {
 
   private readonly THEME_MAPPING = new Map<string, Theme>([
     ['blog', Theme.BLUE],
@@ -18,13 +18,22 @@ export class ThemeByRouteInterception {
   constructor(private themeService: ThemeService, private router: Router) {
     this.router.events.subscribe((e) => {
       if (e.type == EventType.NavigationEnd) {
-        for (const [route, theme] of this.THEME_MAPPING) {
-          if (e.url.includes(route)) {
-            this.themeService.changeTheme(theme);
-          }
-        }
+        this.changeTheme(e.urlAfterRedirects);
       }
     });
+  }
+
+  ngOnInit(): void {
+    const url = this.router.url;
+    this.changeTheme(url);
+  }
+
+  private changeTheme(url: string): void {
+    for (const [route, theme] of this.THEME_MAPPING) {
+      if (url.includes(route)) {
+        this.themeService.changeTheme(theme);
+      }
+    }
   }
 
 }
