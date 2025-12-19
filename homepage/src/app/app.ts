@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, HostListener, OnInit, signal} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LoginComponent} from './authentication/login/login.component';
@@ -22,6 +22,8 @@ export class App implements OnInit {
   public sessionExpireTime: number = 0;
 
   private _countdownLoop: NodeJS.Timeout | undefined;
+
+  public showScrollTopButton: boolean = false;
 
   constructor(private translateService: TranslateService,
               private modalService: NgbModal,
@@ -132,5 +134,19 @@ export class App implements OnInit {
 
   hideLoginButton() {
     this.isShowLoginButton = false;
+  }
+
+  /**
+   * Update visual state of scroll-top button
+   */
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const threshold = window.innerHeight * 1.5; // 150vh
+    this.showScrollTopButton = scrollPosition > threshold;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
