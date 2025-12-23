@@ -7,7 +7,10 @@
       <div class="topic-description" [innerHTML]="topic.description"></div>
     </div>
   </div>
-  <div class="mt-2 p-3 article-container">
+  <a routerLink="/" class="back-button align-self-start clickable">
+    <i class="bi bi-arrow-left me-1"></i>{{'global.back' | translate}}
+  </a>
+  <div class="pb-3 pw-3 article-container">
     <!--    ADD BUTTON -->
     @if (isLoggedIn) {
       <button class="btn border add-button btn-primary" (click)="openArticleDialog()">

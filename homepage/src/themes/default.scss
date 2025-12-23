@@ -13,7 +13,7 @@ $enable-smooth-scroll: true;
 
 $box-shadow: 2px 2px 20px 1px rgba(0,0,0,0.5);
 
-$tertiary: #a67600 !default;
+$tertiary: #414141 !default;
 
 $custom-themes: (
   "tertiary": $tertiary
@@ -22,6 +22,7 @@ $custom-themes: (
 
 // 3. Include remainder of required Bootstrap stylesheets
 $primary: #2f365e !default;
+$secondary: #6e7eef !default;
 
 @import "../../node_modules/bootstrap/scss/variables";
 
@@ -171,3 +172,18 @@ html, body, *{
     color: $color;
   }
 }
+
+.back-button {
+  border-radius: 0 2rem 2rem 0;
+  padding-inline: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @extend .container-tertiary;
+
+}
+

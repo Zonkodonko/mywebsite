@@ -39,6 +39,6 @@
   </div>
 </div>
 <router-outlet></router-outlet>
-<button id="scrollTopButton" class="btn rounded-pill" [class.invisible]="!showScrollTopButton" (click)="scrollToTop()">
+<button id="scrollTopButton" class="btn rounded-pill" [class.invisible]="!showScrollTopButton" [hidden]="!showScrollTopButton" (click)="scrollToTop()">
   <i class="bi bi-arrow-up-circle"></i>
 </button>

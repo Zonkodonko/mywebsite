@@ -50,6 +50,7 @@
   },
   "period": "von {{from}} bis {{to}}",
   "global": {
+    "back": "Zurück",
     "cancel": "Abbrechen",
     "content": "Inhalt",
     "description": "Beschreibung",

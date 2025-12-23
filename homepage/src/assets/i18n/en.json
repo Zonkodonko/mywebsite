@@ -49,6 +49,7 @@
   },
   "period": "from {{from}} to {{to}}",
   "global": {
+    "back": "Back",
     "cancel": "Cancel",
     "content": "Content",
     "description": "Description",

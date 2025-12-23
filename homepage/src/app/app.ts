@@ -142,8 +142,7 @@ export class App implements OnInit {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    const threshold = window.innerHeight * 1.5; // 150vh
-    this.showScrollTopButton = scrollPosition > threshold;
+    this.showScrollTopButton = scrollPosition > window.innerHeight;
   }
 
   scrollToTop() {
