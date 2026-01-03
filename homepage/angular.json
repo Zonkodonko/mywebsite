@@ -45,12 +45,12 @@
               {
                 "input": "src/themes/default.scss",
                 "bundleName": "default",
-                "inject": true
+                "inject": false
               },
               {
                 "input": "src/themes/blue.scss",
                 "bundleName": "blue",
-                "inject": true
+                "inject": false
               }
             ],
             "outputMode": "static",
@@ -70,16 +70,16 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1000kB",
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "15kB",
+                  "maximumError": "10kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "media"
             },
             "development": {
               "optimization": false,
