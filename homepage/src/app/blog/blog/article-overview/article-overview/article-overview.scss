@@ -5,7 +5,7 @@ $zindex-backbutton: 5;
 .article-container { // 1 column
   ::ng-deep {
     > :first-child {
-      max-width: $article-card-width;
+      max-width: min(100vw,$article-card-width);
     }
   }
 }
@@ -14,7 +14,7 @@ $zindex-backbutton: 5;
   .article-container {
     ::ng-deep {
       > :first-child {
-        max-width: calc((2 * $article-card-width) + $gap);
+        max-width: min(100vw,calc((2 * $article-card-width) + $gap));
       }
     }
 
@@ -25,7 +25,7 @@ $zindex-backbutton: 5;
   .article-container {
     ::ng-deep {
       > :first-child {
-        max-width: calc((3 * $article-card-width) + (2 * $gap));
+        max-width: min(100vw,calc((3 * $article-card-width) + (2 * $gap)));
       }
     }
   }
@@ -36,6 +36,7 @@ $zindex-backbutton: 5;
   padding: 1rem;
   align-items: center;
   font-size: 0.8rem;
+  overflow: auto;
 }
 
 .topic-image {
@@ -54,11 +55,12 @@ $zindex-backbutton: 5;
   align-content: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
   flex-grow: 1;
   gap: $gap;
   padding-right: $gap;
   padding-left: $gap;
-  max-width: calc((3 * $article-card-width) + (4 * $gap));
+  max-width: min(100vw,calc((3 * $article-card-width) + (4 * $gap)));
   align-self: center;
 
   > * {
@@ -67,12 +69,12 @@ $zindex-backbutton: 5;
 
   ::ng-deep {
     > :first-child {
-      min-width: $article-card-width;
+      min-width: min(calc(100vw - (2 * $gap)),$article-card-width);
       flex-grow: 1;
     }
 
     > :not(:first-child) {
-      width: $article-card-width;
+      width: 100%;
       max-width: $article-card-width;
     }
 
@@ -92,6 +94,17 @@ $zindex-backbutton: 5;
 }
 
 .topic-description {
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+  max-height: 7rem;
+
+  ::ng-deep > * {
+    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: hidden;
+  }
+
   ::ng-deep > p:last-child {
     margin-bottom: 0 !important;
   }
