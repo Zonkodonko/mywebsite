@@ -47,7 +47,7 @@ public class BlogServiceImpl implements BlogService {
 			BlogArticleRepository blogArticleRepository,
 			BlogTopicRepository blogTopicRepository,
 			ImageRepository imageRepository,
-			@Value("${host.domain}") String hostDomain) {
+			@Value("${server.domain}") String hostDomain) {
 		this.blogArticleRepository = blogArticleRepository;
 		this.blogTopicRepository = blogTopicRepository;
 		this.imageRepository = imageRepository;

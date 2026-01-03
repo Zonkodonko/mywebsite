@@ -34,3 +34,4 @@ data:
 server:
   port: 8081
   forward-headers-strategy: framework
+  domain: https://resume.${HOST_DOMAIN}
