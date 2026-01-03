@@ -21,7 +21,7 @@ $zindex-backbutton: 5;
   }
 }
 
-@media screen and (min-width: $article-card-width*3.4) { // 3 columns
+@media screen and (min-width: calc((3 * $article-card-width) + (4 * $gap))) { // 3 columns
   .article-container {
     ::ng-deep {
       > :first-child {
@@ -58,6 +58,8 @@ $zindex-backbutton: 5;
   gap: $gap;
   padding-right: $gap;
   padding-left: $gap;
+  max-width: calc((3 * $article-card-width) + (4 * $gap));
+  align-self: center;
 
   > * {
     height: fit-content;
