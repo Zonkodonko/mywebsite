@@ -87,9 +87,13 @@ $zindex-backbutton: 5;
   top: 4rem;
   left: 0;
   z-index: $zindex-backbutton;
-  opacity: 0.5;
-  &:hover {
-    opacity: 1;
+  @media screen and (max-aspect-ratio: 3/4) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 

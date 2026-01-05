@@ -53,7 +53,7 @@ $skill-bubble-color-rgb: var(--bs-body-color-rgb);
 
   }
 }
-@media screen and (max-aspect-ratio: 3/4) {
+@media screen and (max-aspect-ratio: 3/4), (max-width: 35rem) {
   .category-content-container {
     grid-template-columns: 3fr 1fr;
   }

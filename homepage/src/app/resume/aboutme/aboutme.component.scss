@@ -42,7 +42,7 @@ $zindex-aboutme:$zindex-portrait - 1;
   padding: 1rem;
 }
 
-@media screen and (max-aspect-ratio: 3/4) {
+@media screen and (max-aspect-ratio: 3/4), (max-width: 35rem) {
   #aboutme {
     width: 100%;
   }

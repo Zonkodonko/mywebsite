@@ -64,7 +64,6 @@
 
   > * {
     width: fit-content;
-
   }
 }
 
@@ -167,15 +166,40 @@
   align-self: center;
 }
 
+#portrait {
+  display: none;
+}
 
-@media screen and (max-aspect-ratio: 3/4) {
+
+@media screen and (max-aspect-ratio: 3/4), (max-width: 35rem) {
   .resume-container {
-    margin-top: 3rem;
+    margin-top: 0;
+  }
+
+  #portrait {
+    display: block;
+    height: 15rem;
+    width: auto;
+    object-fit: contain;
+    box-sizing: content-box;
+    margin-bottom: 1rem;
+  }
+
+  #name {
+    font-size: 3rem;
   }
 
   .resume-header {
     flex-direction: column;
     min-height: 50vh;
+    justify-content: center;
+    height: 100vh;
+
+    > * {
+      text-align: center;
+      width: 100%;
+    }
+
   }
 
   .resume-body {
@@ -195,6 +219,15 @@
   .header-text {
     order: 2;
     margin-left: 0 !important;
+
+    > h2 {
+      font-size: 2rem;
+    }
+
+    * {
+      text-align: center;
+      width: 100%;
+    }
   }
 
   .header-image {
@@ -206,6 +239,17 @@
     padding-left: 1rem;
     padding-right: 1rem;
   };
+
+  #resume-nav {
+    width: 100%;
+    * {
+      text-align: center;
+      width: 100%;
+    }
+    >li {
+      margin-bottom: 0.5rem;
+    }
+  }
 }
 
 
