@@ -36,6 +36,18 @@
   font-size: 1.3rem;
   line-height: 2.5rem;
 
+  ::ng-deep {
+    .line {
+      display: block;
+      height: 1px;
+      min-height: 1px;
+      width: 100%;
+      background-color: var(--bs-gray-500);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
 }
 
 .back-button {
@@ -70,3 +82,4 @@
     justify-content: center;
   }
 }
+

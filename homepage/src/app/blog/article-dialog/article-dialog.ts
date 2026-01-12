@@ -5,6 +5,7 @@ import {Image, ImageService} from '../../shared/image-service/image-service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {LocalizedText} from '../../shared/translation/LocalizedText';
 import {isStringEmpty} from '../../shared/utils/utils';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-article-dialog',
@@ -25,7 +26,7 @@ export class ArticleDialog {
   public contentLang: "de" | "en" = "de";
 
   private _images: Image[] = [];
-  private _imageData: Map<string, string> = new Map();
+  private _imageData: Map<string, string|SafeHtml> = new Map();
   private _originalArticle?: BlogArticleRaw;
 
   public imagesToRemove: string[] = [];
@@ -57,7 +58,7 @@ export class ArticleDialog {
     }),
   });
 
-  constructor(private imageService: ImageService, private modal: NgbActiveModal) {
+  constructor(private imageService: ImageService, private modal: NgbActiveModal, public sanitizer: DomSanitizer) {
   }
 
   set article(article: BlogArticleRaw) {
@@ -72,7 +73,17 @@ export class ArticleDialog {
             url: URL.createObjectURL(foundTitleImg.fileData)
           }
         }
-        this._images.forEach(img => this._imageData.set(img.filename, URL.createObjectURL(img.fileData)));
+        this._images.forEach(img => {
+          if(!img.filename.endsWith('.svg')) {
+            this._imageData.set(img.filename, URL.createObjectURL(img.fileData))
+          } else {
+            img.fileData.text().then(text => {
+              const cleanedSvg = text.replace(/\s*(width|height)="[^"]*"/g, '');
+              this._imageData.set(img.filename, this.sanitizer.bypassSecurityTrustHtml(cleanedSvg));
+            });
+          }
+
+        });
       })
       this._originalArticle = article;
     }
@@ -156,7 +167,7 @@ export class ArticleDialog {
     return this.imagesToOverwrite.includes(filename);
   }
 
-  getImageDataUrl(fileName: string): string {
+  getImageDataUrl(fileName: string): string|SafeHtml {
     return this._imageData.get(fileName)!;
   }
 

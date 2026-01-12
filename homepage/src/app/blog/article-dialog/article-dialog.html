@@ -69,7 +69,13 @@
             'border-warning text-warning': isImageOverwritten(image.filename)
             }"
           >
-            <img src="{{getImageDataUrl(image.filename)}}" alt="{{image.filename}}" class="image-bullet-preview border">
+            @if (image.filename.endsWith('.svg')) {
+              <div [innerHtml]="getImageDataUrl(image.filename)"
+                   class="image-bullet-preview border"
+              ></div>
+            } @else {
+              <img src="{{getImageDataUrl(image.filename)}}" alt="{{image.filename}}" class="image-bullet-preview border">
+            }
             <span class="image-bullet-filename">{{ image.filename }}</span>
             @if (!isImageRemoved(image.filename)) {
               <button class="btn" (click)="removeImage(image.filename)">

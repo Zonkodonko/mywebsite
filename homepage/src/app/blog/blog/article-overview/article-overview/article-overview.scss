@@ -71,6 +71,7 @@ $zindex-backbutton: 5;
     > :first-child {
       min-width: min(calc(100vw - (2 * $gap)),$article-card-width);
       flex-grow: 1;
+      width: 100%;
     }
 
     > :not(:first-child) {
@@ -78,6 +79,14 @@ $zindex-backbutton: 5;
       max-width: $article-card-width;
     }
 
+  }
+
+  &.two-columns {
+    max-width: min(100vw,calc((2 * $article-card-width) + (3 * $gap)));
+    ::ng-deep > :first-child {
+      max-width: min(100vw,calc((2 * $article-card-width) + (3* $gap)));
+      width: 100%;
+    }
   }
 }
 
