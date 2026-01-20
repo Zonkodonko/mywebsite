@@ -173,7 +173,8 @@
 #projects {
   width: 70%;
   align-self: center;
-  height: 70vh;
+  height: fit-content;
+  overflow: hidden;
 }
 
 #backgroundFootage {
