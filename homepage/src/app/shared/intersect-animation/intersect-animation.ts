@@ -29,9 +29,13 @@ export class IntersectAnimation implements OnInit, OnDestroy{
     return new IntersectionObserver(entries => {
       entries.forEach((entry) =>{
         if(entry.isIntersecting) {
-          entry.target.classList.add('show');
+          if(!entry.target.classList.contains('show-intersect')) {
+            entry.target.classList.add('show-intersect');
+          }
         } else {
-          entry.target.classList.remove('show');
+          if(entry.target.classList.contains('show-intersect')) {
+            entry.target.classList.remove('show-intersect');
+          }
         }
       })
     });

@@ -24,7 +24,7 @@ $zindex-aboutme:$zindex-portrait - 1;
     opacity: 0;
     border: none;
     resize: none;
-    &.show {
+    &.show-intersect {
       width: 100%;
       transform: translateX(0);
       opacity: 1;

@@ -63,9 +63,10 @@ $shape-color: var(--bs-body-color);
 
 .bullet-header, .bullet-details{
   transform: translateX(-50%);
+  root-margin: -50%;
   opacity: 0;
   z-index: $list-zindex - 1;
-  &.show {
+  &.show-intersect {
     transform: translateX(0);
     opacity: 1;
   }
