@@ -7,3 +7,4 @@
 /ba/build/
 /ba/gradle/
 /backend/src/main/resources/application.yml
+/backend/src/main/resources/application-prod.yml
