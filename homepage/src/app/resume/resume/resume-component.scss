@@ -16,15 +16,43 @@
   position: relative;
 }
 
+.socials-container { //desktop
+  display: flex;
+  margin-bottom: 3rem;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+
+  * {
+    color: inherit;
+  }
+
+  &.desktop-only {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.resume-header-text-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
 #resume-nav {
-  >li {
+  > li {
     list-style-type: none;
 
-    >a {
+    > a {
       text-decoration: none;
       color: inherit;
     }
+
     //chevron
     ::before {
       content: "\F280";
@@ -37,6 +65,7 @@
       vertical-align: -.125em;
       margin-right: 0.5rem;
     }
+
     :hover:before {
       margin-right: 0;
       margin-left: 0.5rem;
@@ -52,12 +81,15 @@
   > h1 {
     font-size: 6rem;
   }
+
   > h2 {
     font-size: 3rem;
   }
+
   > h3 {
     font-size: 2rem;
   }
+
   > h4 {
     font-size: 1.5rem;
   }
@@ -80,6 +112,7 @@
   overflow-y: auto;
   gap: 6rem;
   margin-top: 6rem;
+
   > .resume-section {
     min-height: 90vh;
     display: flex;
@@ -104,15 +137,15 @@
   //    width: .5rem;
   //  }
 
-    //@for $i from 1 through 50 {
-    //  &:nth-child(#{$i}) {
-    //    top: percentage(random(100)/100);
-    //    left: percentage(random(100)/100);
-    //    animation: background-particles (random(7)+3)*1s infinite;
-    //    animation-direction: nth($directions, random(2));
-    //    animation-delay: random(3)*1s;
-    //  }
-    //}
+  //@for $i from 1 through 50 {
+  //  &:nth-child(#{$i}) {
+  //    top: percentage(random(100)/100);
+  //    left: percentage(random(100)/100);
+  //    animation: background-particles (random(7)+3)*1s infinite;
+  //    animation-direction: nth($directions, random(2));
+  //    animation-delay: random(3)*1s;
+  //  }
+  //}
   //}
 }
 
@@ -189,6 +222,7 @@
     font-size: 3rem;
   }
 
+
   .resume-header {
     flex-direction: column;
     min-height: 50vh;
@@ -238,15 +272,24 @@
     text-wrap: wrap;
     padding-left: 1rem;
     padding-right: 1rem;
-  };
+  }
+
+  .socials-container.mobile-only { //for some stupid unknown reason css thinks that the command of a parent in a media query is stronger than 2 direct classes of this element. So I have to to put that here
+    width: 5rem;
+    overflow: hidden;
+    align-self: center;
+  }
+;
 
   #resume-nav {
     width: 100%;
+
     * {
       text-align: center;
       width: 100%;
     }
-    >li {
+
+    > li {
       margin-bottom: 0.5rem;
     }
   }

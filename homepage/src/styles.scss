@@ -35,3 +35,19 @@
   }
 }
 
+@media screen and (max-aspect-ratio: 3/4) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: unset;
+  }
+}
+
+@media screen and (min-aspect-ratio: 3/4) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+

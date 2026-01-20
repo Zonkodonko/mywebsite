@@ -1,50 +1,69 @@
 <div class="resume-container overflow-y-auto">
   <div class="resume-header">
-    <div class="d-flex flex-column align-items-center w-100">
-      <img id="portrait"
-           src="/assets/portrait.jpg"
-           class="img-fluid shadow"
-      />
-      <div class="header-text ms-3">
-        <h3>{{"resume.greeting.1" | translate}}</h3>
-        <h1 id="name">Timm Kutzner</h1>
-        <h2>{{"resume.greeting.2" | translate}}</h2>
-        <ul id="resume-nav" class="ps-0 pt-3">
-          <li>
-            <a type="button" (click)="scrollTo('aboutme')">{{"resume.aboutme.title" | translate}}</a>
-          </li>
-          <li>
-            <a type="button" (click)="scrollTo('experience')">{{"resume.experience.title" | translate}}</a>
-          </li>
-          <li>
-            <a type="button" (click)="scrollTo('skills')">{{"resume.skills.title" | translate}}</a>
-          </li>
-          <li>
-            <a type="button" (click)="scrollTo('projects')">{{"resume.projects.link" | translate}}</a>
-          </li>
-        </ul>
+    <div class="resume-header-text-container position-relative">
+      <div class="d-flex flex-column align-items-center w-100">
+        <img id="portrait"
+             src="/assets/portrait.jpg"
+             class="img-fluid shadow"
+        />
+        <div class="header-text ms-3">
+          <h3>{{ "resume.greeting.1" | translate }}</h3>
+          <h1 id="name">Timm Kutzner</h1>
+          <h2>{{ "resume.greeting.2" | translate }}</h2>
+          <ul id="resume-nav" class="ps-0 pt-3">
+            <li>
+              <a type="button" (click)="scrollTo('aboutme')">{{ "resume.aboutme.title" | translate }}</a>
+            </li>
+            <li>
+              <a type="button" (click)="scrollTo('experience')">{{ "resume.experience.title" | translate }}</a>
+            </li>
+            <li>
+              <a type="button" (click)="scrollTo('skills')">{{ "resume.skills.title" | translate }}</a>
+            </li>
+            <li>
+              <a type="button" (click)="scrollTo('projects')">{{ "resume.projects.link" | translate }}</a>
+            </li>
+          </ul>
+
+          <div class="socials-container text-body mx-auto mt-2 mobile-only">
+            <a href="https://github.com/Zonkodonko" target="_blank">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="www.linkedin.com/in/timm-kutzner-4b7a17232" target="_blank">
+              <i class="bi bi-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="socials-container text-body ms-3 desktop-only">
+        <a href="https://github.com/Zonkodonko" target="_blank">
+          <i class="bi bi-github"></i>
+        </a>
+        <a href="www.linkedin.com/in/timm-kutzner-4b7a17232" target="_blank">
+          <i class="bi bi-linkedin"></i>
+        </a>
       </div>
     </div>
+
     <div class="header-image">
       <img id="backgroundFootage" src="/assets/coding-stockimage.jpg">
-
     </div>
   </div>
   <div class="resume-body d-flex flex-column position-relative">
     <div id="aboutme" class="resume-section">
-      <h2 class="mb-3">{{"resume.aboutme.title" | translate}}</h2>
+      <h2 class="mb-3">{{ "resume.aboutme.title" | translate }}</h2>
       <app-aboutme [aboutMe]="{text:resume.aboutMe, lang: lang} "></app-aboutme>
     </div>
     <div id="experience" class="resume-section">
-      <h2 class="mb-3">{{"resume.experience.title" | translate}}</h2>
+      <h2 class="mb-3">{{ "resume.experience.title" | translate }}</h2>
       <app-career-component [career]="resume.experience"></app-career-component>
     </div>
     <div id="skills" class="skills resume-section">
-      <h2>{{"resume.skills.title" | translate}}</h2>
+      <h2>{{ "resume.skills.title" | translate }}</h2>
       <app-skill-overview [skills]="resume.skills"></app-skill-overview>
     </div>
     <div id="projects" class="resume-section">
-      <h2 class="mb-3">{{"resume.projects.title" | translate}}</h2>
+      <h2 class="mb-3">{{ "resume.projects.title" | translate }}</h2>
       <app-topic-overview-component></app-topic-overview-component>
     </div>
   </div>
