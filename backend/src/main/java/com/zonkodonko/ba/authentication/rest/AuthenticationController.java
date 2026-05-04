@@ -33,7 +33,6 @@ public class AuthenticationController {
 
 	Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-	// Beispiel: http://localhost:8080/realms/zonkodonko/protocol/openid-connect
 	public AuthenticationController(
 			@Value("${spring.security.oidc.base-url}") String oidcBaseUrl,
 			@Value("${spring.security.oidc.client-id}") String clientId,
@@ -46,7 +45,7 @@ public class AuthenticationController {
 		this.clientSecret = clientSecret;
 	}
 
-	// POST /api/auth/token mit JSON: { "username": "...", "password": "...", "scope": "openid profile email" }
+
 	@PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> token(@Valid @RequestBody LoginRequest body) {
 		MultiValueMap<String, String> form = new LinkedMultiValueMap<>();

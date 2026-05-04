@@ -16,32 +16,48 @@
   position: relative;
 }
 
-.socials-container { //desktop
-  display: flex;
-  margin-bottom: 3rem;
-  flex-direction: row;
-  justify-content: center;
-  gap: 1rem;
-  font-size: 1.5rem;
-
-  * {
-    color: inherit;
-  }
-
-  &.desktop-only {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
-}
-
 .resume-header-text-container {
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   height: 100%;
+
+}
+
+.socials-container { //desktop
+  display: flex;
+  margin-bottom: 3rem;
+  flex-direction: row;
+  justify-content: start;
+  gap: 2rem;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  margin-top: 3rem;
+
+  * {
+    color: inherit;
+  }
+
+  > a {
+    font-size: 1rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    > i {
+      font-size: 2rem;
+    }
+  }
+
+  //&.desktop-only {
+  //  position: absolute;
+  //  bottom: 0;
+  //  left: 0;
+  //}
 }
 
 #resume-nav {
@@ -64,6 +80,7 @@
       line-height: 1;
       vertical-align: -.125em;
       margin-right: 0.5rem;
+      transition: all 0.2s ease-in-out;
     }
 
     :hover:before {
@@ -202,6 +219,7 @@
 
 #portrait {
   display: none;
+  border-radius: 5px;
 }
 
 
@@ -276,9 +294,11 @@
   }
 
   .socials-container.mobile-only { //for some stupid unknown reason css thinks that the command of a parent in a media query is stronger than 2 direct classes of this element. So I have to to put that here
-    width: 5rem;
+    width: 8rem;
     overflow: hidden;
     align-self: center;
+    margin-left: 0;
+    margin-right: 0;
   }
 ;
 
