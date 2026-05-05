@@ -2,6 +2,17 @@
   $flag-icons-included-countries: ("de", "gb")
 );
 
+html {
+  overflow: hidden;
+}
+
+body {
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: calc(100vw + 10px);
+}
+
 .shiny::before {
   background: rgba(255, 255, 255, 0.2);
   content: "";

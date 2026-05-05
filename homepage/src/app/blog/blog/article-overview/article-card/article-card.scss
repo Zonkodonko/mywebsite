@@ -8,6 +8,13 @@
   position: relative;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  box-shadow: var(--bs-box-shadow);
+  transition: box-shadow 0.2s ease-in-out;
+  border-radius: 0.2rem;
+
+  &:hover {
+    box-shadow: 1px 1px 20px 1px rgba(0, 0, 0, 0.5);
+  }
 
   .article-text {
     max-height: 15rem;

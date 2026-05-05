@@ -139,7 +139,7 @@ export class App implements OnInit {
   /**
    * Update visual state of scroll-top button
    */
-  @HostListener('window:scroll', [])
+  @HostListener('body:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
     this.showScrollTopButton = scrollPosition > window.innerHeight;

@@ -1,4 +1,4 @@
-<div class="p-2 article-card border-light shadow border border-1 clickable" [class.bigger]="isLoggedIn"
+<div class="p-2 article-card border-light border border-1 clickable" [class.bigger]="isLoggedIn"
      routerLink="/blog/{{article.topic}}/{{title | slugify}}">
   @if (image != null) {
     <img [src]="image" class="article-image align-items-center align-self-center" [alt]="title">
