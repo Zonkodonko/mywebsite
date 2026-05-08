@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {de, en} from '../resources/resume';
 import {ViewportScroller} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
@@ -19,6 +19,9 @@ export class ResumeComponent implements OnInit, OnDestroy {
   public backgroundParticles: number[] = []
 
   private languageSubscription!: Subscription;
+
+  @ViewChild('resumeContainer')
+  private resumeContainer!: ElementRef<HTMLElement>;
 
   constructor(public viewportScroller: ViewportScroller,
               private translate: TranslateService,
@@ -55,7 +58,6 @@ export class ResumeComponent implements OnInit, OnDestroy {
    * @param id of element
    */
   public scrollTo(id: string) {
-    this.viewportScroller.scrollToAnchor(id, {behavior: 'smooth'})
+    document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'center'});
   }
-
 }

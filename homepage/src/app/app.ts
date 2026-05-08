@@ -146,6 +146,6 @@ export class App implements OnInit {
   }
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementsByTagName("body")[0].scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
